@@ -4,170 +4,361 @@
 
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--color-background-tertiary);color:var(--color-text-primary)}
-.topbar{background:#1a5276;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;border-radius:var(--border-radius-lg) var(--border-radius-lg) 0 0}
-.topbar h1{font-size:15px;font-weight:500}
-.topbar p{font-size:11px;opacity:.7}
-.main{padding:14px 16px 40px}
-.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px 18px;margin-bottom:14px}
-.ctitle{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:#1a5276;border-bottom:1.5px solid #2e86c1;padding-bottom:6px;margin-bottom:13px}
-.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:9px 13px}
-.g{display:flex;flex-direction:column;gap:4px}
-.g label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em}
-.g input,.g select,.g textarea{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 8px;font-size:13px;color:var(--color-text-primary);background:var(--color-background-primary);font-family:inherit}
-.g input:focus,.g select:focus,.g textarea:focus{outline:none;border-color:#2e86c1;box-shadow:0 0 0 2px rgba(46,134,193,.18)}
-.g textarea{resize:vertical;min-height:50px}
+:root{
+  --blue-dark:#0C447C;--blue-mid:#185FA5;--blue-soft:#E6F1FB;--blue-border:#B5D4F4;
+  --teal:#0F6E56;--teal-soft:#E1F5EE;--teal-border:#9FE1CB;
+  --red:#A32D2D;--red-soft:#FCEBEB;
+  --gray-bg:#F1EFE8;--gray-border:#D3D1C7;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--color-background-tertiary);color:var(--color-text-primary);font-size:13px}
+
+.page-header{
+  background:#0C447C;color:#fff;padding:16px 22px;
+  display:flex;align-items:center;gap:14px;
+  border-radius:var(--border-radius-lg) var(--border-radius-lg) 0 0;
+  border-bottom:3px solid #185FA5;
+}
+.page-header .ico{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:var(--border-radius-md);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.page-header h1{font-size:14px;font-weight:500;margin-bottom:2px}
+.page-header p{font-size:11px;opacity:.65}
+
+.wrap{padding:16px 18px 40px}
+
+.section{
+  background:var(--color-background-primary);
+  border:0.5px solid var(--color-border-tertiary);
+  border-radius:var(--border-radius-lg);
+  margin-bottom:16px;
+  overflow:hidden;
+}
+.sec-head{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 16px;
+  background:#E6F1FB;
+  border-bottom:0.5px solid #B5D4F4;
+}
+.sec-head i{color:#185FA5;font-size:16px}
+.sec-head span{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.07em;color:#0C447C}
+.sec-body{padding:16px}
+
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:12px}
 .s2{grid-column:span 2}
-.vr{display:flex;gap:4px;align-items:flex-end}
-.vr input{width:66px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 6px;font-size:13px}
-.vr span{font-size:12px;color:var(--color-text-secondary);padding-bottom:6px}
-.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
-.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit;transition:background .15s}
-.btn:hover{background:var(--color-background-secondary)}
-.btn.pri{background:#1a5276;color:#fff;border-color:#1a5276}
-.btn.pri:hover{background:#2e86c1;border-color:#2e86c1}
-.btn.suc{background:#148f77;color:#fff;border-color:#148f77}
-.btn.suc:hover{background:#0e6655}
-.btn.dng{background:#c0392b;color:#fff;border-color:#c0392b}
-.btn.suc:disabled{background:#aaa;border-color:#aaa;cursor:not-allowed}
-.tw{overflow-x:auto;margin-top:4px}
-table.dt{width:100%;border-collapse:collapse;font-size:11.5px;min-width:980px}
-table.dt thead tr{background:#1a5276;color:#fff}
-table.dt thead th{padding:6px 5px;border:1px solid #2e74aa;font-weight:500;text-align:center;line-height:1.3}
+.s3{grid-column:span 3}
+
+.fld{display:flex;flex-direction:column;gap:0}
+.fld label{
+  font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;
+  color:#185FA5;padding:6px 10px 0;
+  background:var(--color-background-secondary);
+  border:0.5px solid var(--color-border-secondary);
+  border-bottom:none;
+  border-radius:var(--border-radius-md) var(--border-radius-md) 0 0;
+}
+.fld input,.fld select,.fld textarea{
+  border:0.5px solid var(--color-border-secondary);
+  border-top:none;
+  border-radius:0 0 var(--border-radius-md) var(--border-radius-md);
+  padding:7px 10px;font-size:13px;
+  color:var(--color-text-primary);
+  background:var(--color-background-primary);
+  font-family:inherit;
+  text-transform:uppercase;
+}
+.fld select{text-transform:none}
+.fld input:focus,.fld select:focus,.fld textarea:focus{
+  outline:none;border-color:#185FA5;
+  box-shadow:0 0 0 2px rgba(24,95,165,.15);
+  z-index:1;position:relative;
+}
+.fld textarea{resize:vertical;min-height:54px;text-transform:uppercase}
+.fld-td{display:flex;flex-direction:column;gap:0}
+.fld-td label{
+  font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;
+  color:#185FA5;padding:6px 10px 0;
+  background:var(--color-background-secondary);
+  border:0.5px solid var(--color-border-secondary);
+  border-bottom:none;
+  border-radius:var(--border-radius-md) var(--border-radius-md) 0 0;
+}
+.fld-td .td-row{
+  display:flex;gap:0;
+  border:0.5px solid var(--color-border-secondary);
+  border-top:none;
+  border-radius:0 0 var(--border-radius-md) var(--border-radius-md);
+  overflow:hidden;
+}
+.fld-td .td-row input{
+  flex:1;border:none;border-radius:0;padding:7px 8px;font-size:13px;
+  color:var(--color-text-primary);background:var(--color-background-primary);font-family:inherit;
+}
+.fld-td .td-row input:focus{outline:none;background:#E6F1FB}
+.fld-td .td-sep{
+  display:flex;align-items:center;padding:0 6px;
+  background:var(--color-background-secondary);
+  color:var(--color-text-secondary);font-size:14px;font-weight:500;
+  border-left:0.5px solid var(--color-border-tertiary);
+  border-right:0.5px solid var(--color-border-tertiary);
+}
+
+.acts{display:flex;gap:8px;flex-wrap:wrap;padding:0 16px 16px}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 18px;border:none;border-radius:var(--border-radius-md);
+  font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;
+  transition:opacity .15s;
+}
+.btn:hover{opacity:.85}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-add{background:#0C447C;color:#fff}
+.btn-rst{background:var(--color-background-secondary);color:var(--color-text-primary);border:0.5px solid var(--color-border-secondary)}
+.btn-dl{background:#0F6E56;color:#fff}
+.btn-del{background:#A32D2D;color:#fff}
+
+.lib-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;padding:4px 10px;border-radius:20px;
+  margin-bottom:12px;
+}
+.lib-badge.loading{background:#E6F1FB;color:#0C447C}
+.lib-badge.ready{background:#E1F5EE;color:#0F6E56}
+.lib-badge.err{background:#FCEBEB;color:#A32D2D}
+
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.chip{border-radius:20px;padding:3px 12px;font-size:11px;font-weight:500}
+.chip-blue{background:#E6F1FB;color:#0C447C}
+.chip-teal{background:#E1F5EE;color:#0F6E56}
+
+.tw{overflow-x:auto}
+table.dt{width:100%;border-collapse:collapse;font-size:11px;min-width:900px}
+table.dt thead tr:first-child{background:#0C447C;color:#fff}
+table.dt thead tr:last-child{background:#185FA5;color:#fff}
+table.dt thead th{padding:7px 5px;border:1px solid #378ADD;font-weight:500;text-align:center;line-height:1.3;white-space:nowrap}
+table.dt tbody tr{border-bottom:0.5px solid var(--color-border-tertiary)}
 table.dt tbody tr:nth-child(even){background:var(--color-background-secondary)}
-table.dt tbody tr:hover{background:var(--color-background-info)}
-table.dt tbody td{padding:5px 5px;border:0.5px solid var(--color-border-tertiary);vertical-align:middle;text-align:center;font-size:11.5px}
+table.dt tbody tr:hover{background:#E6F1FB}
+table.dt tbody td{padding:6px 5px;border:0.5px solid var(--color-border-tertiary);vertical-align:middle;text-align:center}
 table.dt tbody td.l{text-align:left}
-.db{background:transparent;border:none;cursor:pointer;color:#c0392b;font-size:14px;padding:2px 4px;border-radius:4px}
-.db:hover{background:#fadbd8}
-.empty{text-align:center;padding:28px;color:var(--color-text-secondary);font-size:13px}
-.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
-.chip{background:#1a5276;color:#fff;border-radius:20px;padding:3px 11px;font-size:11px;font-weight:500}
-.chip.g2{background:#148f77}
-#libstat{font-size:12px;color:var(--color-text-secondary);padding:4px 0;margin-bottom:6px}
-#libstat.ok{color:#148f77}
-#libstat.err{color:#c0392b}
-#toast{position:fixed;bottom:18px;right:18px;background:#1e8449;color:#fff;padding:9px 16px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500;box-shadow:0 3px 12px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none;z-index:999}
+.empty-state{text-align:center;padding:32px 16px;color:var(--color-text-secondary)}
+.empty-state i{font-size:28px;display:block;margin-bottom:8px;color:var(--color-border-secondary)}
+
+#toast{
+  position:absolute;bottom:16px;right:16px;
+  background:#0F6E56;color:#fff;
+  padding:9px 16px;border-radius:var(--border-radius-md);
+  font-size:12px;font-weight:500;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .25s,transform .25s;
+  pointer-events:none;
+}
 #toast.on{opacity:1;transform:translateY(0)}
 </style>
 
-<div class="topbar">
-  <i class="ti ti-building-hospital" style="font-size:22px" aria-hidden="true"></i>
+<div class="page-header">
+  <div class="ico"><i class="ti ti-building-hospital" aria-hidden="true"></i></div>
   <div>
     <h1>Entrian Rawat Jalan Tingkat Pertama (RJTP)</h1>
     <p>Laporan Pelayanan – UPTD Puskesmas</p>
   </div>
 </div>
 
-<div class="main">
+<div class="wrap">
 
-<div class="card">
-  <div class="ctitle">Header Laporan</div>
-  <div class="fg">
-    <div class="g"><label>Nama Faskes</label><input type="text" id="namaFaskes" value="UPTD Puskesmas Mowewe"/></div>
-    <div class="g"><label>Alamat / Kecamatan</label><input type="text" id="alamat" value="Kecamatan Mowewe"/></div>
-    <div class="g"><label>Nama Kel / Desa</label><input type="text" id="namaDesa" placeholder="Desa / Kelurahan"/></div>
-    <div class="g"><label>Bulan</label>
-      <select id="bulan">
-        <option value="1">Januari</option><option value="2" selected>Februari</option><option value="3">Maret</option>
-        <option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
-        <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
-        <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
-      </select>
-    </div>
-    <div class="g"><label>Tahun</label><input type="number" id="tahun" value="2026" min="2000" max="2099"/></div>
+<div class="section">
+  <div class="sec-head">
+    <i class="ti ti-file-description" aria-hidden="true"></i>
+    <span>Header Laporan</span>
   </div>
-</div>
-
-<div class="card">
-  <div class="ctitle">Form Entri Pasien</div>
-  <div class="fg">
-    <div class="g"><label>Tanggal</label><select id="tanggal"></select></div>
-    <div class="g"><label>Jenis Kunjungan</label>
-      <select id="jenisKunjungan"><option value="Posyandu">Posyandu</option><option value="Homecare">Homecare</option></select>
-    </div>
-    <div class="g"><label>Jenis ID</label>
-      <select id="jenisID"><option value="BPJS">BPJS</option><option value="NIK">NIK</option></select>
-    </div>
-    <div class="g"><label>Nomor BPJS / NIK</label><input type="text" id="nomorID" placeholder="Nomor …"/></div>
-    <div class="g s2"><label>Nama Peserta</label><input type="text" id="namaPasien" placeholder="Nama lengkap"/></div>
-    <div class="g"><label>Umur (tahun)</label><input type="number" id="umur" placeholder="Thn" min="0" max="150"/></div>
-    <div class="g"><label>Jenis Kelamin</label>
-      <select id="jk"><option value="P">P – Perempuan</option><option value="L">L – Laki-laki</option></select>
-    </div>
-    <div class="g"><label>BB (kg)</label><input type="number" id="bb" placeholder="kg" step="0.1"/></div>
-    <div class="g"><label>TB (cm)</label><input type="number" id="tb" placeholder="cm"/></div>
-    <div class="g"><label>LP (cm)</label><input type="number" id="lp" placeholder="cm"/></div>
-    <div class="g"><label>TD Sistol / Diastol</label>
-      <div class="vr">
-        <input type="number" id="sistol" placeholder="Sistol"/>
-        <span>/</span>
-        <input type="number" id="diastol" placeholder="Diastol"/>
+  <div class="sec-body">
+    <div class="fg">
+      <div class="fld">
+        <label>Nama Faskes</label>
+        <input type="text" id="namaFaskes" value="UPTD PUSKESMAS MOWEWE"/>
+      </div>
+      <div class="fld">
+        <label>Alamat / Kecamatan</label>
+        <input type="text" id="alamat" value="KECAMATAN MOWEWE"/>
+      </div>
+      <div class="fld">
+        <label>Nama Kel / Desa</label>
+        <input type="text" id="namaDesa" placeholder="DESA / KELURAHAN"/>
+      </div>
+      <div class="fld">
+        <label>Bulan</label>
+        <select id="bulan" style="text-transform:none">
+          <option value="1">Januari</option><option value="2" selected>Februari</option><option value="3">Maret</option>
+          <option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+          <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option>
+          <option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Tahun</label>
+        <input type="number" id="tahun" value="2026" min="2000" max="2099" style="text-transform:none"/>
       </div>
     </div>
-    <div class="g"><label>Nadi (x/mnt)</label><input type="number" id="nadi" placeholder="bpm"/></div>
-    <div class="g"><label>Suhu (°C)</label><input type="number" id="suhu" placeholder="°C" step="0.1"/></div>
-    <div class="g"><label>RR (x/mnt)</label><input type="number" id="rr" placeholder="x/mnt"/></div>
-    <div class="g s2"><label>Diagnosa / Keluhan</label><textarea id="diagnosa" placeholder="Tulis diagnosa atau keluhan …"></textarea></div>
-    <div class="g s2"><label>Terapi / Obat yang Diberikan</label><textarea id="terapi" placeholder="Tulis terapi atau nama obat …"></textarea></div>
-  </div>
-  <div class="acts">
-    <button class="btn pri" onclick="tambah()">+ Tambah ke Tabel</button>
-    <button class="btn" onclick="resetF()">↺ Reset Form</button>
   </div>
 </div>
 
-<div class="card">
-  <div class="ctitle">Pratinjau Data</div>
-  <div id="libstat">⏳ Memuat library DOCX…</div>
-  <div class="chips" id="chips"></div>
-  <div class="tw">
-    <table class="dt">
-      <thead>
-        <tr>
-          <th rowspan="2">No</th><th rowspan="2">Tanggal</th><th rowspan="2">Jenis<br>Kunjungan</th>
-          <th rowspan="2">Nomor BPJS/NIK</th><th rowspan="2">Nama Peserta</th>
-          <th rowspan="2">Umur</th><th rowspan="2">JK</th>
-          <th rowspan="2">BB</th><th rowspan="2">TB</th><th rowspan="2">LP</th>
-          <th colspan="4">Pemeriksaan Fisik</th>
-          <th rowspan="2">Diagnosa/Keluhan</th><th rowspan="2">Terapi/Obat</th><th rowspan="2">Aksi</th>
-        </tr>
-        <tr><th>TD</th><th>N</th><th>S</th><th>RR</th></tr>
-      </thead>
-      <tbody id="tbody">
-        <tr><td colspan="17"><div class="empty">Belum ada data. Isi form di atas lalu klik Tambah ke Tabel.</div></td></tr>
-      </tbody>
-    </table>
+<div class="section">
+  <div class="sec-head">
+    <i class="ti ti-user-plus" aria-hidden="true"></i>
+    <span>Form Entri Pasien</span>
+  </div>
+  <div class="sec-body">
+    <div class="fg">
+      <div class="fld">
+        <label>Tanggal</label>
+        <select id="tanggal" style="text-transform:none"></select>
+      </div>
+      <div class="fld">
+        <label>Jenis Kunjungan</label>
+        <select id="jenisKunjungan">
+          <option value="Posyandu">Posyandu</option>
+          <option value="Homecare">Homecare</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Jenis ID</label>
+        <select id="jenisID">
+          <option value="BPJS">BPJS</option>
+          <option value="NIK">NIK</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>Nomor BPJS / NIK</label>
+        <input type="text" id="nomorID" placeholder="NOMOR …" style="text-transform:none"/>
+      </div>
+      <div class="fld s2">
+        <label>Nama Peserta</label>
+        <input type="text" id="namaPasien" placeholder="NAMA LENGKAP"/>
+      </div>
+      <div class="fld">
+        <label>Umur (Tahun)</label>
+        <input type="number" id="umur" placeholder="THN" min="0" max="150" style="text-transform:none"/>
+      </div>
+      <div class="fld">
+        <label>Jenis Kelamin</label>
+        <select id="jk">
+          <option value="P">P – Perempuan</option>
+          <option value="L">L – Laki-laki</option>
+        </select>
+      </div>
+      <div class="fld">
+        <label>BB (kg)</label>
+        <input type="number" id="bb" placeholder="KG" step="0.1" style="text-transform:none"/>
+      </div>
+      <div class="fld">
+        <label>TB (cm)</label>
+        <input type="number" id="tb" placeholder="CM" style="text-transform:none"/>
+      </div>
+      <div class="fld">
+        <label>LP – Lingkar Pinggang (cm)</label>
+        <input type="number" id="lp" placeholder="CM" style="text-transform:none"/>
+      </div>
+      <div class="fld-td">
+        <label>Tekanan Darah (mmHg)</label>
+        <div class="td-row">
+          <input type="number" id="sistol" placeholder="Sistol" style="text-align:center"/>
+          <div class="td-sep">/</div>
+          <input type="number" id="diastol" placeholder="Diastol" style="text-align:center"/>
+        </div>
+      </div>
+      <div class="fld">
+        <label>Nadi (x/mnt)</label>
+        <input type="number" id="nadi" placeholder="BPM" style="text-transform:none"/>
+      </div>
+      <div class="fld">
+        <label>Suhu (°C)</label>
+        <input type="number" id="suhu" placeholder="°C" step="0.1" style="text-transform:none"/>
+      </div>
+      <div class="fld">
+        <label>RR – Resp. Rate (x/mnt)</label>
+        <input type="number" id="rr" placeholder="X/MNT" style="text-transform:none"/>
+      </div>
+      <div class="fld s2">
+        <label>Diagnosa / Keluhan</label>
+        <textarea id="diagnosa" placeholder="TULIS DIAGNOSA ATAU KELUHAN …"></textarea>
+      </div>
+      <div class="fld s2">
+        <label>Terapi / Obat yang Diberikan</label>
+        <textarea id="terapi" placeholder="TULIS TERAPI ATAU NAMA OBAT …"></textarea>
+      </div>
+    </div>
   </div>
   <div class="acts">
-    <button class="btn suc" id="btnDl" onclick="dlDocx()" disabled>⬇ Download .docx (Landscape)</button>
-    <button class="btn dng" onclick="hapusAll()">🗑 Hapus Semua</button>
+    <button class="btn btn-add" onclick="tambah()">
+      <i class="ti ti-plus" aria-hidden="true"></i> Tambah ke Tabel
+    </button>
+    <button class="btn btn-rst" onclick="resetF()">
+      <i class="ti ti-refresh" aria-hidden="true"></i> Reset Form
+    </button>
   </div>
 </div>
 
+<div class="section" style="position:relative">
+  <div class="sec-head">
+    <i class="ti ti-table" aria-hidden="true"></i>
+    <span>Pratinjau Data</span>
+  </div>
+  <div class="sec-body" style="padding-bottom:4px">
+    <div class="lib-badge loading" id="libstat">
+      <i class="ti ti-loader" aria-hidden="true"></i> Memuat library DOCX…
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="tw">
+      <table class="dt">
+        <thead>
+          <tr>
+            <th rowspan="2">No</th><th rowspan="2">Tanggal</th><th rowspan="2">Jenis<br>Kunjungan</th>
+            <th rowspan="2">Nomor BPJS/NIK</th><th rowspan="2">Nama Peserta</th>
+            <th rowspan="2">Umur</th><th rowspan="2">JK</th>
+            <th rowspan="2">BB</th><th rowspan="2">TB</th><th rowspan="2">LP</th>
+            <th colspan="4">Pemeriksaan Fisik</th>
+            <th rowspan="2">Diagnosa / Keluhan</th>
+            <th rowspan="2">Terapi / Obat</th>
+          </tr>
+          <tr><th>TD</th><th>N</th><th>S</th><th>RR</th></tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="16">
+            <div class="empty-state">
+              <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+              Belum ada data — isi form di atas lalu klik Tambah ke Tabel
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="acts" style="padding-top:12px">
+    <button class="btn btn-dl" id="btnDl" onclick="dlDocx()" disabled>
+      <i class="ti ti-download" aria-hidden="true"></i> Download .docx (Landscape)
+    </button>
+    <button class="btn btn-del" onclick="hapusAll()">
+      <i class="ti ti-trash" aria-hidden="true"></i> Hapus Semua
+    </button>
+  </div>
+  <div id="toast"></div>
 </div>
-<div id="toast"></div>
+
+</div>
 
 <script>
 const BN=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 let rows=[];
 
-// --- Cek library sudah termuat ---
 function cekLib(){
-  const stat=document.getElementById('libstat');
+  const el=document.getElementById('libstat');
   const btn=document.getElementById('btnDl');
-  if(typeof docx!=='undefined' && typeof saveAs!=='undefined'){
-    stat.textContent='✓ Library DOCX siap digunakan';
-    stat.className='ok';
+  if(typeof docx!=='undefined'&&typeof saveAs!=='undefined'){
+    el.innerHTML='<i class="ti ti-circle-check" aria-hidden="true"></i> Library DOCX siap';
+    el.className='lib-badge ready';
     btn.disabled=false;
   } else {
-    stat.textContent='⏳ Memuat library… (tunggu sebentar)';
-    stat.className='';
-    btn.disabled=true;
-    setTimeout(cekLib,600);
+    setTimeout(cekLib,500);
   }
 }
-setTimeout(cekLib,300);
+setTimeout(cekLib,200);
 
 function days(m,y){return new Date(y,m,0).getDate();}
 function popTgl(){
@@ -181,6 +372,8 @@ document.getElementById('bulan').onchange=popTgl;
 document.getElementById('tahun').oninput=popTgl;
 popTgl();
 
+function uc(v){return(v||'').toUpperCase();}
+
 function tambah(){
   const m=+document.getElementById('bulan').value,y=+document.getElementById('tahun').value;
   const d=document.getElementById('tanggal').value;
@@ -188,7 +381,7 @@ function tambah(){
   const jenisKunjungan=document.getElementById('jenisKunjungan').value;
   const jenisID=document.getElementById('jenisID').value;
   const nomorID=document.getElementById('nomorID').value.trim();
-  const nama=document.getElementById('namaPasien').value.trim();
+  const nama=uc(document.getElementById('namaPasien').value.trim());
   const umur=document.getElementById('umur').value;
   const jk=document.getElementById('jk').value;
   const bb=document.getElementById('bb').value;
@@ -199,8 +392,8 @@ function tambah(){
   const nadi=document.getElementById('nadi').value;
   const suhu=document.getElementById('suhu').value;
   const rr=document.getElementById('rr').value;
-  const diagnosa=document.getElementById('diagnosa').value.trim();
-  const terapi=document.getElementById('terapi').value.trim();
+  const diagnosa=uc(document.getElementById('diagnosa').value.trim());
+  const terapi=uc(document.getElementById('terapi').value.trim());
   if(!nama){alert('Nama peserta wajib diisi!');return;}
   if(!nomorID){alert('Nomor BPJS/NIK wajib diisi!');return;}
   const td=s1&&s2v?`${s1}/${s2v}`:s1||s2v||'-';
@@ -214,7 +407,7 @@ function render(){
   const tb=document.getElementById('tbody');
   tb.innerHTML='';
   if(!rows.length){
-    tb.innerHTML='<tr><td colspan="17"><div class="empty">Belum ada data.</div></td></tr>';
+    tb.innerHTML='<tr><td colspan="16"><div class="empty-state"><i class="ti ti-clipboard-list" aria-hidden="true"></i> Belum ada data.</div></td></tr>';
     document.getElementById('chips').innerHTML='';return;
   }
   rows.forEach((r,i)=>{
@@ -223,45 +416,46 @@ function render(){
       <td class="l">(${r.jenisID}) ${r.nomorID}</td><td class="l">${r.nama}</td>
       <td>${r.umur}</td><td>${r.jk}</td><td>${r.bb}</td><td>${r.tb}</td><td>${r.lp}</td>
       <td>${r.td}</td><td>${r.nadi}</td><td>${r.suhu}</td><td>${r.rr}</td>
-      <td class="l">${r.diagnosa}</td><td class="l">${r.terapi}</td>
-      <td><button class="db" onclick="del(${i})">✕</button></td>`;
+      <td class="l">${r.diagnosa}</td><td class="l">${r.terapi}</td>`;
     tb.appendChild(tr);
   });
   const p=rows.filter(r=>r.jenisKunjungan==='Posyandu').length;
   const h=rows.filter(r=>r.jenisKunjungan==='Homecare').length;
-  document.getElementById('chips').innerHTML=`<span class="chip">Total: ${rows.length}</span><span class="chip">Posyandu: ${p}</span><span class="chip g2">Homecare: ${h}</span>`;
+  document.getElementById('chips').innerHTML=
+    `<span class="chip chip-blue">Total: ${rows.length} pasien</span>`+
+    `<span class="chip chip-blue">Posyandu: ${p}</span>`+
+    `<span class="chip chip-teal">Homecare: ${h}</span>`;
 }
 
-function del(i){if(!confirm('Hapus data ini?'))return;rows.splice(i,1);render();}
 function hapusAll(){if(!rows.length||!confirm('Hapus semua data?'))return;rows=[];render();}
-function resetF(){['nomorID','namaPasien','umur','bb','tb','lp','sistol','diastol','nadi','suhu','rr','diagnosa','terapi'].forEach(id=>{document.getElementById(id).value='';});}
-function toast(m){const t=document.getElementById('toast');t.textContent='✓ '+m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500);}
+function resetF(){
+  ['nomorID','namaPasien','umur','bb','tb','lp','sistol','diastol','nadi','suhu','rr','diagnosa','terapi']
+    .forEach(id=>{document.getElementById(id).value='';});
+}
+function toast(m){
+  const t=document.getElementById('toast');
+  t.textContent='✓ '+m;t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2200);
+}
 
 async function dlDocx(){
   if(!rows.length){alert('Tidak ada data untuk diekspor!');return;}
-  if(typeof docx==='undefined'||typeof saveAs==='undefined'){
-    alert('Library belum siap, tunggu indikator "✓ Library DOCX siap" di atas tombol download.');return;
-  }
   const{Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,
     AlignmentType,PageOrientation,WidthType,BorderStyle,ShadingType,VerticalAlign}=docx;
-
-  const namaFaskes=document.getElementById('namaFaskes').value||'UPTD Puskesmas';
+  const namaFaskes=document.getElementById('namaFaskes').value||'UPTD PUSKESMAS';
   const alamat=document.getElementById('alamat').value||'-';
   const namaDesa=document.getElementById('namaDesa').value||'-';
   const bi=+document.getElementById('bulan').value;
   const th=document.getElementById('tahun').value;
   const bn=BN[bi];
-
   const CW=15398;
   const RAW=[340,750,900,1650,1850,400,300,360,360,360,760,360,360,360,2200,2448];
   const rs=RAW.reduce((a,b)=>a+b,0);
   const W=RAW.map(w=>Math.round(w*CW/rs));
   W[W.length-1]+=CW-W.reduce((a,b)=>a+b,0);
-
   const b1={style:BorderStyle.SINGLE,size:4,color:'000000'};
   const ab={top:b1,bottom:b1,left:b1,right:b1};
   const mg={top:50,bottom:50,left:70,right:70};
-
   const C=(txt,o={})=>new TableCell({
     borders:ab,verticalAlign:VerticalAlign.CENTER,
     shading:o.h?{fill:'1A5276',type:ShadingType.CLEAR}:{fill:'FFFFFF',type:ShadingType.CLEAR},
@@ -271,7 +465,6 @@ async function dlDocx(){
       children:[new TextRun({text:String(txt??''),bold:!!o.h,size:o.h?15:14,
         color:o.h?'FFFFFF':'000000',font:'Arial'})]})]
   });
-
   const hr1=new TableRow({tableHeader:true,children:[
     C('No',{h:1,rs:2,w:W[0]}),C('Tanggal',{h:1,rs:2,w:W[1]}),
     C('Jenis Kunjungan',{h:1,rs:2,w:W[2]}),C('Nomor BPJS/NIK',{h:1,rs:2,w:W[3]}),
@@ -285,7 +478,6 @@ async function dlDocx(){
   const hr2=new TableRow({tableHeader:true,children:[
     C('TD',{h:1,w:W[10]}),C('N',{h:1,w:W[11]}),C('S',{h:1,w:W[12]}),C('R',{h:1,w:W[13]})
   ]});
-
   const dr=rows.map((r,i)=>new TableRow({children:[
     C(i+1,{w:W[0]}),C(r.tgl,{w:W[1]}),C(r.jenisKunjungan,{w:W[2]}),
     C(`(${r.jenisID}) ${r.nomorID}`,{w:W[3],al:AlignmentType.LEFT}),
@@ -294,11 +486,9 @@ async function dlDocx(){
     C(r.td,{w:W[10]}),C(r.nadi,{w:W[11]}),C(r.suhu,{w:W[12]}),C(r.rr,{w:W[13]}),
     C(r.diagnosa,{w:W[14],al:AlignmentType.LEFT}),C(r.terapi,{w:W[15],al:AlignmentType.LEFT}),
   ]}));
-
   const PP=(t,o={})=>new Paragraph({alignment:o.al||AlignmentType.CENTER,spacing:{after:o.after||0},
     children:[new TextRun({text:t,bold:o.bold||false,size:o.size||20,font:'Arial'})]});
-
-  const document2=new Document({sections:[{
+  const doc2=new Document({sections:[{
     properties:{page:{size:{width:11906,height:16838,orientation:PageOrientation.LANDSCAPE},margin:{top:720,right:720,bottom:720,left:720}}},
     children:[
       PP('LAPORAN PELAYANAN',{bold:true,size:22}),
@@ -310,14 +500,12 @@ async function dlDocx(){
       new Table({width:{size:CW,type:WidthType.DXA},columnWidths:W,rows:[hr1,hr2,...dr]})
     ]
   }]});
-
   try{
-    const blob=await Packer.toBlob(document2);
+    const blob=await Packer.toBlob(doc2);
     saveAs(blob,`RJTP_${bn}_${th}.docx`);
     toast('File DOCX berhasil diunduh!');
   }catch(e){
-    alert('Gagal membuat file: '+e.message);
-    console.error(e);
+    alert('Gagal: '+e.message);console.error(e);
   }
 }
 </script>
