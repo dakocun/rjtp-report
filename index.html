@@ -1,47 +1,53 @@
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--color-background-tertiary);color:var(--color-text-primary);min-height:100vh}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--color-background-tertiary);color:var(--color-text-primary)}
 .topbar{background:#1a5276;color:#fff;padding:14px 20px;display:flex;align-items:center;gap:12px;border-radius:var(--border-radius-lg) var(--border-radius-lg) 0 0}
-.topbar h1{font-size:15px;font-weight:500;line-height:1.3}
-.topbar p{font-size:12px;opacity:.7}
+.topbar h1{font-size:15px;font-weight:500}
+.topbar p{font-size:11px;opacity:.7}
 .main{padding:14px 16px 40px}
 .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:16px 18px;margin-bottom:14px}
-.card-title{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:#1a5276;border-bottom:1.5px solid #2e86c1;padding-bottom:7px;margin-bottom:14px}
-.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px 14px}
+.ctitle{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:#1a5276;border-bottom:1.5px solid #2e86c1;padding-bottom:6px;margin-bottom:13px}
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:9px 13px}
 .g{display:flex;flex-direction:column;gap:4px}
 .g label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.04em}
-.g input,.g select,.g textarea{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 9px;font-size:13px;color:var(--color-text-primary);background:var(--color-background-primary);font-family:inherit}
+.g input,.g select,.g textarea{border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 8px;font-size:13px;color:var(--color-text-primary);background:var(--color-background-primary);font-family:inherit}
 .g input:focus,.g select:focus,.g textarea:focus{outline:none;border-color:#2e86c1;box-shadow:0 0 0 2px rgba(46,134,193,.18)}
-.g textarea{resize:vertical;min-height:52px}
+.g textarea{resize:vertical;min-height:50px}
 .s2{grid-column:span 2}
-.vr{display:flex;gap:5px;align-items:flex-end}
-.vr input{width:68px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 6px;font-size:13px}
-.vr span{font-size:12px;color:var(--color-text-secondary);padding-bottom:7px}
-.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit;transition:background .15s}
+.vr{display:flex;gap:4px;align-items:flex-end}
+.vr input{width:66px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:6px 6px;font-size:13px}
+.vr span{font-size:12px;color:var(--color-text-secondary);padding-bottom:6px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:13px;font-weight:500;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-primary);font-family:inherit;transition:background .15s}
 .btn:hover{background:var(--color-background-secondary)}
 .btn.pri{background:#1a5276;color:#fff;border-color:#1a5276}
 .btn.pri:hover{background:#2e86c1;border-color:#2e86c1}
 .btn.suc{background:#148f77;color:#fff;border-color:#148f77}
-.btn.suc:hover{background:#0e6655;border-color:#0e6655}
+.btn.suc:hover{background:#0e6655}
 .btn.dng{background:#c0392b;color:#fff;border-color:#c0392b}
-.btn.dng:hover{background:#a93226}
+.btn.suc:disabled{background:#aaa;border-color:#aaa;cursor:not-allowed}
 .tw{overflow-x:auto;margin-top:4px}
-table.dt{width:100%;border-collapse:collapse;font-size:12px;min-width:1000px}
+table.dt{width:100%;border-collapse:collapse;font-size:11.5px;min-width:980px}
 table.dt thead tr{background:#1a5276;color:#fff}
-table.dt thead th{padding:7px 5px;border:1px solid #2e74aa;font-weight:500;text-align:center;white-space:nowrap;line-height:1.3}
+table.dt thead th{padding:6px 5px;border:1px solid #2e74aa;font-weight:500;text-align:center;line-height:1.3}
 table.dt tbody tr:nth-child(even){background:var(--color-background-secondary)}
 table.dt tbody tr:hover{background:var(--color-background-info)}
-table.dt tbody td{padding:5px 5px;border:0.5px solid var(--color-border-tertiary);vertical-align:middle;text-align:center;font-size:12px}
+table.dt tbody td{padding:5px 5px;border:0.5px solid var(--color-border-tertiary);vertical-align:middle;text-align:center;font-size:11.5px}
 table.dt tbody td.l{text-align:left}
-.db{background:transparent;border:none;cursor:pointer;color:#c0392b;font-size:14px;padding:2px 5px;border-radius:4px}
+.db{background:transparent;border:none;cursor:pointer;color:#c0392b;font-size:14px;padding:2px 4px;border-radius:4px}
 .db:hover{background:#fadbd8}
-.empty{text-align:center;padding:30px;color:var(--color-text-secondary);font-size:13px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.chip{background:#1a5276;color:#fff;border-radius:20px;padding:3px 12px;font-size:11px;font-weight:500}
+.empty{text-align:center;padding:28px;color:var(--color-text-secondary);font-size:13px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+.chip{background:#1a5276;color:#fff;border-radius:20px;padding:3px 11px;font-size:11px;font-weight:500}
 .chip.g2{background:#148f77}
-#toast{position:fixed;bottom:20px;right:20px;background:#1e8449;color:#fff;padding:10px 18px;border-radius:var(--border-radius-md);font-size:13px;font-weight:500;box-shadow:0 3px 12px rgba(0,0,0,.2);opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;pointer-events:none;z-index:999}
+#libstat{font-size:12px;color:var(--color-text-secondary);padding:4px 0;margin-bottom:6px}
+#libstat.ok{color:#148f77}
+#libstat.err{color:#c0392b}
+#toast{position:fixed;bottom:18px;right:18px;background:#1e8449;color:#fff;padding:9px 16px;border-radius:var(--border-radius-md);font-size:12px;font-weight:500;box-shadow:0 3px 12px rgba(0,0,0,.2);opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none;z-index:999}
 #toast.on{opacity:1;transform:translateY(0)}
 </style>
 
@@ -56,7 +62,7 @@ table.dt tbody td.l{text-align:left}
 <div class="main">
 
 <div class="card">
-  <div class="card-title"><i class="ti ti-file-description" aria-hidden="true"></i> Header Laporan</div>
+  <div class="ctitle">Header Laporan</div>
   <div class="fg">
     <div class="g"><label>Nama Faskes</label><input type="text" id="namaFaskes" value="UPTD Puskesmas Mowewe"/></div>
     <div class="g"><label>Alamat / Kecamatan</label><input type="text" id="alamat" value="Kecamatan Mowewe"/></div>
@@ -74,7 +80,7 @@ table.dt tbody td.l{text-align:left}
 </div>
 
 <div class="card">
-  <div class="card-title"><i class="ti ti-plus" aria-hidden="true"></i> Form Entri Pasien</div>
+  <div class="ctitle">Form Entri Pasien</div>
   <div class="fg">
     <div class="g"><label>Tanggal</label><select id="tanggal"></select></div>
     <div class="g"><label>Jenis Kunjungan</label>
@@ -91,8 +97,8 @@ table.dt tbody td.l{text-align:left}
     </div>
     <div class="g"><label>BB (kg)</label><input type="number" id="bb" placeholder="kg" step="0.1"/></div>
     <div class="g"><label>TB (cm)</label><input type="number" id="tb" placeholder="cm"/></div>
-    <div class="g"><label>LP / Lingkar Pinggang (cm)</label><input type="number" id="lp" placeholder="cm"/></div>
-    <div class="g"><label>Tekanan Darah (Sistol/Diastol)</label>
+    <div class="g"><label>LP (cm)</label><input type="number" id="lp" placeholder="cm"/></div>
+    <div class="g"><label>TD Sistol / Diastol</label>
       <div class="vr">
         <input type="number" id="sistol" placeholder="Sistol"/>
         <span>/</span>
@@ -101,18 +107,19 @@ table.dt tbody td.l{text-align:left}
     </div>
     <div class="g"><label>Nadi (x/mnt)</label><input type="number" id="nadi" placeholder="bpm"/></div>
     <div class="g"><label>Suhu (°C)</label><input type="number" id="suhu" placeholder="°C" step="0.1"/></div>
-    <div class="g"><label>RR – Resp. Rate (x/mnt)</label><input type="number" id="rr" placeholder="x/mnt"/></div>
+    <div class="g"><label>RR (x/mnt)</label><input type="number" id="rr" placeholder="x/mnt"/></div>
     <div class="g s2"><label>Diagnosa / Keluhan</label><textarea id="diagnosa" placeholder="Tulis diagnosa atau keluhan …"></textarea></div>
     <div class="g s2"><label>Terapi / Obat yang Diberikan</label><textarea id="terapi" placeholder="Tulis terapi atau nama obat …"></textarea></div>
   </div>
   <div class="acts">
-    <button class="btn pri" onclick="tambah()"><i class="ti ti-plus" aria-hidden="true"></i> Tambah ke Tabel</button>
-    <button class="btn" onclick="resetF()"><i class="ti ti-refresh" aria-hidden="true"></i> Reset Form</button>
+    <button class="btn pri" onclick="tambah()">+ Tambah ke Tabel</button>
+    <button class="btn" onclick="resetF()">↺ Reset Form</button>
   </div>
 </div>
 
 <div class="card">
-  <div class="card-title"><i class="ti ti-table" aria-hidden="true"></i> Pratinjau Data</div>
+  <div class="ctitle">Pratinjau Data</div>
+  <div id="libstat">⏳ Memuat library DOCX…</div>
   <div class="chips" id="chips"></div>
   <div class="tw">
     <table class="dt">
@@ -133,19 +140,34 @@ table.dt tbody td.l{text-align:left}
     </table>
   </div>
   <div class="acts">
-    <button class="btn suc" onclick="dlDocx()"><i class="ti ti-download" aria-hidden="true"></i> Download .docx (Landscape)</button>
-    <button class="btn dng" onclick="hapusAll()"><i class="ti ti-trash" aria-hidden="true"></i> Hapus Semua</button>
+    <button class="btn suc" id="btnDl" onclick="dlDocx()" disabled>⬇ Download .docx (Landscape)</button>
+    <button class="btn dng" onclick="hapusAll()">🗑 Hapus Semua</button>
   </div>
 </div>
 
 </div>
 <div id="toast"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.5.0/docx.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 <script>
 const BN=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 let rows=[];
+
+// --- Cek library sudah termuat ---
+function cekLib(){
+  const stat=document.getElementById('libstat');
+  const btn=document.getElementById('btnDl');
+  if(typeof docx!=='undefined' && typeof saveAs!=='undefined'){
+    stat.textContent='✓ Library DOCX siap digunakan';
+    stat.className='ok';
+    btn.disabled=false;
+  } else {
+    stat.textContent='⏳ Memuat library… (tunggu sebentar)';
+    stat.className='';
+    btn.disabled=true;
+    setTimeout(cekLib,600);
+  }
+}
+setTimeout(cekLib,300);
 
 function days(m,y){return new Date(y,m,0).getDate();}
 function popTgl(){
@@ -173,7 +195,7 @@ function tambah(){
   const tb=document.getElementById('tb').value;
   const lp=document.getElementById('lp').value;
   const s1=document.getElementById('sistol').value;
-  const s2=document.getElementById('diastol').value;
+  const s2v=document.getElementById('diastol').value;
   const nadi=document.getElementById('nadi').value;
   const suhu=document.getElementById('suhu').value;
   const rr=document.getElementById('rr').value;
@@ -181,7 +203,7 @@ function tambah(){
   const terapi=document.getElementById('terapi').value.trim();
   if(!nama){alert('Nama peserta wajib diisi!');return;}
   if(!nomorID){alert('Nomor BPJS/NIK wajib diisi!');return;}
-  const td=s1&&s2?`${s1}/${s2}`:s1||s2||'-';
+  const td=s1&&s2v?`${s1}/${s2v}`:s1||s2v||'-';
   rows.push({tgl,jenisKunjungan,jenisID,nomorID,nama,umur:umur||'-',jk,
     bb:bb||'-',tb:tb||'-',lp:lp||'-',td,nadi:nadi||'-',suhu:suhu||'-',rr:rr||'-',
     diagnosa:diagnosa||'-',terapi:terapi||'-'});
@@ -202,7 +224,7 @@ function render(){
       <td>${r.umur}</td><td>${r.jk}</td><td>${r.bb}</td><td>${r.tb}</td><td>${r.lp}</td>
       <td>${r.td}</td><td>${r.nadi}</td><td>${r.suhu}</td><td>${r.rr}</td>
       <td class="l">${r.diagnosa}</td><td class="l">${r.terapi}</td>
-      <td><button class="db" onclick="del(${i})"><i class="ti ti-trash" aria-hidden="true"></i></button></td>`;
+      <td><button class="db" onclick="del(${i})">✕</button></td>`;
     tb.appendChild(tr);
   });
   const p=rows.filter(r=>r.jenisKunjungan==='Posyandu').length;
@@ -217,7 +239,9 @@ function toast(m){const t=document.getElementById('toast');t.textContent='✓ '+
 
 async function dlDocx(){
   if(!rows.length){alert('Tidak ada data untuk diekspor!');return;}
-  if(typeof docx==='undefined'){alert('Library docx belum selesai dimuat, coba lagi sebentar.');return;}
+  if(typeof docx==='undefined'||typeof saveAs==='undefined'){
+    alert('Library belum siap, tunggu indikator "✓ Library DOCX siap" di atas tombol download.');return;
+  }
   const{Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,
     AlignmentType,PageOrientation,WidthType,BorderStyle,ShadingType,VerticalAlign}=docx;
 
@@ -271,15 +295,15 @@ async function dlDocx(){
     C(r.diagnosa,{w:W[14],al:AlignmentType.LEFT}),C(r.terapi,{w:W[15],al:AlignmentType.LEFT}),
   ]}));
 
-  const P=(t,o={})=>new Paragraph({alignment:o.al||AlignmentType.CENTER,spacing:{after:o.after||0},
+  const PP=(t,o={})=>new Paragraph({alignment:o.al||AlignmentType.CENTER,spacing:{after:o.after||0},
     children:[new TextRun({text:t,bold:o.bold||false,size:o.size||20,font:'Arial'})]});
 
-  const doc2=new Document({sections:[{
+  const document2=new Document({sections:[{
     properties:{page:{size:{width:11906,height:16838,orientation:PageOrientation.LANDSCAPE},margin:{top:720,right:720,bottom:720,left:720}}},
     children:[
-      P('LAPORAN PELAYANAN',{bold:true,size:22}),
-      P('RAWAT JALAN TINGKAT PERTAMA (RJTP)',{bold:true,size:22}),
-      P(`BULAN : ${bn.toUpperCase()}   TAHUN : ${th}`,{bold:true,size:22,after:160}),
+      PP('LAPORAN PELAYANAN',{bold:true,size:22}),
+      PP('RAWAT JALAN TINGKAT PERTAMA (RJTP)',{bold:true,size:22}),
+      PP(`BULAN : ${bn.toUpperCase()}   TAHUN : ${th}`,{bold:true,size:22,after:160}),
       new Paragraph({spacing:{after:0},children:[new TextRun({text:'NAMA FASKES  :  ',bold:true,size:20,font:'Arial'}),new TextRun({text:namaFaskes,size:20,font:'Arial'})]}),
       new Paragraph({spacing:{after:0},children:[new TextRun({text:'ALAMAT            :  ',bold:true,size:20,font:'Arial'}),new TextRun({text:alamat,size:20,font:'Arial'})]}),
       new Paragraph({spacing:{after:160},children:[new TextRun({text:'NAMA KEL/DESA  :  ',bold:true,size:20,font:'Arial'}),new TextRun({text:namaDesa,size:20,font:'Arial'})]}),
@@ -287,8 +311,13 @@ async function dlDocx(){
     ]
   }]});
 
-  const blob=await Packer.toBlob(doc2);
-  saveAs(blob,`RJTP_${bn}_${th}.docx`);
-  toast('File DOCX berhasil diunduh!');
+  try{
+    const blob=await Packer.toBlob(document2);
+    saveAs(blob,`RJTP_${bn}_${th}.docx`);
+    toast('File DOCX berhasil diunduh!');
+  }catch(e){
+    alert('Gagal membuat file: '+e.message);
+    console.error(e);
+  }
 }
 </script>
