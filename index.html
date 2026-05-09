@@ -17,23 +17,20 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
 
-/* HEADER */
 .site-header{background:var(--hbg);border-bottom:1px solid #334155;padding:0 2rem;position:sticky;top:0;z-index:100}
-.site-header-inner{max-width:1500px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:1rem}
+.site-header-inner{max-width:1600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:1rem}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-icon{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
 .logo-icon svg{width:18px;height:18px;fill:white}
 .logo-text strong{display:block;font-size:13px;font-weight:700;color:#f1f5f9;letter-spacing:-.01em}
-.logo-text span{font-size:11px;color:#94a3b8;font-weight:400}
+.logo-text span{font-size:11px;color:#94a3b8}
 .hbadge{font-size:11px;padding:4px 10px;background:#1e3a5f;color:#93c5fd;border-radius:20px;font-weight:500;border:1px solid #1e40af}
 
-/* LAYOUT */
-.main{max-width:1500px;margin:0 auto;padding:2rem 2rem 4rem}
+.main{max-width:1600px;margin:0 auto;padding:2rem 2rem 4rem}
 .page-title{margin-bottom:1.75rem}
 .page-title h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
 .page-title p{font-size:13px;color:var(--text2);margin-top:4px}
 
-/* CARD */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:1.25rem;overflow:hidden}
 .card-header{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;gap:10px}
 .card-icon{width:28px;height:28px;background:var(--accent-l);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0}
@@ -41,7 +38,6 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .badge{margin-left:auto;font-size:11px;padding:2px 8px;background:var(--accent-l);color:var(--accent);border-radius:20px;font-weight:600}
 .card-body{padding:20px}
 
-/* FIELDS */
 .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
@@ -50,15 +46,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .field input:focus,.field select:focus{border-color:var(--accent-m);box-shadow:0 0 0 3px rgba(59,130,246,.12)}
 .field input::placeholder{color:var(--text3)}
 
-/* TABLE TOOLBAR */
 .toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:8px;flex-wrap:wrap}
 .toolbar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .hint{font-size:11px;color:var(--text3)}
 
-/* TABLE */
 .twrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rs)}
-table{width:100%;border-collapse:collapse;min-width:1600px}
-thead th{background:#0f172a;color:#e2e8f0;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:8px 5px;text-align:center;white-space:nowrap;border-right:1px solid #1e293b}
+table{width:100%;border-collapse:collapse;min-width:1400px}
+thead th{background:#0f172a;color:#e2e8f0;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:8px 4px;text-align:center;white-space:nowrap;border-right:1px solid #1e293b}
 thead th:last-child{border-right:none}
 thead th.sub{background:#1e3a5f;color:#93c5fd;font-size:9px}
 thead tr:first-child th{border-bottom:1px solid #334155}
@@ -73,10 +67,16 @@ tbody input:hover,tbody select:hover{border-color:var(--border-s);background:whi
 tbody input:focus,tbody select:focus{border-color:var(--accent-m);background:white;box-shadow:0 0 0 2px rgba(59,130,246,.12)}
 tbody input.left{text-align:left}
 tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 3px center;padding-right:14px}
+/* textarea for terapi - multiline */
+tbody textarea{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:5px 4px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--text);width:100%;min-width:0;text-align:left;outline:none;resize:vertical;min-height:34px;line-height:1.4;transition:border-color .1s,background .1s}
+tbody textarea:hover{border-color:var(--border-s);background:white}
+tbody textarea:focus{border-color:var(--accent-m);background:white;box-shadow:0 0 0 2px rgba(59,130,246,.12)}
 .del-btn{width:24px;height:24px;border:1px solid #fca5a5;background:#fef2f2;color:var(--red);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;margin:auto;transition:background .1s}
 .del-btn:hover{background:#fee2e2}
+.td-split{display:flex;align-items:center;gap:1px}
+.td-split input{flex:1;min-width:0}
+.td-split span{font-size:10px;color:var(--text3);flex-shrink:0}
 
-/* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--rs);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border-s);background:white;color:var(--text2);transition:background .15s,transform .08s;white-space:nowrap;outline:none}
 .btn:hover{background:var(--bg)}
 .btn:active{transform:scale(.97)}
@@ -85,19 +85,16 @@ tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-i
 .btn-green{background:var(--green);color:white;border-color:#15803d}
 .btn-green:hover{background:#15803d}
 
-/* GENERATE BAR */
 .gen-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:20px;display:flex;flex-direction:column;gap:14px;margin-bottom:1.25rem}
 .gen-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .gen-desc{flex:1;min-width:180px}
 .gen-desc strong{display:block;font-size:14px;font-weight:600}
 .gen-desc span{font-size:12px;color:var(--text2)}
 
-/* PROGRESS */
 .pw{display:none;height:3px;background:var(--border);border-radius:3px;overflow:hidden}
 .pw.show{display:block}
 .pb{height:100%;background:var(--accent-m);border-radius:3px;transition:width .3s ease}
 
-/* ALERTS */
 .alert{display:none;padding:14px 18px;border-radius:var(--rs);align-items:center;gap:12px;animation:fadeIn .3s ease}
 .alert.show{display:flex}
 .alert-ok{background:var(--green-l);border:1px solid #bbf7d0}
@@ -116,24 +113,14 @@ tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-i
 .dl-link{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--green);color:white;border-radius:var(--rs);text-decoration:none;font-size:12px;font-weight:600;transition:background .15s;border:none;cursor:pointer;font-family:inherit;white-space:nowrap}
 .dl-link:hover{background:#15803d}
 
-/* SPINNER */
 .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-/* FOOTER */
 .site-footer{text-align:center;padding:2rem;font-size:11px;color:var(--text3);border-top:1px solid var(--border);background:var(--surface)}
-
-/* SCROLLBAR */
 .twrap::-webkit-scrollbar{height:5px}
 .twrap::-webkit-scrollbar-track{background:var(--bg)}
 .twrap::-webkit-scrollbar-thumb{background:var(--border-s);border-radius:3px}
-
-/* SISTOLIK/DIASTOLIK split input */
-.td-split{display:flex;align-items:center;gap:1px}
-.td-split input{flex:1;min-width:0}
-.td-split span{font-size:10px;color:var(--text3);flex-shrink:0;padding:0 1px}
-
 @media(max-width:640px){.main{padding:1rem 1rem 3rem}.site-header{padding:0 1rem}.hbadge{display:none}}
 </style>
 </head>
@@ -173,18 +160,12 @@ tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-i
         <div class="field">
           <label>Bulan</label>
           <select id="bulan" onchange="onBulanChange()">
-            <option value="1">Januari</option>
-            <option value="2" selected>Februari</option>
-            <option value="3">Maret</option>
-            <option value="4">April</option>
-            <option value="5">Mei</option>
-            <option value="6">Juni</option>
-            <option value="7">Juli</option>
-            <option value="8">Agustus</option>
-            <option value="9">September</option>
-            <option value="10">Oktober</option>
-            <option value="11">November</option>
-            <option value="12">Desember</option>
+            <option value="1">Januari</option><option value="2" selected>Februari</option>
+            <option value="3">Maret</option><option value="4">April</option>
+            <option value="5">Mei</option><option value="6">Juni</option>
+            <option value="7">Juli</option><option value="8">Agustus</option>
+            <option value="9">September</option><option value="10">Oktober</option>
+            <option value="11">November</option><option value="12">Desember</option>
           </select>
         </div>
         <div class="field">
@@ -193,15 +174,15 @@ tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-i
         </div>
         <div class="field">
           <label>Nama Kel / Desa</label>
-          <input type="text" id="desa" value="PUOSU" placeholder="Nama Kelurahan/Desa">
+          <input type="text" id="desa" value="PUOSU" placeholder="Nama Kelurahan/Desa" oninput="this.value=this.value.toUpperCase()">
         </div>
         <div class="field">
           <label>Nama Faskes</label>
-          <input type="text" id="faskes" value="UPTD PUSKESMAS MOWEWE">
+          <input type="text" id="faskes" value="UPTD PUSKESMAS MOWEWE" oninput="this.value=this.value.toUpperCase()">
         </div>
         <div class="field">
           <label>Alamat</label>
-          <input type="text" id="alamat" value="KECAMATAN MOWEWE">
+          <input type="text" id="alamat" value="KECAMATAN MOWEWE" oninput="this.value=this.value.toUpperCase()">
         </div>
       </div>
     </div>
@@ -229,42 +210,44 @@ tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-i
             Kosongkan
           </button>
         </div>
-        <span class="hint">Klik sel untuk edit langsung · Tanggal menyesuaikan bulan yang dipilih</span>
+        <span class="hint">Klik sel untuk edit · Terapi/Obat: Enter untuk baris baru · Tanggal sesuai bulan dipilih</span>
       </div>
 
       <div class="twrap">
         <table>
           <thead>
             <tr>
-              <th rowspan="2" style="min-width:32px">No</th>
-              <th rowspan="2" style="min-width:80px">Tanggal</th>
-              <th rowspan="2" style="min-width:90px">Jenis<br>Pasien</th>
-              <th rowspan="2" style="min-width:55px">Tipe ID</th>
-              <th rowspan="2" style="min-width:140px">Nomor BPJS / NIK</th>
-              <th rowspan="2" style="min-width:130px">Nama Peserta</th>
-              <th rowspan="2" style="min-width:48px">Umur</th>
-              <th rowspan="2" style="min-width:38px">JK</th>
-              <th rowspan="2" style="min-width:44px">BB<br><span style="font-weight:400;font-size:8px">(kg)</span></th>
-              <th rowspan="2" style="min-width:44px">TB<br><span style="font-weight:400;font-size:8px">(cm)</span></th>
-              <th rowspan="2" style="min-width:44px">LP<br><span style="font-weight:400;font-size:8px">(cm)</span></th>
-              <th colspan="5" class="sub" style="min-width:230px">Pemeriksaan Fisik</th>
-              <th rowspan="2" style="min-width:140px">Diagnosa / Keluhan</th>
-              <th rowspan="2" style="min-width:140px">Terapi / Obat</th>
-              <th rowspan="2" style="min-width:30px"></th>
+              <th rowspan="2" style="min-width:30px">No</th>
+              <th rowspan="2" style="min-width:100px">Tanggal</th>
+              <th rowspan="2" style="min-width:140px">Nomor BPJS/NIK</th>
+              <th rowspan="2" style="min-width:130px">Nama</th>
+              <th rowspan="2" style="min-width:44px">Umur</th>
+              <th rowspan="2" style="min-width:34px">JK</th>
+              <th rowspan="2" style="min-width:40px">BB<br><span style="font-weight:400;font-size:8px">kg</span></th>
+              <th rowspan="2" style="min-width:40px">TB<br><span style="font-weight:400;font-size:8px">cm</span></th>
+              <th rowspan="2" style="min-width:40px">LP<br><span style="font-weight:400;font-size:8px">cm</span></th>
+              <th colspan="7" class="sub">Pemeriksaan Fisik</th>
+              <th rowspan="2" style="min-width:130px">Diagnosa/Keluhan</th>
+              <th rowspan="2" style="min-width:160px">Terapi/Obat</th>
+              <th rowspan="2" style="min-width:48px">Kun&shy;jungan</th>
+              <th rowspan="2" style="min-width:28px"></th>
             </tr>
             <tr>
-              <th class="sub" style="min-width:90px">TD (Sistol/Diastol)<br><span style="font-weight:400;font-size:8px">mmHg</span></th>
-              <th class="sub" style="min-width:42px">Nadi<br><span style="font-weight:400;font-size:8px">/mnt</span></th>
-              <th class="sub" style="min-width:44px">Suhu<br><span style="font-weight:400;font-size:8px">°C</span></th>
-              <th class="sub" style="min-width:42px">RR<br><span style="font-weight:400;font-size:8px">/mnt</span></th>
-              <th class="sub" style="min-width:42px">SpO2<br><span style="font-weight:400;font-size:8px">%</span></th>
+              <th class="sub" style="min-width:80px">TD<br><span style="font-weight:400;font-size:8px">mmHg</span></th>
+              <th class="sub" style="min-width:34px">N<br><span style="font-weight:400;font-size:8px">/mnt</span></th>
+              <th class="sub" style="min-width:36px">S<br><span style="font-weight:400;font-size:8px">°C</span></th>
+              <th class="sub" style="min-width:32px">P<br><span style="font-weight:400;font-size:8px">/mnt</span></th>
+              <th class="sub" style="min-width:32px">C<br><span style="font-weight:400;font-size:8px">cm</span></th>
+              <th class="sub" style="min-width:32px">A<br><span style="font-weight:400;font-size:8px">cm</span></th>
+              <th class="sub" style="min-width:34px">G<br><span style="font-weight:400;font-size:8px">mg/dL</span></th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
-      <div style="margin-top:10px">
+      <div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
         <span class="hint" id="total-hint">Belum ada data — klik "Tambah Baris"</span>
+        <span class="hint">Kolom Pemeriksaan Fisik: TD=Tekanan Darah, N=Nadi, S=Suhu, P=Pernapasan, C=Lingkar Dada, A=Lingkar Abdomen, G=Gula Darah</span>
       </div>
     </div>
   </div>
@@ -274,7 +257,7 @@ tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-i
     <div class="gen-top">
       <div class="gen-desc">
         <strong>Buat &amp; Unduh Dokumen Word</strong>
-        <span>Format landscape, tabel lengkap sesuai standar laporan RJTP Puskesmas</span>
+        <span>Format landscape otomatis, tabel lengkap sesuai standar laporan RJTP Puskesmas</span>
       </div>
       <button class="btn btn-green" id="gen-btn" onclick="generateDoc()" style="min-width:200px;justify-content:center;padding:11px 20px;font-size:13px">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
@@ -308,107 +291,94 @@ tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-i
 </footer>
 
 <script>
-// ── KONSTANTA BULAN ───────────────────────────────────────────
-var BULAN_NAMA = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-var BULAN_NAMA_UP = ['','JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
+var BULAN_NAMA  = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+var BULAN_UP    = ['','JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
 
-function getDaysInMonth(month, year) {
-  return new Date(year, month, 0).getDate();
-}
+function getDaysInMonth(m,y){ return new Date(y,m,0).getDate(); }
 
-function buildTanggalOptions(month, year) {
-  var days = getDaysInMonth(parseInt(month), parseInt(year));
-  var opts = '<option value="">— Pilih —</option>';
-  for (var d = 1; d <= days; d++) {
-    var dd = String(d).padStart(2,'0');
-    var mm = String(month).padStart(2,'0');
-    var yy = String(year).slice(-2);
-    opts += '<option value="'+dd+'/'+mm+'/'+yy+'">'+dd+' '+BULAN_NAMA[parseInt(month)]+' '+year+'</option>';
+function buildTglOpts(month,year){
+  var d=getDaysInMonth(parseInt(month),parseInt(year));
+  var o='<option value="">-- Pilih --</option>';
+  for(var i=1;i<=d;i++){
+    var dd=String(i).padStart(2,'0');
+    var mm=String(month).padStart(2,'0');
+    var yy=String(year).slice(-2);
+    o+='<option value="'+dd+'/'+mm+'/'+yy+'">'+dd+' '+BULAN_NAMA[parseInt(month)]+' '+year+'</option>';
   }
-  return opts;
+  return o;
 }
 
-function onBulanChange() {
-  var month = document.getElementById('bulan').value;
-  var year  = document.getElementById('tahun').value;
-  var selects = document.querySelectorAll('select.tgl-sel');
-  var opts = buildTanggalOptions(month, year);
-  for (var i=0;i<selects.length;i++) {
-    var cur = selects[i].value;
-    selects[i].innerHTML = opts;
-    selects[i].value = cur; // try to restore
-  }
+function onBulanChange(){
+  var month=document.getElementById('bulan').value;
+  var year=document.getElementById('tahun').value;
+  var opts=buildTglOpts(month,year);
+  document.querySelectorAll('select.tgl-sel').forEach(function(s){
+    var cur=s.value; s.innerHTML=opts; s.value=cur;
+  });
 }
 
-// ── STATE ─────────────────────────────────────────────────────
-var rowIdCounter = 0;
-var rowIds = [];
-
+// ── STATE
+var rowIdCtr=0, rowIds=[];
 function v(f,id){ var e=document.getElementById(f+'_'+id); return e?e.value.trim():''; }
 function eq(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function up(s){ return eq(s).toUpperCase(); }
 
-// ── ADD ROW ───────────────────────────────────────────────────
-function addRow(data) {
-  data = data || {};
-  rowIdCounter++;
-  var id = rowIdCounter;
+// ── ADD ROW
+function addRow(data){
+  data=data||{};
+  rowIdCtr++;
+  var id=rowIdCtr;
   rowIds.push(id);
+  var month=document.getElementById('bulan').value;
+  var year=document.getElementById('tahun').value;
+  var tglOpts=buildTglOpts(month,year);
 
-  var month = document.getElementById('bulan').value;
-  var year  = document.getElementById('tahun').value;
-  var tglOpts = buildTanggalOptions(month, year);
-
-  var tr = document.createElement('tr');
-  tr.id = 'row_'+id;
-  tr.innerHTML =
+  var tr=document.createElement('tr');
+  tr.id='row_'+id;
+  tr.innerHTML=
     '<td class="no">'+(rowIds.length)+'</td>'+
-    // Tanggal - dropdown sesuai bulan
-    '<td style="min-width:110px"><select id="tgl_'+id+'" class="tgl-sel" style="font-size:10px;padding:4px 14px 4px 4px">'+tglOpts+'</select></td>'+
-    // Jenis pasien
-    '<td><select id="jenis_'+id+'">'+
-      '<option value="Rawat Jalan"'+((!data.jenis||data.jenis==='Rawat Jalan')?' selected':'')+'>Rawat Jalan</option>'+
-      '<option value="Home Care"'+(data.jenis==='Home Care'?' selected':'')+'>Home Care</option>'+
-      '<option value="Posyandu"'+(data.jenis==='Posyandu'?' selected':'')+'>Posyandu</option>'+
-    '</select></td>'+
-    // Tipe ID
-    '<td><select id="tipe_'+id+'">'+
-      '<option value="BPJS"'+((!data.tipe||data.tipe==='BPJS')?' selected':'')+'>BPJS</option>'+
-      '<option value="NIK"'+(data.tipe==='NIK'?' selected':'')+'>NIK</option>'+
-    '</select></td>'+
-    '<td><input id="nomor_'+id+'" value="'+eq(data.nomor||'')+'" placeholder="Nomor" class="left"></td>'+
-    '<td><input id="nama_'+id+'"  value="'+eq(data.nama||'')+'"  placeholder="Nama lengkap" class="left"></td>'+
-    '<td><input id="umur_'+id+'"  type="number" value="'+eq(data.umur||'')+'" placeholder="thn" min="0" max="150"></td>'+
-    '<td><select id="jk_'+id+'">'+
-      '<option value="P"'+((!data.jk||data.jk==='P')?' selected':'')+'>P</option>'+
-      '<option value="L"'+(data.jk==='L'?' selected':'')+'>L</option>'+
-    '</select></td>'+
-    '<td><input id="bb_'+id+'"   type="number" value="'+eq(data.bb||'')+'"   placeholder="kg"></td>'+
-    '<td><input id="tb_'+id+'"   type="number" value="'+eq(data.tb||'')+'"   placeholder="cm"></td>'+
-    '<td><input id="lp_'+id+'"   type="number" value="'+eq(data.lp||'')+'"   placeholder="cm"></td>'+
-    // TD: sistolik / diastolik
-    '<td style="min-width:90px"><div class="td-split">'+
-      '<input id="sistol_'+id+'"  type="number" value="'+eq(data.sistol||'')+'"  placeholder="120" style="min-width:36px">'+
+    // Tanggal
+    '<td style="min-width:105px"><select id="tgl_'+id+'" class="tgl-sel" style="font-size:10px;padding:4px 14px 4px 3px">'+tglOpts+'</select></td>'+
+    // Nomor BPJS/NIK
+    '<td><input id="nomor_'+id+'" value="'+eq(data.nomor||'')+'" placeholder="Nomor" class="left" oninput="this.value=this.value.toUpperCase()"></td>'+
+    // Nama
+    '<td><input id="nama_'+id+'" value="'+eq(data.nama||'')+'" placeholder="Nama" class="left" oninput="this.value=this.value.toUpperCase()"></td>'+
+    // Umur
+    '<td><input id="umur_'+id+'" type="number" value="'+eq(data.umur||'')+'" placeholder="thn" min="0" max="150"></td>'+
+    // JK
+    '<td><select id="jk_'+id+'"><option value="P"'+((!data.jk||data.jk==='P')?' selected':'')+'>P</option><option value="L"'+(data.jk==='L'?' selected':'')+'>L</option></select></td>'+
+    // BB TB LP
+    '<td><input id="bb_'+id+'" type="number" value="'+eq(data.bb||'')+'" placeholder="kg"></td>'+
+    '<td><input id="tb_'+id+'" type="number" value="'+eq(data.tb||'')+'" placeholder="cm"></td>'+
+    '<td><input id="lp_'+id+'" type="number" value="'+eq(data.lp||'')+'" placeholder="cm"></td>'+
+    // TD sistol/diastol
+    '<td style="min-width:84px"><div class="td-split">'+
+      '<input id="sistol_'+id+'" type="number" value="'+eq(data.sistol||'')+'" placeholder="120" style="min-width:32px">'+
       '<span>/</span>'+
-      '<input id="diastol_'+id+'" type="number" value="'+eq(data.diastol||'')+'" placeholder="80"  style="min-width:32px">'+
+      '<input id="diastol_'+id+'" type="number" value="'+eq(data.diastol||'')+'" placeholder="80" style="min-width:28px">'+
     '</div></td>'+
-    '<td><input id="nadi_'+id+'"  type="number" value="'+eq(data.nadi||'')+'"  placeholder="80"></td>'+
-    '<td><input id="suhu_'+id+'"  value="'+eq(data.suhu||'')+'"  placeholder="36.5"></td>'+
-    '<td><input id="rr_'+id+'"    type="number" value="'+eq(data.rr||'')+'"    placeholder="20"></td>'+
-    '<td><input id="spo2_'+id+'"  type="number" value="'+eq(data.spo2||'')+'"  placeholder="98"  min="0" max="100"></td>'+
-    '<td><input id="diag_'+id+'"  value="'+eq(data.diag||'')+'"  placeholder="Diagnosa/Keluhan" class="left"></td>'+
-    '<td><input id="ther_'+id+'"  value="'+eq(data.ther||'')+'"  placeholder="Terapi/Obat" class="left"></td>'+
+    // N S P C A G
+    '<td><input id="nadi_'+id+'" type="number" value="'+eq(data.nadi||'')+'" placeholder="80"></td>'+
+    '<td><input id="suhu_'+id+'" value="'+eq(data.suhu||'')+'" placeholder="36.5"></td>'+
+    '<td><input id="rr_'+id+'" type="number" value="'+eq(data.rr||'')+'" placeholder="20"></td>'+
+    '<td><input id="circ_'+id+'" type="number" value="'+eq(data.circ||'')+'" placeholder="—"></td>'+
+    '<td><input id="abd_'+id+'" type="number" value="'+eq(data.abd||'')+'" placeholder="—"></td>'+
+    '<td><input id="gula_'+id+'" type="number" value="'+eq(data.gula||'')+'" placeholder="—"></td>'+
+    // Diagnosa
+    '<td><input id="diag_'+id+'" value="'+eq(data.diag||'')+'" placeholder="Diagnosa/Keluhan" class="left" oninput="this.value=this.value.toUpperCase()"></td>'+
+    // Terapi - textarea multiline
+    '<td style="min-width:160px;vertical-align:top;padding:3px"><textarea id="ther_'+id+'" placeholder="1. Obat A&#10;2. Obat B" rows="2" oninput="autoUp(this)">'+eq(data.ther||'')+'</textarea></td>'+
+    // Kunjungan
+    '<td><select id="kunj_'+id+'"><option value="L"'+((!data.kunj||data.kunj==='L')?' selected':'')+'>L</option><option value="B"'+(data.kunj==='B'?' selected':'')+'>B</option></select></td>'+
+    // Delete
     '<td><button class="del-btn" onclick="deleteRow('+id+')" title="Hapus">✕</button></td>';
 
   document.getElementById('tbody').appendChild(tr);
-
-  // Set tanggal value if provided
-  if (data.tgl) {
-    var sel = document.getElementById('tgl_'+id);
-    if (sel) sel.value = data.tgl;
-  }
+  if(data.tgl){ var s=document.getElementById('tgl_'+id); if(s) s.value=data.tgl; }
   updateUI();
 }
 
+function autoUp(el){ el.value=el.value.toUpperCase(); }
 function addMultiple(){ for(var i=0;i<5;i++) addRow(); }
 
 function deleteRow(id){
@@ -420,92 +390,69 @@ function deleteRow(id){
 }
 
 function clearAll(){
-  if(rowIds.length===0) return;
-  if(!confirm('Hapus semua '+rowIds.length+' baris data pasien?')) return;
+  if(!rowIds.length) return;
+  if(!confirm('Hapus semua '+rowIds.length+' baris?')) return;
   rowIds.length=0;
   document.getElementById('tbody').innerHTML='';
   updateUI();
 }
 
 function renumber(){
-  var trs=document.getElementById('tbody').querySelectorAll('tr');
-  for(var i=0;i<trs.length;i++){
-    var c=trs[i].querySelector('.no');
-    if(c) c.textContent=i+1;
-  }
+  document.getElementById('tbody').querySelectorAll('tr').forEach(function(tr,i){
+    var c=tr.querySelector('.no'); if(c) c.textContent=i+1;
+  });
 }
 
 function updateUI(){
   var n=rowIds.length;
   document.getElementById('row-badge').textContent=n+' pasien';
-  document.getElementById('total-hint').textContent=
-    n>0?'Total '+n+' data pasien':'Belum ada data — klik "Tambah Baris"';
+  document.getElementById('total-hint').textContent=n>0?'Total '+n+' data pasien':'Belum ada data — klik "Tambah Baris"';
 }
 
 function collectData(){
   return rowIds.map(function(id){
-    var sistol  = v('sistol',id);
-    var diastol = v('diastol',id);
-    var td = sistol&&diastol ? sistol+'/'+diastol : (sistol||diastol||'');
+    var sistol=v('sistol',id), diastol=v('diastol',id);
     return {
-      tgl:   v('tgl',id),   jenis: v('jenis',id), tipe:  v('tipe',id),
-      nomor: v('nomor',id), nama:  v('nama',id),   umur:  v('umur',id),
-      jk:    v('jk',id),    bb:    v('bb',id),     tb:    v('tb',id),
-      lp:    v('lp',id),    td:    td,             nadi:  v('nadi',id),
-      suhu:  v('suhu',id),  rr:    v('rr',id),     spo2:  v('spo2',id),
-      diag:  v('diag',id),  ther:  v('ther',id),
+      tgl:   v('tgl',id),  nomor: v('nomor',id), nama:  v('nama',id),
+      umur:  v('umur',id), jk:    v('jk',id),    bb:    v('bb',id),
+      tb:    v('tb',id),   lp:    v('lp',id),
+      td:    sistol&&diastol?sistol+'/'+diastol:(sistol||diastol||''),
+      nadi:  v('nadi',id), suhu:  v('suhu',id),  rr:    v('rr',id),
+      circ:  v('circ',id), abd:   v('abd',id),   gula:  v('gula',id),
+      diag:  v('diag',id), ther:  v('ther',id),  kunj:  v('kunj',id),
     };
   });
 }
 
-// ── DOCX GENERATE ─────────────────────────────────────────────
+// ── DOCX
 function resetBtn(){
-  var btn=document.getElementById('gen-btn');
-  btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Unduh DOCX';
-  btn.disabled=false;
+  var b=document.getElementById('gen-btn');
+  b.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Unduh DOCX';
+  b.disabled=false;
 }
 
 function generateDoc(){
-  if(typeof docx==='undefined'){
-    showErr('Pustaka belum termuat. Pastikan koneksi internet aktif lalu refresh halaman.');
-    return;
-  }
+  if(typeof docx==='undefined'){ showErr('Pustaka belum termuat. Refresh halaman.'); return; }
   hideAlerts();
   var btn=document.getElementById('gen-btn');
-  var pw=document.getElementById('pw');
-  var pb=document.getElementById('pb');
+  var pw=document.getElementById('pw'), pb=document.getElementById('pb');
   btn.disabled=true;
   btn.innerHTML='<div class="spinner"></div> Membuat dokumen...';
   pw.classList.add('show'); pb.style.width='15%';
 
-  // Build doc object synchronously, then use async Packer
   setTimeout(function(){
     var res;
-    try{
-      pb.style.width='40%';
-      res = buildDocx();
-    } catch(e){
-      console.error(e);
-      showErr(e.message||'Kesalahan saat membangun dokumen');
-      setTimeout(function(){ pw.classList.remove('show'); pb.style.width='0%'; },600);
-      resetBtn();
-      return;
-    }
+    try{ pb.style.width='40%'; res=buildDocx(); }
+    catch(e){ console.error(e); showErr(e.message||'Error'); setTimeout(function(){pw.classList.remove('show');pb.style.width='0%';},600); resetBtn(); return; }
 
     pb.style.width='65%';
-
-    // Packer.toBase64String returns a Promise in docx v8/v9
     docx.Packer.toBase64String(res.doc).then(function(b64){
       pb.style.width='95%';
-
-      // Convert base64 to Blob
-      var binary = atob(b64);
-      var bytes  = new Uint8Array(binary.length);
-      for(var i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
-      var blob = new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
-      var url  = URL.createObjectURL(blob);
-
-      var lnk = document.getElementById('dl-link');
+      var bin=atob(b64), bytes=new Uint8Array(bin.length);
+      for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+      var blob=new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+      var url=URL.createObjectURL(blob);
+      var lnk=document.getElementById('dl-link');
       lnk.href=url; lnk.download=res.fname;
       document.getElementById('a-fname').textContent=res.fname;
       document.getElementById('a-sub').textContent=res.count+' data pasien · Klik "Simpan File" untuk menyimpan';
@@ -514,14 +461,7 @@ function generateDoc(){
       setTimeout(function(){ lnk.click(); },100);
       setTimeout(function(){ pw.classList.remove('show'); pb.style.width='0%'; },900);
       resetBtn();
-
-    }).catch(function(e){
-      console.error(e);
-      showErr('Gagal membuat file: '+(e.message||e));
-      setTimeout(function(){ pw.classList.remove('show'); pb.style.width='0%'; },600);
-      resetBtn();
-    });
-
+    }).catch(function(e){ console.error(e); showErr('Gagal: '+(e.message||e)); setTimeout(function(){pw.classList.remove('show');pb.style.width='0%';},600); resetBtn(); });
   },80);
 }
 
@@ -530,95 +470,118 @@ function showErr(m){ document.getElementById('err-msg').textContent=m; document.
 
 function buildDocx(){
   var D=docx;
-  var Document=D.Document, Packer=D.Packer, Paragraph=D.Paragraph, TextRun=D.TextRun;
+  var Document=D.Document, Paragraph=D.Paragraph, TextRun=D.TextRun;
   var Table=D.Table, TableRow=D.TableRow, TableCell=D.TableCell;
   var AlignmentType=D.AlignmentType, WidthType=D.WidthType, BorderStyle=D.BorderStyle;
   var VerticalAlign=D.VerticalAlign, ShadingType=D.ShadingType, PageOrientation=D.PageOrientation;
+  var UnderlineType=D.UnderlineType;
 
-  var bulanNum = document.getElementById('bulan').value;
-  var tahun    = document.getElementById('tahun').value;
-  var bulanUp  = BULAN_NAMA_UP[parseInt(bulanNum)];
-  var desa     = document.getElementById('desa').value.toUpperCase();
-  var faskes   = document.getElementById('faskes').value.toUpperCase();
-  var alamat   = document.getElementById('alamat').value.toUpperCase();
-  var data     = collectData();
+  var bulanNum=document.getElementById('bulan').value;
+  var tahun=document.getElementById('tahun').value;
+  var bulanUp=BULAN_UP[parseInt(bulanNum)];
+  var desa=document.getElementById('desa').value.toUpperCase();
+  var faskes=document.getElementById('faskes').value.toUpperCase();
+  var alamat=document.getElementById('alamat').value.toUpperCase();
+  var data=collectData();
 
   function bdr(c,sz){ return {style:BorderStyle.SINGLE,size:sz||6,color:c||'000000'}; }
-  var boldB  = {top:bdr(),bottom:bdr(),left:bdr(),right:bdr()};
-  var lightB = {top:bdr('BBBBBB',4),bottom:bdr('BBBBBB',4),left:bdr('BBBBBB',4),right:bdr('BBBBBB',4)};
+  var boldB={top:bdr(),bottom:bdr(),left:bdr(),right:bdr()};
+  var lightB={top:bdr('BBBBBB',4),bottom:bdr('BBBBBB',4),left:bdr('BBBBBB',4),right:bdr('BBBBBB',4)};
 
+  // Simple single-line cell
   function mkCell(text,opts){
     opts=opts||{};
     return new TableCell({
-      borders:       opts.h ? boldB : lightB,
-      width:         opts.w ? {size:opts.w,type:WidthType.DXA} : undefined,
-      shading:       opts.fill ? {fill:opts.fill,type:ShadingType.CLEAR} : undefined,
-      verticalAlign: VerticalAlign.CENTER,
-      margins:       {top:55,bottom:55,left:75,right:75},
-      rowSpan:       opts.rs,
-      columnSpan:    opts.cs,
+      borders:opts.h?boldB:lightB,
+      width:opts.w?{size:opts.w,type:WidthType.DXA}:undefined,
+      shading:opts.fill?{fill:opts.fill,type:ShadingType.CLEAR}:undefined,
+      verticalAlign:VerticalAlign.CENTER,
+      margins:{top:50,bottom:50,left:70,right:70},
+      rowSpan:opts.rs, columnSpan:opts.cs,
       children:[new Paragraph({
-        alignment: opts.align||AlignmentType.CENTER,
-        children:  [new TextRun({
-          text:  String(text!=null?text:''),
-          font:  'Arial',
-          size:  opts.sz||(opts.h?15:14),
-          bold:  !!opts.bold,
-        })]
+        alignment:opts.align||AlignmentType.CENTER,
+        children:[new TextRun({text:String(text!=null?text:''),font:'Arial',size:opts.sz||(opts.h?15:14),bold:!!opts.bold})]
       })]
     });
   }
 
-  // Col widths (DXA) — landscape ~13500 total usable
-  var cols=[460,900,820,560,1560,1760,460,380,440,440,440,820,400,440,400,400,1800,1800];
+  // Multiline cell for terapi — each line becomes a numbered paragraph
+  function mkTherCell(text,w){
+    var lines=(text||'').split('\n').map(function(l){return l.trim();}).filter(function(l){return l.length>0;});
+    var children;
+    if(lines.length===0){
+      children=[new Paragraph({alignment:AlignmentType.LEFT,children:[new TextRun({text:'',font:'Arial',size:14})]})];
+    } else {
+      children=lines.map(function(line,i){
+        return new Paragraph({
+          alignment:AlignmentType.LEFT,
+          indent:{left:0},
+          children:[new TextRun({text:(lines.length>1?(i+1)+'. ':'')+line.toUpperCase(),font:'Arial',size:14})]
+        });
+      });
+    }
+    return new TableCell({
+      borders:lightB,
+      width:w?{size:w,type:WidthType.DXA}:undefined,
+      verticalAlign:VerticalAlign.TOP,
+      margins:{top:50,bottom:50,left:70,right:70},
+      children:children
+    });
+  }
+
+  // Column widths DXA — page width 15840, margins 900+720 = 1620 → usable 14220
+  // cols: no, tgl, nomor, nama, umur, jk, bb, tb, lp, td, n, s, p, c, a, g, diag, ther, kunj
+  var cols=[380,900,1480,1680,400,340,380,380,380,760,340,380,320,320,320,340,1700,1700,380];
   var colSum=cols.reduce(function(a,b){return a+b;},0);
-  var H1='D6E4F0', H2='BDD7EE';
+  var H1='D6E4F0',H2='BDD7EE';
 
   var thead1=new TableRow({tableHeader:true,children:[
-    mkCell('NO',              {bold:true,rs:2,w:cols[0], fill:H1,h:true}),
-    mkCell('TANGGAL',         {bold:true,rs:2,w:cols[1], fill:H1,h:true}),
-    mkCell('JENIS\nPASIEN',   {bold:true,rs:2,w:cols[2], fill:H1,h:true}),
-    mkCell('TIPE ID',         {bold:true,rs:2,w:cols[3], fill:H1,h:true}),
-    mkCell('NOMOR BPJS/NIK',  {bold:true,rs:2,w:cols[4], fill:H1,h:true}),
-    mkCell('NAMA PESERTA',    {bold:true,rs:2,w:cols[5], fill:H1,h:true}),
-    mkCell('UMUR',            {bold:true,rs:2,w:cols[6], fill:H1,h:true}),
-    mkCell('JK',              {bold:true,rs:2,w:cols[7], fill:H1,h:true}),
-    mkCell('BB (kg)',         {bold:true,rs:2,w:cols[8], fill:H1,h:true}),
-    mkCell('TB (cm)',         {bold:true,rs:2,w:cols[9], fill:H1,h:true}),
-    mkCell('LP (cm)',         {bold:true,rs:2,w:cols[10],fill:H1,h:true}),
-    mkCell('PEMERIKSAAN FISIK',{bold:true,cs:5,w:cols[11]+cols[12]+cols[13]+cols[14]+0,fill:H2,h:true}),
+    mkCell('NO',             {bold:true,rs:2,w:cols[0], fill:H1,h:true}),
+    mkCell('TANGGAL',        {bold:true,rs:2,w:cols[1], fill:H1,h:true}),
+    mkCell('NOMOR BPJS/NIK', {bold:true,rs:2,w:cols[2], fill:H1,h:true}),
+    mkCell('NAMA',           {bold:true,rs:2,w:cols[3], fill:H1,h:true}),
+    mkCell('UMUR',           {bold:true,rs:2,w:cols[4], fill:H1,h:true}),
+    mkCell('JK',             {bold:true,rs:2,w:cols[5], fill:H1,h:true}),
+    mkCell('BB\n(kg)',       {bold:true,rs:2,w:cols[6], fill:H1,h:true}),
+    mkCell('TB\n(cm)',       {bold:true,rs:2,w:cols[7], fill:H1,h:true}),
+    mkCell('LP\n(cm)',       {bold:true,rs:2,w:cols[8], fill:H1,h:true}),
+    mkCell('PEMERIKSAAN FISIK',{bold:true,cs:7,w:cols[9]+cols[10]+cols[11]+cols[12]+cols[13]+cols[14]+cols[15],fill:H2,h:true}),
     mkCell('DIAGNOSA/KELUHAN',{bold:true,rs:2,w:cols[16],fill:H1,h:true}),
-    mkCell('TERAPI/OBAT',     {bold:true,rs:2,w:cols[17],fill:H1,h:true}),
+    mkCell('TERAPI/OBAT',    {bold:true,rs:2,w:cols[17],fill:H1,h:true}),
+    mkCell('KUN-\nJUNGAN',  {bold:true,rs:2,w:cols[18],fill:H1,h:true}),
   ]});
 
   var thead2=new TableRow({tableHeader:true,children:[
-    mkCell('TD Sistol/Diastol (mmHg)',{bold:true,w:cols[11],fill:H2,h:true,sz:12}),
-    mkCell('Nadi (/mnt)',{bold:true,w:cols[12],fill:H2,h:true,sz:12}),
-    mkCell('Suhu (°C)',  {bold:true,w:cols[13],fill:H2,h:true,sz:12}),
-    mkCell('RR (/mnt)', {bold:true,w:cols[14],fill:H2,h:true,sz:12}),
-    mkCell('SpO2 (%)',  {bold:true,w:cols[15]||400,fill:H2,h:true,sz:12}),
+    mkCell('TD',{bold:true,w:cols[9], fill:H2,h:true,sz:13}),
+    mkCell('N', {bold:true,w:cols[10],fill:H2,h:true,sz:13}),
+    mkCell('S', {bold:true,w:cols[11],fill:H2,h:true,sz:13}),
+    mkCell('P', {bold:true,w:cols[12],fill:H2,h:true,sz:13}),
+    mkCell('C', {bold:true,w:cols[13],fill:H2,h:true,sz:13}),
+    mkCell('A', {bold:true,w:cols[14],fill:H2,h:true,sz:13}),
+    mkCell('G', {bold:true,w:cols[15],fill:H2,h:true,sz:13}),
   ]});
 
   var dataRows=data.map(function(r,i){
     return new TableRow({children:[
-      mkCell(i+1,         {w:cols[0]}),
-      mkCell(r.tgl,       {w:cols[1]}),
-      mkCell(r.jenis,     {w:cols[2]}),
-      mkCell(r.tipe,      {w:cols[3]}),
-      mkCell(r.nomor,     {w:cols[4],align:AlignmentType.LEFT}),
-      mkCell(r.nama?r.nama.toUpperCase():'',{w:cols[5],align:AlignmentType.LEFT}),
-      mkCell(r.umur,      {w:cols[6]}),
-      mkCell(r.jk,        {w:cols[7]}),
-      mkCell(r.bb,        {w:cols[8]}),
-      mkCell(r.tb,        {w:cols[9]}),
-      mkCell(r.lp,        {w:cols[10]}),
-      mkCell(r.td,        {w:cols[11]}),
-      mkCell(r.nadi,      {w:cols[12]}),
-      mkCell(r.suhu,      {w:cols[13]}),
-      mkCell(r.rr,        {w:cols[14]}),
-      mkCell(r.spo2,      {w:cols[15]||400}),
-      mkCell(r.diag,      {w:cols[16],align:AlignmentType.LEFT}),
-      mkCell(r.ther,      {w:cols[17],align:AlignmentType.LEFT}),
+      mkCell(i+1,   {w:cols[0]}),
+      mkCell(r.tgl, {w:cols[1]}),
+      mkCell(r.nomor,{w:cols[2],align:AlignmentType.LEFT}),
+      mkCell(r.nama.toUpperCase(),{w:cols[3],align:AlignmentType.LEFT}),
+      mkCell(r.umur,{w:cols[4]}),
+      mkCell(r.jk,  {w:cols[5]}),
+      mkCell(r.bb,  {w:cols[6]}),
+      mkCell(r.tb,  {w:cols[7]}),
+      mkCell(r.lp,  {w:cols[8]}),
+      mkCell(r.td,  {w:cols[9],sz:13}),
+      mkCell(r.nadi,{w:cols[10]}),
+      mkCell(r.suhu,{w:cols[11]}),
+      mkCell(r.rr,  {w:cols[12]}),
+      mkCell(r.circ,{w:cols[13]}),
+      mkCell(r.abd, {w:cols[14]}),
+      mkCell(r.gula,{w:cols[15]}),
+      mkCell(r.diag.toUpperCase(),{w:cols[16],align:AlignmentType.LEFT}),
+      mkTherCell(r.ther, cols[17]),
+      mkCell(r.kunj,{w:cols[18]}),
     ]});
   });
 
@@ -627,7 +590,7 @@ function buildDocx(){
   for(var ei=0;ei<emptyCount;ei++){
     (function(idx){
       emptyRows.push(new TableRow({children:cols.map(function(w,ci){
-        return mkCell(ci===0?data.length+idx+1:'',{w:w});
+        return ci===0?mkCell(data.length+idx+1,{w:w}):mkCell('',{w:w});
       })}));
     })(ei);
   }
@@ -649,9 +612,15 @@ function buildDocx(){
     return new TextRun({text:txt,font:'Arial',size:sz||22,bold:!!bold,underline:ul?{}:undefined});
   }
 
+  // CRITICAL: use explicit width/height with orientation for true landscape
+  // width=15840 (11in), height=12240 (8.5in) = A4 landscape in twips (1440 twips/in)
   var doc=new Document({sections:[{
     properties:{page:{
-      size:{width:15840,height:12240,orientation:PageOrientation.LANDSCAPE},
+      size:{
+        width:15840,   // 11 inches
+        height:12240,  // 8.5 inches
+        orientation:PageOrientation.LANDSCAPE,
+      },
       margin:{top:720,right:720,bottom:720,left:900},
     }},
     children:[
@@ -664,34 +633,30 @@ function buildDocx(){
       mainTable,
       para([run('Mowewe, ......................  '+tahun,20)],false,200,40),
       para([run('Petugas Kesehatan,',20)],false,0,0),
-      para([run(''),  ],false,0,0),
-      para([run(''),  ],false,0,0),
-      para([run(''),  ],false,0,0),
-      para([run('(_____________________________)',20)],false,0,0),
+      para([run('')],false,0,0),para([run('')],false,0,0),para([run('')],false,0,0),
+      para([run('(___________________________)',20)],false,0,0),
     ]
   }]});
 
-  var fname='Laporan_RJTP_'+bulanUp+'_'+tahun+'.docx';
-  return {doc:doc, fname:fname, count:data.length};
+  return {doc:doc,fname:'Laporan_RJTP_'+bulanUp+'_'+tahun+'.docx',count:data.length};
 }
 
-// ── INIT ──────────────────────────────────────────────────────
+// ── INIT
 window.addEventListener('load',function(){
   if(typeof docx==='undefined'){
     var s=document.createElement('script');
     s.src='https://unpkg.com/docx@8.5.0/build/index.umd.js';
-    s.onerror=function(){ showErr('Gagal memuat pustaka docx. Periksa koneksi internet.'); };
+    s.onerror=function(){ showErr('Gagal memuat pustaka. Periksa koneksi internet.'); };
     document.head.appendChild(s);
   }
 });
 
-// Sample data
 var sample=[
-  {tgl:'11/02/26',jenis:'Rawat Jalan',tipe:'BPJS',nomor:'0701036506610001',nama:'ROSTINA',umur:65,jk:'P',bb:62,tb:155,lp:96,sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,spo2:98,diag:'Hipertensi',ther:'Amlodipine 5mg'},
-  {tgl:'11/02/26',jenis:'Rawat Jalan',tipe:'BPJS',nomor:'7401196109870001',nama:'HERIANTI',umur:92,jk:'P',bb:52,tb:153,lp:'',sistol:140,diastol:80,nadi:78,suhu:'36.8',rr:18,spo2:97,diag:'Febris',ther:'PCT, CTM'},
-  {tgl:'11/02/26',jenis:'Posyandu',   tipe:'NIK', nomor:'7401039572730001',nama:'NURIANA', umur:48,jk:'P',bb:42,tb:167,lp:102,sistol:110,diastol:80,nadi:81,suhu:'36.2',rr:19,spo2:99,diag:'ISPA',ther:'Methylprednisolon'},
-  {tgl:'12/02/26',jenis:'Rawat Jalan',tipe:'BPJS',nomor:'7901039308790001',nama:'HANIA',   umur:52,jk:'P',bb:69,tb:168,lp:85,sistol:130,diastol:90,nadi:86,suhu:'37.2',rr:20,spo2:98,diag:'Gout Artritis',ther:'Piroxicam, Allopurinol'},
-  {tgl:'12/02/26',jenis:'Home Care',  tipe:'BPJS',nomor:'9901024908378002',nama:'SARLINA', umur:51,jk:'P',bb:55,tb:160,lp:'',sistol:110,diastol:80,nadi:90,suhu:'37.0',rr:18,spo2:97,diag:'Gastritis',ther:'Antasida, Omeprazole'},
+  {tgl:'11/02/26',nomor:'0701036506610001',nama:'ROSTINA', umur:65,jk:'P',bb:62,tb:155,lp:96, sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,circ:'',abd:'',gula:'', diag:'HIPERTENSI',  ther:'1. AMLODIPINE 5MG\n2. LISINOPRIL 10MG',kunj:'L'},
+  {tgl:'11/02/26',nomor:'7401196109870001',nama:'HERIANTI',umur:92,jk:'P',bb:52,tb:153,lp:'',  sistol:140,diastol:80,nadi:78,suhu:'36.8',rr:18,circ:'',abd:'',gula:'', diag:'FEBRIS',      ther:'1. PCT 500MG\n2. CTM',kunj:'B'},
+  {tgl:'11/02/26',nomor:'7401039572730001',nama:'NURIANA', umur:48,jk:'P',bb:42,tb:167,lp:102,sistol:110,diastol:80,nadi:81,suhu:'36.2',rr:19,circ:'',abd:'',gula:'', diag:'ISPA',         ther:'1. METHYLPREDNISOLON\n2. AMBROXOL',kunj:'L'},
+  {tgl:'12/02/26',nomor:'7901039308790001',nama:'HANIA',   umur:52,jk:'P',bb:69,tb:168,lp:85, sistol:130,diastol:90,nadi:86,suhu:'37.2',rr:20,circ:'',abd:'',gula:210, diag:'GOUT ARTRITIS',ther:'1. PIROXICAM\n2. ALLOPURINOL',kunj:'L'},
+  {tgl:'12/02/26',nomor:'9901024908378002',nama:'SARLINA', umur:51,jk:'P',bb:55,tb:160,lp:'',  sistol:110,diastol:80,nadi:90,suhu:'37.0',rr:18,circ:'',abd:'',gula:'', diag:'GASTRITIS',   ther:'1. ANTASIDA\n2. OMEPRAZOLE 20MG',kunj:'B'},
 ];
 sample.forEach(function(d){ addRow(d); });
 </script>
