@@ -459,6 +459,12 @@ function collectData(){
 }
 
 // ── DOCX GENERATE ─────────────────────────────────────────────
+function resetBtn(){
+  var btn=document.getElementById('gen-btn');
+  btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Unduh DOCX';
+  btn.disabled=false;
+}
+
 function generateDoc(){
   if(typeof docx==='undefined'){
     showErr('Pustaka belum termuat. Pastikan koneksi internet aktif lalu refresh halaman.');
@@ -472,27 +478,50 @@ function generateDoc(){
   btn.innerHTML='<div class="spinner"></div> Membuat dokumen...';
   pw.classList.add('show'); pb.style.width='15%';
 
+  // Build doc object synchronously, then use async Packer
   setTimeout(function(){
+    var res;
     try{
-      pb.style.width='45%';
-      var res=buildDocx();
-      pb.style.width='85%';
-      var blob=new Blob([res.buf],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
-      var url=URL.createObjectURL(blob);
-      var lnk=document.getElementById('dl-link');
+      pb.style.width='40%';
+      res = buildDocx();
+    } catch(e){
+      console.error(e);
+      showErr(e.message||'Kesalahan saat membangun dokumen');
+      setTimeout(function(){ pw.classList.remove('show'); pb.style.width='0%'; },600);
+      resetBtn();
+      return;
+    }
+
+    pb.style.width='65%';
+
+    // Packer.toBase64String returns a Promise in docx v8/v9
+    docx.Packer.toBase64String(res.doc).then(function(b64){
+      pb.style.width='95%';
+
+      // Convert base64 to Blob
+      var binary = atob(b64);
+      var bytes  = new Uint8Array(binary.length);
+      for(var i=0;i<binary.length;i++) bytes[i]=binary.charCodeAt(i);
+      var blob = new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+      var url  = URL.createObjectURL(blob);
+
+      var lnk = document.getElementById('dl-link');
       lnk.href=url; lnk.download=res.fname;
       document.getElementById('a-fname').textContent=res.fname;
       document.getElementById('a-sub').textContent=res.count+' data pasien · Klik "Simpan File" untuk menyimpan';
       document.getElementById('a-ok').classList.add('show');
       pb.style.width='100%';
       setTimeout(function(){ lnk.click(); },100);
-    }catch(e){
+      setTimeout(function(){ pw.classList.remove('show'); pb.style.width='0%'; },900);
+      resetBtn();
+
+    }).catch(function(e){
       console.error(e);
-      showErr(e.message||'Kesalahan tidak diketahui');
-    }
-    setTimeout(function(){ pw.classList.remove('show'); pb.style.width='0%'; },800);
-    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Unduh DOCX';
-    btn.disabled=false;
+      showErr('Gagal membuat file: '+(e.message||e));
+      setTimeout(function(){ pw.classList.remove('show'); pb.style.width='0%'; },600);
+      resetBtn();
+    });
+
   },80);
 }
 
@@ -642,10 +671,8 @@ function buildDocx(){
     ]
   }]});
 
-  var buf=Packer.toBuffer(doc);
-  if(buf&&buf.then) throw new Error('Packer async tidak didukung di mode ini.');
   var fname='Laporan_RJTP_'+bulanUp+'_'+tahun+'.docx';
-  return {buf:buf,fname:fname,count:data.length};
+  return {doc:doc, fname:fname, count:data.length};
 }
 
 // ── INIT ──────────────────────────────────────────────────────
