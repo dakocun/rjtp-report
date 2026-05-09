@@ -383,7 +383,7 @@ function addRow(data){
     '<td class="col-vital"><input id="gda_'+id+'" class="ci" type="number" value="'+eq(data.gda||'')+'" placeholder="—"></td>'+
     '<td class="col-text" style="vertical-align:top"><input id="diag_'+id+'" class="ci left" value="'+eq(data.diag||'')+'" placeholder="Diagnosa" oninput="this.value=this.value.toUpperCase()"></td>'+
     '<td class="col-text" style="vertical-align:top;padding:2px 3px"><textarea id="ther_'+id+'" class="ci-ta" rows="2" placeholder="1. Obat A&#10;2. Obat B" oninput="this.value=this.value.toUpperCase()">'+eq(data.ther||'')+'</textarea></td>'+
-    '<td class="col-kunj"><select id="kunj_'+id+'" class="ci sel"><option value="L"'+((!data.kunj||data.kunj==='L')?' selected':'')+'>L</option><option value="B"'+(data.kunj==='B'?' selected':'')+'>B</option></select></td>'+
+    '<td class="col-kunj"><select id="kunj_'+id+'" class="ci sel"><option value="LAMA"'+((!data.kunj||data.kunj==="LAMA")?' selected':'')+'>LAMA</option><option value="BARU"'+(data.kunj==="BARU"?' selected':'')+'>BARU</option></select></td>'+
     '<td class="col-act"><button class="del-btn" onclick="deleteRow('+id+')" title="Hapus">✕</button></td>';
   document.getElementById('tbody').appendChild(tr);
   if(data.tgl){var s=document.getElementById('tgl_'+id);if(s)s.value=data.tgl;}
@@ -429,13 +429,13 @@ function setProgress(n){document.getElementById('pb').style.width=n+'%';}
 function showProgress(){document.getElementById('pw').classList.add('show');}
 function hideProgress(){setTimeout(function(){document.getElementById('pw').classList.remove('show');setProgress(0);},700);}
 
+
 function buildPDF(){
   var {jsPDF}=window.jspdf;
-  // A4 landscape: 297mm x 210mm
   var doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-  var PW=297,PH=210; // page dimensions mm
-  var ML=8,MR=8,MT=10,MB=10; // margins
-  var CW=PW-ML-MR; // content width = 281mm
+  var PW=297,PH=210;
+  var ML=8,MR=8,MT=8,MB=8;
+  var CW=PW-ML-MR; // 281mm usable
 
   var bulanNum=parseInt(document.getElementById('bulan').value);
   var tahun=document.getElementById('tahun').value;
@@ -445,274 +445,274 @@ function buildPDF(){
   var alamat=document.getElementById('alamat').value.toUpperCase();
   var data=collectData();
 
-  // ── FONTS & HELPERS
   var FONT='helvetica';
-  function text(txt,x,y,opts){doc.text(String(txt==null?'':txt),x,y,opts||{});}
-  function setFont(style,sz){doc.setFont(FONT,style);doc.setFontSize(sz);}
-  function line(x1,y1,x2,y2,lw){doc.setLineWidth(lw||0.2);doc.line(x1,y1,x2,y2);}
-  function rect(x,y,w,h,lw){doc.setLineWidth(lw||0.2);doc.rect(x,y,w,h);}
-  function fillRect(x,y,w,h,r,g,b){
-    doc.setFillColor(r,g,b);doc.rect(x,y,w,h,'F');
+  function T(txt,x,y,opts){doc.text(String(txt==null?'':txt),x,y,opts||{});}
+  function SF(style,sz){doc.setFont(FONT,style);doc.setFontSize(sz);}
+  function TC(r,g,b){doc.setTextColor(r,g,b);}
+  function DC(r,g,b){doc.setDrawColor(r,g,b);}
+  function LW(w){doc.setLineWidth(w);}
+
+  // ── DOCUMENT HEADER
+  var y=MT;
+  TC(15,23,42);
+  SF('bold',12); T('LAPORAN PELAYANAN',PW/2,y,{align:'center'}); y+=5.5;
+  SF('bold',10); T('RAWAT JALAN TINGKAT PERTAMA (RJTP)',PW/2,y,{align:'center'}); y+=5;
+  SF('normal',8.5); T('BULAN : '+bulanStr+'    TAHUN : '+tahun,PW/2,y,{align:'center'}); y+=5.5;
+
+  SF('normal',8);
+  T('NAMA FASKES     :  '+faskes, ML, y); y+=4;
+  T('ALAMAT               :  '+alamat, ML, y); y+=4;
+  T('NAMA KEL/DESA :  '+desa, ML, y); y+=5;
+
+  // ── COLUMN DEFINITIONS
+  // Total must equal CW=281
+  // No(5) Tgl(22) BPJS(30) Nama(28) Umur(7) JK(6) BB(7) TB(7) LP(7)
+  // TD(15) N(8) S(8) P(8) CHOL(9) AU(9) GDA(9)
+  // Diag(34) Terapi(40) Kunj(12)
+  // Sum: 5+22+30+28+7+6+7+7+7+15+8+8+8+9+9+9+34+40+12 = 281 ✓
+  var W={no:5,tgl:22,id:30,nama:33,umur:7,jk:6,bb:7,tb:7,lp:7,
+         td:15,nadi:8,suhu:8,rr:8,chol:9,au:9,gda:9,
+         diag:39,ther:40,kunj:12};
+
+  var COL_ORDER=['no','tgl','id','nama','umur','jk','bb','tb','lp','td','nadi','suhu','rr','chol','au','gda','diag','ther','kunj'];
+  var VITALS=['nadi','suhu','rr','chol','au','gda'];
+  var V_LABELS=['N','S','P','CHOL','AU','GDA'];
+
+  // Build X positions
+  var CX={};
+  var cur=ML;
+  COL_ORDER.forEach(function(k){CX[k]=cur;cur+=W[k];});
+
+  // ── HEADER DRAWING FUNCTION (reused on each page)
+  var TH1=6.5; // top header row: spans rowspan cols + "PEMERIKSAAN FISIK" label
+  var TH2=5;   // sub-header row: TD N S P CHOL AU GDA
+  var THtotal=TH1+TH2;
+
+  // Column groups:
+  // rowspan-2 cols: no,tgl,id,nama,umur,jk,bb,tb,lp,diag,ther,kunj
+  // colspan "PEMERIKSAAN FISIK": td+nadi+suhu+rr+chol+au+gda
+  var pfX=CX.td;
+  var pfW=W.td+W.nadi+W.suhu+W.rr+W.chol+W.au+W.gda;
+
+  var RS_COLS=['no','tgl','id','nama','umur','jk','bb','tb','lp','diag','ther','kunj'];
+  var RS_LABELS={no:'NO',tgl:'TANGGAL',id:'NOMOR\nBPJS/NIK',nama:'NAMA',umur:'UMUR',jk:'JK',
+                 bb:'BB',tb:'TB',lp:'LP',diag:'DIAGNOSA/\nKELUHAN',ther:'TERAPI/OBAT',kunj:'KUNJUNGAN'};
+
+  function drawHeader(topY){
+    // No background — white/transparent
+    // Draw outer box
+    DC(80,80,80); LW(0.3);
+    doc.rect(ML,topY,CW,THtotal);
+
+    // Horizontal divider — only under the PEMERIKSAAN FISIK span area
+    LW(0.2);
+    // Left section: single tall cells — draw bottom border at TH1 only for pf group
+    // Draw the horizontal mid-line only inside PF group
+    doc.line(pfX,topY+TH1,pfX+pfW,topY+TH1);
+
+    // Vertical lines between ALL columns — full header height
+    COL_ORDER.forEach(function(k,i){
+      if(i===0) return; // left edge already from rect
+      DC(80,80,80); LW(0.2);
+      doc.line(CX[k],topY,CX[k],topY+THtotal);
+    });
+
+    // Draw rowspan cell texts (centered vertically over full TH)
+    TC(15,23,42);
+    SF('bold',5.5);
+    RS_COLS.forEach(function(k){
+      var cw=W[k];
+      var cx=CX[k];
+      var label=RS_LABELS[k];
+      var lines=label.split('\n');
+      var lh=3.2;
+      var totalH=lines.length*lh;
+      var startY=topY+THtotal/2-totalH/2+lh*0.75;
+      lines.forEach(function(l,i){
+        T(l,cx+cw/2,startY+i*lh,{align:'center'});
+      });
+    });
+
+    // PEMERIKSAAN FISIK group label (row 1, spanning pf group)
+    SF('bold',5.5); TC(15,23,42);
+    T('PEMERIKSAAN FISIK',pfX+pfW/2,topY+TH1/2+1.5,{align:'center'});
+
+    // Sub header row: TD + vitals
+    SF('bold',5.5); TC(15,23,42);
+    T('TD',CX.td+W.td/2,topY+TH1+TH2/2+1.5,{align:'center'});
+    VITALS.forEach(function(k,i){
+      T(V_LABELS[i],CX[k]+W[k]/2,topY+TH1+TH2/2+1.5,{align:'center'});
+    });
   }
 
-  // ── HEADER
-  var y=MT;
-  setFont('bold',13);
-  doc.setTextColor(15,23,42);
-  text('LAPORAN PELAYANAN',PW/2,y,{align:'center'}); y+=6;
-  setFont('bold',11);
-  text('RAWAT JALAN TINGKAT PERTAMA (RJTP)',PW/2,y,{align:'center'}); y+=5;
-  setFont('normal',9);
-  text('BULAN : '+bulanStr+'    TAHUN : '+tahun,PW/2,y,{align:'center'}); y+=6;
+  var tY=y; // table top
+  drawHeader(tY);
+  var dY=tY+THtotal;
 
-  setFont('normal',8);
-  var hx=ML;
-  text('NAMA FASKES  :  '+faskes, hx, y); y+=4;
-  text('ALAMAT             :  '+alamat, hx, y); y+=4;
-  text('NAMA KEL/DESA :  '+desa, hx, y); y+=5;
+  // ── ROW DRAWING HELPERS
+  var PAD=1; // left padding for text cells
+  var LH_TEXT=3.5; // line height for wrapped text
 
-  // ── TABLE LAYOUT
-  // Columns: No | Tanggal | BPJS/NIK | Nama | Umur | JK | BB | TB | LP | TD | N | S | P | CHOL | AU | GDA | Diagnosa | Terapi | Kunj
-  // Total CW = 281mm, distribute carefully
-  // Groups: identifiers(wide), vitals(narrow equal), text cols(wide), kunj(narrow)
-  var W={
-    no:6, tgl:18, id:30, nama:30, umur:8, jk:6,
-    bb:8, tb:8, lp:8,
-    td:16, vital:9, // N S P CHOL AU GDA each 9mm → 6×9=54
-    diag:36, ther:40, kunj:8
-  };
-  // Sum: 6+18+30+30+8+6+8+8+8+16+54+36+40+8 = 276 → adjust to fill 281
-  // Give extra to ther: 40+5=45
-  W.ther=45;
-  // Total check: 6+18+30+30+8+6+8+8+8+16+54+36+45+8=281 ✓
+  function cellCenterMiddle(txt,col,rowTop,rowH){
+    var t=String(txt==null?'':txt).toUpperCase();
+    if(!t) return;
+    var cw=W[col];
+    var cx2=CX[col]+cw/2;
+    var cy=rowTop+rowH/2+1.5;
+    // truncate if too wide
+    var maxW=cw-1;
+    if(doc.getTextWidth(t)>maxW){
+      SF('normal',5.5);
+      T(t,cx2,cy,{align:'center',maxWidth:maxW});
+      SF('normal',6.5);
+    } else {
+      T(t,cx2,cy,{align:'center'});
+    }
+  }
 
-  var vitals=['nadi','suhu','rr','chol','au','gda'];
-  var vLabels=['N','S','P','CHOL','AU','GDA'];
+  function cellLeftMiddle(txt,col,rowTop,rowH,fontSize){
+    var t=String(txt==null?'':txt).toUpperCase();
+    if(!t) return;
+    var cw=W[col];
+    var lines=doc.splitTextToSize(t,cw-PAD*2);
+    var lh=LH_TEXT;
+    var totalH=lines.length*lh;
+    var startY=rowTop+rowH/2-totalH/2+lh*0.75;
+    lines.forEach(function(l,i){T(l,CX[col]+PAD,startY+i*lh);});
+  }
 
-  // Column x positions
-  var cx={};
-  var cur=ML;
-  ['no','tgl','id','nama','umur','jk','bb','tb','lp','td'].forEach(function(k){cx[k]=cur;cur+=W[k];});
-  vitals.forEach(function(k){cx[k]=cur;cur+=W.vital;});
-  cx.diag=cur;cur+=W.diag;
-  cx.ther=cur;cur+=W.ther;
-  cx.kunj=cur;
+  function bulletLines(txt,col,rowTop,rowH){
+    // Split by newline, strip any leading "1. " "2. " numbering the user typed
+    var raw=String(txt==null?'':txt).toUpperCase();
+    var rawLines=raw.split('\n').map(function(l){
+      return l.trim().replace(/^\d+[\.\)]\s*/,''); // strip "1. " or "1) " prefix
+    }).filter(function(l){return l.length>0;});
+    if(!rawLines.length) return;
+    var cw=W[col];
+    var lh=3.6;
+    var totalH=rawLines.length*lh;
+    var startY=rowTop+rowH/2-totalH/2+lh*0.75;
+    rawLines.forEach(function(l,i){
+      // bullet char
+      T('\u2022',CX[col]+PAD,startY+i*lh);
+      var wrapped=doc.splitTextToSize(l,cw-PAD*2-2.5);
+      wrapped.forEach(function(wl,wi){T(wl,CX[col]+PAD+2.5,startY+i*lh+wi*lh);});
+    });
+  }
 
-  var TH1=6, TH2=5; // header row heights
-  var ROW_H=7; // data row height
-  var tY=y; // table top Y
-
-  // ── DRAW TABLE HEADER ROW 1
-  var headBg=[13,23,42]; // dark navy
-  var subBg=[30,58,95];  // dark blue
-  var headFg=[226,232,240];
-
-  // bg for all header
-  fillRect(ML,tY,CW,TH1+TH2,headBg[0],headBg[1],headBg[2]);
-
-  // rowspan cells (draw text centered vertically over both rows)
-  var rsCells=[
-    {k:'no',label:'NO'},
-    {k:'tgl',label:'TANGGAL'},
-    {k:'id',label:'NOMOR BPJS/NIK'},
-    {k:'nama',label:'NAMA'},
-    {k:'umur',label:'UMUR'},
-    {k:'jk',label:'JK'},
-    {k:'bb',label:'BB'},
-    {k:'tb',label:'TB'},
-    {k:'lp',label:'LP'},
-    {k:'diag',label:'DIAGNOSA/KELUHAN'},
-    {k:'ther',label:'TERAPI/OBAT'},
-    {k:'kunj',label:'KUNJ.'},
-  ];
-  doc.setTextColor(headFg[0],headFg[1],headFg[2]);
-  setFont('bold',6);
-  rsCells.forEach(function(c){
-    var midY=tY+(TH1+TH2)/2+2;
-    var cw=W[c.k]||W.vital;
-    // wrap long labels
-    var lines=doc.splitTextToSize(c.label,cw-1);
-    var lineH=3.2;
-    var totalH=lines.length*lineH;
-    var startY=tY+(TH1+TH2)/2-totalH/2+lineH*0.8;
-    lines.forEach(function(l,i){text(l,cx[c.k]+cw/2,startY+i*lineH,{align:'center'});});
-  });
-
-  // PEMERIKSAAN FISIK group header
-  var pfX=cx.td, pfW=W.td+vitals.length*W.vital;
-  fillRect(pfX,tY,pfW,TH1,subBg[0],subBg[1],subBg[2]);
-  doc.setTextColor(147,197,253);
-  setFont('bold',6.5);
-  text('PEMERIKSAAN FISIK',pfX+pfW/2,tY+TH1/2+1.5,{align:'center'});
-
-  // Sub headers row 2: TD + vitals
-  var sh2Y=tY+TH1;
-  fillRect(cx.td,sh2Y,W.td+vitals.length*W.vital,TH2,subBg[0],subBg[1],subBg[2]);
-  doc.setTextColor(147,197,253);
-  setFont('bold',6);
-  text('TD',cx.td+W.td/2,sh2Y+TH2/2+1.5,{align:'center'});
-  vitals.forEach(function(k,i){
-    text(vLabels[i],cx[k]+W.vital/2,sh2Y+TH2/2+1.5,{align:'center'});
-  });
-
-  // ── GRID LINES for header
-  doc.setDrawColor(51,65,85);
-  doc.setLineWidth(0.15);
-  var allCols=Object.keys(cx);
-  allCols.forEach(function(k){
-    doc.line(cx[k],tY,cx[k],tY+TH1+TH2);
-  });
-  doc.line(ML+CW,tY,ML+CW,tY+TH1+TH2);
-  doc.line(ML,tY,ML+CW,tY);
-  doc.line(ML,tY+TH1,cx.td,tY+TH1); // divider only under non-grouped cols? No — under group
-  doc.line(cx.td,tY+TH1,ML+CW,tY+TH1);
-  doc.line(ML,tY+TH1+TH2,ML+CW,tY+TH1+TH2);
+  function drawRowBorders(rowTop,rowH){
+    DC(160,160,160); LW(0.15);
+    // horizontal bottom line
+    doc.line(ML,rowTop+rowH,ML+CW,rowTop+rowH);
+    // vertical col dividers
+    COL_ORDER.forEach(function(k,i){
+      if(i===0) return;
+      doc.line(CX[k],rowTop,CX[k],rowTop+rowH);
+    });
+    doc.line(ML+CW,rowTop,ML+CW,rowTop+rowH); // right edge
+  }
 
   // ── DATA ROWS
-  var dY=tY+TH1+TH2;
-  doc.setTextColor(15,23,42);
+  SF('normal',6.5); TC(15,23,42);
+  var ROW_MIN=7;
 
   data.forEach(function(r,i){
-    // compute row height based on ther multiline
-    var therLines=r.ther?r.ther.split('\n').filter(function(l){return l.trim();}):[];
-    var rh=Math.max(ROW_H, therLines.length*3.8+2);
+    // Compute row height from multiline content
+    var therRaw=String(r.ther||'').toUpperCase();
+    var therLines=therRaw.split('\n').map(function(l){return l.trim().replace(/^\d+[\.\)]\s*/,'');}).filter(function(l){return l.length>0;});
+    var diagLines=doc.splitTextToSize((r.diag||'').toUpperCase(),W.diag-PAD*2);
+    var namaLines=doc.splitTextToSize((r.nama||'').toUpperCase(),W.nama-PAD*2);
+    var maxLines=Math.max(therLines.length,diagLines.length,namaLines.length,1);
+    var rh=Math.max(ROW_MIN,maxLines*3.6+2);
 
-    // zebra
-    if(i%2===1){doc.setFillColor(248,250,252);doc.rect(ML,dY,CW,rh,'F');}
-
-    // clip check — new page if needed
-    if(dY+rh>PH-MB-10){
+    // new page check
+    if(dY+rh>PH-MB-12){
+      // close current table
+      DC(60,60,60);LW(0.3);doc.line(ML,dY,ML+CW,dY);
+      doc.line(ML,tY,ML,dY); doc.line(ML+CW,tY,ML+CW,dY);
       doc.addPage();
-      dY=MT;
-      // redraw mini header on new page
-      fillRect(ML,dY,CW,TH1+TH2,headBg[0],headBg[1],headBg[2]);
-      fillRect(pfX,dY,pfW,TH1,subBg[0],subBg[1],subBg[2]);
-      fillRect(cx.td,dY+TH1,W.td+vitals.length*W.vital,TH2,subBg[0],subBg[1],subBg[2]);
-      doc.setTextColor(headFg[0],headFg[1],headFg[2]);
-      setFont('bold',6);
-      rsCells.forEach(function(c){
-        var cw=W[c.k]||W.vital;
-        var lines=doc.splitTextToSize(c.label,cw-1);
-        var lineH=3.2,totalH=lines.length*lineH;
-        var startY=dY+(TH1+TH2)/2-totalH/2+lineH*0.8;
-        lines.forEach(function(l,li){text(l,cx[c.k]+cw/2,startY+li*lineH,{align:'center'});});
-      });
-      doc.setTextColor(147,197,253);setFont('bold',6.5);
-      text('PEMERIKSAAN FISIK',pfX+pfW/2,dY+TH1/2+1.5,{align:'center'});
-      setFont('bold',6);
-      text('TD',cx.td+W.td/2,dY+TH1+TH2/2+1.5,{align:'center'});
-      vitals.forEach(function(k,vi){text(vLabels[vi],cx[k]+W.vital/2,dY+TH1+TH2/2+1.5,{align:'center'});});
-      doc.setDrawColor(51,65,85);doc.setLineWidth(0.15);
-      allCols.forEach(function(k){doc.line(cx[k],dY,cx[k],dY+TH1+TH2);});
-      doc.line(ML+CW,dY,ML+CW,dY+TH1+TH2);
-      doc.line(ML,dY,ML+CW,dY);doc.line(ML,dY+TH1,cx.td,dY+TH1);
-      doc.line(cx.td,dY+TH1,ML+CW,dY+TH1);doc.line(ML,dY+TH1+TH2,ML+CW,dY+TH1+TH2);
-      dY+=TH1+TH2;
-      doc.setTextColor(15,23,42);
+      tY=MT;
+      drawHeader(tY);
+      dY=tY+THtotal;
+      SF('normal',6.5);TC(15,23,42);
     }
 
-    // draw cell text
-    setFont('normal',7);
-    var cy=dY+rh/2+1.5; // vertical center
-    var pad=1;
-
-    function ctext(txt,col,align,maxW){
-      var t=String(txt==null?'':txt).toUpperCase();
-      var cw=(col==='td'?W.td:col==='ther'||col==='diag'?W[col]:col==='id'||col==='nama'?W[col]:W.vital||W[col]||6);
-      if(align==='center'){text(t,cx[col]+cw/2,cy,{align:'center',maxWidth:cw-1});}
-      else{
-        // left: multiline for long text
-        var lines=doc.splitTextToSize(t,(maxW||cw)-1);
-        var lh=3.5;
-        var startY=dY+rh/2-(lines.length*lh)/2+lh*0.8;
-        lines.forEach(function(l,li){text(l,cx[col]+pad,startY+li*lh);});
-      }
+    // draw cells
+    // center+middle: no,umur,jk,bb,tb,lp,td,nadi,suhu,rr,chol,au,gda,kunj,tgl
+    cellCenterMiddle(i+1,'no',dY,rh);
+    // tgl: show exactly as entered, uppercase
+    cellCenterMiddle(r.tgl,'tgl',dY,rh);
+    // id: center, smaller font for long numbers
+    SF('normal',5.8);
+    var idT=String(r.nomor||'').toUpperCase();
+    var idCY=dY+rh/2+1.5;
+    var idW=W.id;
+    if(doc.getTextWidth(idT)>idW-1){
+      var idLines=doc.splitTextToSize(idT,idW-1);
+      var idStartY=dY+rh/2-(idLines.length*3.2)/2+3.2*0.75;
+      idLines.forEach(function(l,li){T(l,CX.id+idW/2,idStartY+li*3.2,{align:'center'});});
+    } else {
+      T(idT,CX.id+idW/2,idCY,{align:'center'});
     }
+    SF('normal',6.5);
+    // Nama: left+middle
+    cellLeftMiddle(r.nama,'nama',dY,rh);
+    cellCenterMiddle(r.umur,'umur',dY,rh);
+    cellCenterMiddle(r.jk,'jk',dY,rh);
+    cellCenterMiddle(r.bb,'bb',dY,rh);
+    cellCenterMiddle(r.tb,'tb',dY,rh);
+    cellCenterMiddle(r.lp,'lp',dY,rh);
+    SF('normal',6); cellCenterMiddle(r.td,'td',dY,rh); SF('normal',6.5);
+    cellCenterMiddle(r.nadi,'nadi',dY,rh);
+    cellCenterMiddle(r.suhu,'suhu',dY,rh);
+    cellCenterMiddle(r.rr,'rr',dY,rh);
+    cellCenterMiddle(r.chol,'chol',dY,rh);
+    cellCenterMiddle(r.au,'au',dY,rh);
+    cellCenterMiddle(r.gda,'gda',dY,rh);
+    // Diagnosa: left+middle
+    cellLeftMiddle(r.diag,'diag',dY,rh);
+    // Terapi: bullets, left+middle
+    bulletLines(r.ther,'ther',dY,rh);
+    // Kunjungan
+    cellCenterMiddle(r.kunj,'kunj',dY,rh);
 
-    ctext(i+1,'no','center');
-    ctext(r.tgl,'tgl','center');
-    // BPJS — smaller font for long numbers
-    doc.setFontSize(6.5);
-    var idLines=doc.splitTextToSize(r.nomor||'',W.id-1);
-    var idSY=dY+rh/2-(idLines.length*3.2)/2+3;
-    idLines.forEach(function(l,li){text(l,cx.id+pad,idSY+li*3.2);});
-    doc.setFontSize(7);
-    // Nama - left aligned, wrap
-    var namaLines=doc.splitTextToSize((r.nama||'').toUpperCase(),W.nama-1);
-    var namaSY=dY+rh/2-(namaLines.length*3.5)/2+3.5*0.8;
-    namaLines.forEach(function(l,li){text(l,cx.nama+pad,namaSY+li*3.5);});
-
-    ctext(r.umur,'umur','center');
-    ctext(r.jk,'jk','center');
-    ctext(r.bb,'bb','center');
-    ctext(r.tb,'tb','center');
-    ctext(r.lp,'lp','center');
-    // TD
-    doc.setFontSize(6.5);ctext(r.td,'td','center');doc.setFontSize(7);
-    ctext(r.nadi,'nadi','center');
-    ctext(r.suhu,'suhu','center');
-    ctext(r.rr,'rr','center');
-    ctext(r.chol,'chol','center');
-    ctext(r.au,'au','center');
-    ctext(r.gda,'gda','center');
-    // Diagnosa
-    var diagLines=doc.splitTextToSize((r.diag||'').toUpperCase(),W.diag-1.5);
-    var diagSY=dY+rh/2-(diagLines.length*3.5)/2+3.5*0.8;
-    diagLines.forEach(function(l,li){text(l,cx.diag+pad,diagSY+li*3.5);});
-    // Terapi - numbered lines
-    if(therLines.length>0){
-      setFont('normal',6.5);
-      var tlerSY=dY+1.5+2.5;
-      therLines.forEach(function(l,li){
-        var numbered=(therLines.length>1?(li+1)+'. ':'')+l.toUpperCase();
-        text(numbered,cx.ther+pad,tlerSY+li*3.8);
-      });
-    }
-    doc.setFontSize(7);
-    ctext(r.kunj,'kunj','center');
-
-    // row border
-    doc.setDrawColor(200,210,220);doc.setLineWidth(0.1);
-    doc.line(ML,dY+rh,ML+CW,dY+rh);
-    // vertical col lines
-    allCols.forEach(function(k){doc.line(cx[k],dY,cx[k],dY+rh);});
-    doc.line(ML+CW,dY,ML+CW,dY+rh);
-
+    drawRowBorders(dY,rh);
     dY+=rh;
   });
 
-  // empty rows to fill minimum 5 blank
+  // Empty filler rows
   var minBlank=Math.max(0,5-data.length);
   for(var ei=0;ei<minBlank;ei++){
-    if(dY+ROW_H>PH-MB-10){doc.addPage();dY=MT;}
-    if(ei%2===1){doc.setFillColor(248,250,252);doc.rect(ML,dY,CW,ROW_H,'F');}
-    setFont('normal',7);doc.setTextColor(15,23,42);
-    var noTxt=data.length+ei+1;
-    text(String(noTxt),cx.no+W.no/2,dY+ROW_H/2+1.5,{align:'center'});
-    doc.setDrawColor(200,210,220);doc.setLineWidth(0.1);
-    doc.line(ML,dY+ROW_H,ML+CW,dY+ROW_H);
-    allCols.forEach(function(k){doc.line(cx[k],dY,cx[k],dY+ROW_H);});
-    doc.line(ML+CW,dY,ML+CW,dY+ROW_H);
-    dY+=ROW_H;
+    if(dY+ROW_MIN>PH-MB-12){
+      DC(60,60,60);LW(0.3);doc.line(ML,dY,ML+CW,dY);
+      doc.line(ML,tY,ML,dY);doc.line(ML+CW,tY,ML+CW,dY);
+      doc.addPage();tY=MT;drawHeader(tY);dY=tY+THtotal;SF('normal',6.5);TC(15,23,42);
+    }
+    SF('normal',6.5);TC(15,23,42);
+    cellCenterMiddle(data.length+ei+1,'no',dY,ROW_MIN);
+    drawRowBorders(dY,ROW_MIN);
+    dY+=ROW_MIN;
   }
 
-  // outer border
-  doc.setDrawColor(15,23,42);doc.setLineWidth(0.4);
-  doc.rect(ML,tY,CW,dY-tY);
+  // Close table outer border
+  DC(60,60,60);LW(0.35);
+  doc.line(ML,tY,ML,dY);   // left
+  doc.line(ML+CW,tY,ML+CW,dY); // right
+  doc.line(ML,dY,ML+CW,dY); // bottom
 
   // ── SIGNATURE
-  dY+=6;
-  setFont('normal',8);doc.setTextColor(15,23,42);
-  text('Mowewe, ......................... '+tahun,ML+CW,dY,{align:'right'});
-  dY+=5;text('Petugas Kesehatan,',ML+CW,dY,{align:'right'});
-  dY+=16;text('(___________________________)',ML+CW,dY,{align:'right'});
+  dY+=7;
+  SF('normal',8);TC(15,23,42);
+  T('Mowewe, ......................... '+tahun,ML+CW,dY,{align:'right'});
+  dY+=5;T('Petugas Kesehatan,',ML+CW,dY,{align:'right'});
+  dY+=15;T('(___________________________)',ML+CW,dY,{align:'right'});
 
   // ── PAGE NUMBERS
   var totalPages=doc.getNumberOfPages();
   for(var p=1;p<=totalPages;p++){
     doc.setPage(p);
-    setFont('normal',7);doc.setTextColor(148,163,184);
-    text('Halaman '+p+' / '+totalPages,PW/2,PH-4,{align:'center'});
+    SF('normal',7);TC(148,163,184);
+    T('Halaman '+p+' / '+totalPages,PW/2,PH-4,{align:'center'});
   }
 
   return doc;
@@ -731,19 +731,15 @@ function previewPDF(){
       setProgress(50);
       var doc=buildPDF();
       setProgress(80);
-      // Render preview using jsPDF output as blob URL
       var pdfBlob=doc.output('blob');
       var url=URL.createObjectURL(pdfBlob);
       var pageCount=doc.getNumberOfPages();
       var bulanNum=parseInt(document.getElementById('bulan').value);
       var tahun=document.getElementById('tahun').value;
-      var modal=document.getElementById('modal-overlay');
-      var body=document.getElementById('modal-body');
       document.getElementById('modal-title').textContent='Pratinjau — '+BULAN_UP[bulanNum]+' '+tahun;
       document.getElementById('modal-info').textContent=collectData().length+' data pasien · '+pageCount+' halaman · A4 Landscape';
-      // Embed PDF in iframe for preview
-      body.innerHTML='<iframe src="'+url+'" style="width:100%;height:600px;border:none;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.2)" allowfullscreen></iframe>';
-      modal.classList.add('show');
+      document.getElementById('modal-body').innerHTML='<iframe src="'+url+'" style="width:100%;height:620px;border:none;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.2)"></iframe>';
+      document.getElementById('modal-overlay').classList.add('show');
       setProgress(100);
     }catch(e){
       console.error(e);showErr('Gagal membuat pratinjau: '+e.message);
@@ -785,11 +781,11 @@ document.getElementById('modal-overlay').addEventListener('click',function(e){if
 
 // ── SAMPLE DATA
 var sample=[
-  {tgl:'11/02/26',nomor:'0701036506610001',nama:'ROSTINA', umur:65,jk:'P',bb:62,tb:155,lp:96, sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,chol:210,au:'5.2',gda:'', diag:'HIPERTENSI',  ther:'1. AMLODIPINE 5MG\n2. LISINOPRIL 10MG',kunj:'L'},
-  {tgl:'11/02/26',nomor:'7401196109870001',nama:'HERIANTI',umur:92,jk:'P',bb:52,tb:153,lp:'',  sistol:140,diastol:80,nadi:78,suhu:'36.8',rr:18,chol:'',  au:'',   gda:'', diag:'FEBRIS',      ther:'1. PCT 500MG\n2. CTM',kunj:'B'},
-  {tgl:'11/02/26',nomor:'7401039572730001',nama:'NURIANA', umur:48,jk:'P',bb:42,tb:167,lp:102,sistol:110,diastol:80,nadi:81,suhu:'36.2',rr:19,chol:'',  au:'',   gda:'', diag:'ISPA',         ther:'1. METHYLPREDNISOLON\n2. AMBROXOL',kunj:'L'},
-  {tgl:'12/02/26',nomor:'7901039308790001',nama:'HANIA',   umur:52,jk:'P',bb:69,tb:168,lp:85, sistol:130,diastol:90,nadi:86,suhu:'37.2',rr:20,chol:240,au:'7.1',gda:210,diag:'GOUT ARTRITIS',ther:'1. PIROXICAM 20MG\n2. ALLOPURINOL 100MG',kunj:'L'},
-  {tgl:'12/02/26',nomor:'9901024908378002',nama:'SARLINA', umur:51,jk:'P',bb:55,tb:160,lp:'',  sistol:110,diastol:80,nadi:90,suhu:'37.0',rr:18,chol:'',  au:'',   gda:'', diag:'GASTRITIS',   ther:'1. ANTASIDA\n2. OMEPRAZOLE 20MG',kunj:'B'},
+  {tgl:'11/02/26',nomor:'0701036506610001',nama:'ROSTINA', umur:65,jk:'P',bb:62,tb:155,lp:96, sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,chol:210,au:'5.2',gda:'', diag:'HIPERTENSI',  ther:'AMLODIPINE 5MG\nLISINOPRIL 10MG',kunj:'LAMA'},
+  {tgl:'11/02/26',nomor:'7401196109870001',nama:'HERIANTI',umur:92,jk:'P',bb:52,tb:153,lp:'',  sistol:140,diastol:80,nadi:78,suhu:'36.8',rr:18,chol:'',  au:'',   gda:'', diag:'FEBRIS',      ther:'PCT 500MG\nCTM',kunj:'BARU'},
+  {tgl:'11/02/26',nomor:'7401039572730001',nama:'NURIANA', umur:48,jk:'P',bb:42,tb:167,lp:102,sistol:110,diastol:80,nadi:81,suhu:'36.2',rr:19,chol:'',  au:'',   gda:'', diag:'ISPA',         ther:'METHYLPREDNISOLON\nAMBROXOL',kunj:'LAMA'},
+  {tgl:'12/02/26',nomor:'7901039308790001',nama:'HANIA',   umur:52,jk:'P',bb:69,tb:168,lp:85, sistol:130,diastol:90,nadi:86,suhu:'37.2',rr:20,chol:240,au:'7.1',gda:210,diag:'GOUT ARTRITIS',ther:'PIROXICAM 20MG\nALLOPURINOL 100MG',kunj:'LAMA'},
+  {tgl:'12/02/26',nomor:'9901024908378002',nama:'SARLINA', umur:51,jk:'P',bb:55,tb:160,lp:'',  sistol:110,diastol:80,nadi:90,suhu:'37.0',rr:18,chol:'',  au:'',   gda:'', diag:'GASTRITIS',   ther:'ANTASIDA\nOMEPRAZOLE 20MG',kunj:'BARU'},
 ];
 sample.forEach(function(d){addRow(d);});
 </script>
