@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laporan RJTP — UPTD Puskesmas Mowewe</title>
-<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
-:root {
-  --bg:#f0f4f8;--surface:#fff;--surface2:#f8fafc;--border:#e2e8f0;
-  --border-s:#cbd5e1;--text:#0f172a;--text2:#475569;--text3:#94a3b8;
+:root{
+  --bg:#f0f4f8;--surface:#fff;--surface2:#f8fafc;--border:#e2e8f0;--border-s:#cbd5e1;
+  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
   --accent:#1d4ed8;--accent-l:#eff6ff;--accent-m:#3b82f6;--accent-d:#1e40af;
   --green:#16a34a;--green-l:#f0fdf4;--red:#dc2626;--hbg:#0f172a;
   --r:10px;--rs:6px;--sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
@@ -38,7 +38,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .badge{margin-left:auto;font-size:11px;padding:2px 8px;background:var(--accent-l);color:var(--accent);border-radius:20px;font-weight:600}
 .card-body{padding:20px}
 
-.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
 .field{display:flex;flex-direction:column;gap:5px}
 .field label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
 .field input,.field select{font-family:inherit;font-size:13px;padding:8px 12px;border:1px solid var(--border-s);border-radius:var(--rs);background:var(--surface);color:var(--text);transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none;outline:none}
@@ -50,46 +50,65 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .toolbar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .hint{font-size:11px;color:var(--text3)}
 
+/* TABLE */
 .twrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rs)}
-table{width:100%;border-collapse:collapse;min-width:1400px}
-thead th{background:#0f172a;color:#e2e8f0;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:8px 4px;text-align:center;white-space:nowrap;border-right:1px solid #1e293b}
-thead th:last-child{border-right:none}
-thead th.sub{background:#1e3a5f;color:#93c5fd;font-size:9px}
-thead tr:first-child th{border-bottom:1px solid #334155}
-tbody tr{border-bottom:1px solid var(--border)}
-tbody tr:last-child{border-bottom:none}
-tbody tr:nth-child(even) td{background:#fafbfc}
-tbody tr:hover td{background:#eff6ff}
-tbody td{padding:3px;text-align:center;vertical-align:middle}
-td.no{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mono',monospace;padding:3px 6px;min-width:32px}
-tbody input,tbody select{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:5px 4px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--text);width:100%;min-width:0;text-align:center;outline:none;transition:border-color .1s,background .1s}
-tbody input:hover,tbody select:hover{border-color:var(--border-s);background:white}
-tbody input:focus,tbody select:focus{border-color:var(--accent-m);background:white;box-shadow:0 0 0 2px rgba(59,130,246,.12)}
-tbody input.left{text-align:left}
-tbody select{-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 3px center;padding-right:14px}
-/* textarea for terapi - multiline */
-tbody textarea{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:5px 4px;border:1px solid transparent;border-radius:4px;background:transparent;color:var(--text);width:100%;min-width:0;text-align:left;outline:none;resize:vertical;min-height:34px;line-height:1.4;transition:border-color .1s,background .1s}
-tbody textarea:hover{border-color:var(--border-s);background:white}
-tbody textarea:focus{border-color:var(--accent-m);background:white;box-shadow:0 0 0 2px rgba(59,130,246,.12)}
-.del-btn{width:24px;height:24px;border:1px solid #fca5a5;background:#fef2f2;color:var(--red);border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;margin:auto;transition:background .1s}
+table.data-table{width:100%;border-collapse:collapse;min-width:1300px}
+table.data-table thead th{background:#0f172a;color:#e2e8f0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:7px 4px;text-align:center;white-space:nowrap;border-right:1px solid #1e293b}
+table.data-table thead th:last-child{border-right:none}
+table.data-table thead th.sub{background:#1e3a5f;color:#93c5fd}
+table.data-table thead tr:first-child th{border-bottom:1px solid #334155}
+table.data-table tbody tr{border-bottom:1px solid var(--border)}
+table.data-table tbody tr:last-child{border-bottom:none}
+table.data-table tbody tr:nth-child(even) td{background:#fafbfc}
+table.data-table tbody tr:hover td{background:#eff6ff}
+table.data-table tbody td{padding:2px 3px;text-align:center;vertical-align:middle}
+td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mono',monospace;padding:2px 5px;width:28px}
+
+/* uniform cell inputs */
+.ci{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:4px 3px;border:1px solid transparent;border-radius:3px;background:transparent;color:var(--text);width:100%;text-align:center;outline:none;transition:border-color .1s,background .1s}
+.ci:hover{border-color:var(--border-s);background:white}
+.ci:focus{border-color:var(--accent-m);background:white;box-shadow:0 0 0 2px rgba(59,130,246,.1)}
+.ci.left{text-align:left}
+.ci.sel{-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center;padding-right:12px}
+.ci-ta{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:4px 3px;border:1px solid transparent;border-radius:3px;background:transparent;color:var(--text);width:100%;text-align:left;outline:none;resize:vertical;min-height:32px;line-height:1.35;transition:border-color .1s,background .1s}
+.ci-ta:hover{border-color:var(--border-s);background:white}
+.ci-ta:focus{border-color:var(--accent-m);background:white;box-shadow:0 0 0 2px rgba(59,130,246,.1)}
+.td-split{display:flex;align-items:center;gap:0}
+.td-split .ci{flex:1}
+.td-split span{font-size:10px;color:var(--text3);flex-shrink:0;padding:0 1px}
+.del-btn{width:22px;height:22px;border:1px solid #fca5a5;background:#fef2f2;color:var(--red);border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;margin:auto;transition:background .1s;flex-shrink:0}
 .del-btn:hover{background:#fee2e2}
-.td-split{display:flex;align-items:center;gap:1px}
-.td-split input{flex:1;min-width:0}
-.td-split span{font-size:10px;color:var(--text3);flex-shrink:0}
+
+/* column width groups - px as min-width hints */
+.col-no{width:28px}
+.col-date{width:105px}
+.col-id{width:138px}
+.col-name{width:140px}
+.col-umur{width:42px}
+.col-jk{width:36px}
+.col-measure{width:42px} /* BB TB LP - same */
+.col-td{width:82px}
+.col-vital{width:36px}  /* N S P CHOL AU GDA - same */
+.col-text{width:145px}  /* diagnosa terapi */
+.col-kunj{width:40px}
+.col-act{width:28px}
 
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--rs);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border-s);background:white;color:var(--text2);transition:background .15s,transform .08s;white-space:nowrap;outline:none}
 .btn:hover{background:var(--bg)}
 .btn:active{transform:scale(.97)}
 .btn-primary{background:var(--accent);color:white;border-color:var(--accent-d)}
 .btn-primary:hover{background:var(--accent-d)}
-.btn-green{background:var(--green);color:white;border-color:#15803d}
+.btn-green{background:var(--green);color:white;border-color:#15803d;font-size:13px;padding:11px 20px}
 .btn-green:hover{background:#15803d}
+.btn-blue{background:#0369a1;color:white;border-color:#075985;font-size:13px;padding:11px 20px}
+.btn-blue:hover{background:#075985}
 
 .gen-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:20px;display:flex;flex-direction:column;gap:14px;margin-bottom:1.25rem}
-.gen-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.gen-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .gen-desc{flex:1;min-width:180px}
 .gen-desc strong{display:block;font-size:14px;font-weight:600}
 .gen-desc span{font-size:12px;color:var(--text2)}
+.gen-actions{display:flex;gap:10px;flex-wrap:wrap}
 
 .pw{display:none;height:3px;background:var(--border);border-radius:3px;overflow:hidden}
 .pw.show{display:block}
@@ -110,13 +129,29 @@ tbody textarea:focus{border-color:var(--accent-m);background:white;box-shadow:0 
 .abody span{font-size:11px}
 .alert-ok .abody span{color:#16a34a}
 .alert-err .abody span{color:var(--red)}
-.dl-link{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--green);color:white;border-radius:var(--rs);text-decoration:none;font-size:12px;font-weight:600;transition:background .15s;border:none;cursor:pointer;font-family:inherit;white-space:nowrap}
-.dl-link:hover{background:#15803d}
+.dl-btn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--green);color:white;border-radius:var(--rs);text-decoration:none;font-size:12px;font-weight:600;transition:background .15s;border:none;cursor:pointer;font-family:inherit;white-space:nowrap}
+.dl-btn:hover{background:#15803d}
+
+/* PREVIEW MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:white;border-radius:12px;width:100%;max-width:960px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,.35)}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-header h3{font-size:14px;font-weight:600}
+.modal-header-actions{display:flex;align-items:center;gap:10px}
+.modal-close{width:30px;height:30px;border:none;background:var(--bg);border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text2)}
+.modal-close:hover{background:var(--border)}
+.modal-body{flex:1;overflow:auto;padding:24px;background:#e5e7eb;display:flex;flex-direction:column;align-items:center;gap:12px}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;flex-wrap:wrap;gap:10px}
+.modal-footer span{font-size:12px;color:var(--text2)}
+
+/* PDF page preview */
+.pdf-page-preview{background:white;box-shadow:0 4px 20px rgba(0,0,0,.2);border-radius:3px;position:relative}
+.pdf-page-preview canvas{display:block;max-width:100%}
 
 .spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-
 .site-footer{text-align:center;padding:2rem;font-size:11px;color:var(--text3);border-top:1px solid var(--border);background:var(--surface)}
 .twrap::-webkit-scrollbar{height:5px}
 .twrap::-webkit-scrollbar-track{background:var(--bg)}
@@ -129,9 +164,7 @@ tbody textarea:focus{border-color:var(--accent-m);background:white;box-shadow:0 
 <header class="site-header">
   <div class="site-header-inner">
     <div class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 13h8v1H8v-1zm0 3h8v1H8v-1zm0-6h3v1H8v-1z"/></svg>
-      </div>
+      <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 13h8v1H8v-1zm0 3h8v1H8v-1zm0-6h3v1H8v-1z"/></svg></div>
       <div class="logo-text">
         <strong>Sistem Laporan RJTP</strong>
         <span>UPTD Puskesmas Mowewe</span>
@@ -144,16 +177,14 @@ tbody textarea:focus{border-color:var(--accent-m);background:white;box-shadow:0 
 <main class="main">
   <div class="page-title">
     <h1>Input Laporan Pelayanan RJTP</h1>
-    <p>Isi informasi laporan dan data pasien, kemudian unduh dokumen Word (.docx) siap cetak.</p>
+    <p>Isi data pasien, preview dokumen, lalu unduh sebagai PDF siap cetak.</p>
   </div>
 
   <!-- INFO LAPORAN -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 14H8v-2h4v2zm4-4H8v-2h8v2zm0-4H8V7h8v2z"/></svg>
-      </div>
-      <h2>Informasi Laporan &amp; Header Dokumen</h2>
+      <div class="card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg></div>
+      <h2>Informasi Laporan</h2>
     </div>
     <div class="card-body">
       <div class="fgrid">
@@ -173,8 +204,8 @@ tbody textarea:focus{border-color:var(--accent-m);background:white;box-shadow:0 
           <input type="number" id="tahun" value="2026" min="2000" max="2099" onchange="onBulanChange()">
         </div>
         <div class="field">
-          <label>Nama Kel / Desa</label>
-          <input type="text" id="desa" value="PUOSU" placeholder="Nama Kelurahan/Desa" oninput="this.value=this.value.toUpperCase()">
+          <label>Nama Kel/Desa</label>
+          <input type="text" id="desa" value="PUOSU" oninput="this.value=this.value.toUpperCase()">
         </div>
         <div class="field">
           <label>Nama Faskes</label>
@@ -191,9 +222,7 @@ tbody textarea:focus{border-color:var(--accent-m);background:white;box-shadow:0 
   <!-- DATA PASIEN -->
   <div class="card">
     <div class="card-header">
-      <div class="card-icon">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
-      </div>
+      <div class="card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
       <h2>Data Pasien</h2>
       <span class="badge" id="row-badge">0 pasien</span>
     </div>
@@ -201,464 +230,568 @@ tbody textarea:focus{border-color:var(--accent-m);background:white;box-shadow:0 
       <div class="toolbar">
         <div class="toolbar-left">
           <button class="btn btn-primary" onclick="addRow()">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
-            Tambah Baris
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>Tambah Baris
           </button>
           <button class="btn" onclick="addMultiple()">+5 Baris</button>
           <button class="btn" onclick="clearAll()" style="color:#dc2626;border-color:#fca5a5;">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
-            Kosongkan
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Kosongkan
           </button>
         </div>
-        <span class="hint">Klik sel untuk edit · Terapi/Obat: Enter untuk baris baru · Tanggal sesuai bulan dipilih</span>
+        <span class="hint">Terapi/Obat: Enter untuk baris baru (tampil bernomor di PDF)</span>
       </div>
 
       <div class="twrap">
-        <table>
+        <table class="data-table">
           <thead>
             <tr>
-              <th rowspan="2" style="min-width:30px">No</th>
-              <th rowspan="2" style="min-width:100px">Tanggal</th>
-              <th rowspan="2" style="min-width:140px">Nomor BPJS/NIK</th>
-              <th rowspan="2" style="min-width:130px">Nama</th>
-              <th rowspan="2" style="min-width:44px">Umur</th>
-              <th rowspan="2" style="min-width:34px">JK</th>
-              <th rowspan="2" style="min-width:40px">BB<br><span style="font-weight:400;font-size:8px">kg</span></th>
-              <th rowspan="2" style="min-width:40px">TB<br><span style="font-weight:400;font-size:8px">cm</span></th>
-              <th rowspan="2" style="min-width:40px">LP<br><span style="font-weight:400;font-size:8px">cm</span></th>
+              <th class="col-no" rowspan="2">No</th>
+              <th class="col-date" rowspan="2">Tanggal</th>
+              <th class="col-id" rowspan="2">Nomor BPJS/NIK</th>
+              <th class="col-name" rowspan="2">Nama</th>
+              <th class="col-umur" rowspan="2">Umur</th>
+              <th class="col-jk" rowspan="2">JK</th>
+              <th class="col-measure" rowspan="2">BB</th>
+              <th class="col-measure" rowspan="2">TB</th>
+              <th class="col-measure" rowspan="2">LP</th>
               <th colspan="7" class="sub">Pemeriksaan Fisik</th>
-              <th rowspan="2" style="min-width:130px">Diagnosa/Keluhan</th>
-              <th rowspan="2" style="min-width:160px">Terapi/Obat</th>
-              <th rowspan="2" style="min-width:48px">Kun&shy;jungan</th>
-              <th rowspan="2" style="min-width:28px"></th>
+              <th class="col-text" rowspan="2">Diagnosa/Keluhan</th>
+              <th class="col-text" rowspan="2">Terapi/Obat</th>
+              <th class="col-kunj" rowspan="2">Kunj.</th>
+              <th class="col-act" rowspan="2"></th>
             </tr>
             <tr>
-              <th class="sub" style="min-width:80px">TD<br><span style="font-weight:400;font-size:8px">mmHg</span></th>
-              <th class="sub" style="min-width:34px">N<br><span style="font-weight:400;font-size:8px">/mnt</span></th>
-              <th class="sub" style="min-width:36px">S<br><span style="font-weight:400;font-size:8px">°C</span></th>
-              <th class="sub" style="min-width:32px">P<br><span style="font-weight:400;font-size:8px">/mnt</span></th>
-              <th class="sub" style="min-width:32px">C<br><span style="font-weight:400;font-size:8px">cm</span></th>
-              <th class="sub" style="min-width:32px">A<br><span style="font-weight:400;font-size:8px">cm</span></th>
-              <th class="sub" style="min-width:34px">G<br><span style="font-weight:400;font-size:8px">mg/dL</span></th>
+              <th class="sub col-td">TD</th>
+              <th class="sub col-vital">N</th>
+              <th class="sub col-vital">S</th>
+              <th class="sub col-vital">P</th>
+              <th class="sub col-vital">CHOL</th>
+              <th class="sub col-vital">AU</th>
+              <th class="sub col-vital">GDA</th>
             </tr>
           </thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
-      <div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <div style="margin-top:10px">
         <span class="hint" id="total-hint">Belum ada data — klik "Tambah Baris"</span>
-        <span class="hint">Kolom Pemeriksaan Fisik: TD=Tekanan Darah, N=Nadi, S=Suhu, P=Pernapasan, C=Lingkar Dada, A=Lingkar Abdomen, G=Gula Darah</span>
       </div>
     </div>
   </div>
 
-  <!-- GENERATE -->
+  <!-- GENERATE BAR -->
   <div class="gen-bar">
     <div class="gen-top">
       <div class="gen-desc">
-        <strong>Buat &amp; Unduh Dokumen Word</strong>
-        <span>Format landscape otomatis, tabel lengkap sesuai standar laporan RJTP Puskesmas</span>
+        <strong>Pratinjau &amp; Unduh Dokumen</strong>
+        <span>Format PDF landscape, siap cetak langsung dari browser</span>
       </div>
-      <button class="btn btn-green" id="gen-btn" onclick="generateDoc()" style="min-width:200px;justify-content:center;padding:11px 20px;font-size:13px">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-        Unduh DOCX
-      </button>
+      <div class="gen-actions">
+        <button class="btn btn-blue" id="prev-btn" onclick="previewPDF()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+          Pratinjau PDF
+        </button>
+        <button class="btn btn-green" id="gen-btn" onclick="downloadPDF()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Unduh PDF
+        </button>
+      </div>
     </div>
     <div class="pw" id="pw"><div class="pb" id="pb" style="width:0%"></div></div>
-    <div class="alert alert-ok" id="a-ok">
-      <div class="aicon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>
-      <div class="abody">
-        <strong id="a-fname">Dokumen berhasil dibuat</strong>
-        <span id="a-sub">Siap diunduh</span>
-      </div>
-      <a id="dl-link" href="#" class="dl-link">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-        Simpan File
-      </a>
-    </div>
     <div class="alert alert-err" id="a-err">
       <div class="aicon"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></div>
-      <div class="abody">
-        <strong>Gagal membuat dokumen</strong>
-        <span id="err-msg">Terjadi kesalahan</span>
-      </div>
+      <div class="abody"><strong>Gagal membuat dokumen</strong><span id="err-msg">Terjadi kesalahan</span></div>
     </div>
   </div>
 </main>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Pratinjau PDF</h3>
+      <div class="modal-header-actions">
+        <button class="dl-btn" onclick="downloadPDF()" style="padding:6px 14px;font-size:12px">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Unduh PDF
+        </button>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+    </div>
+    <div class="modal-body" id="modal-body">
+      <div style="color:#6b7280;font-size:13px;padding:40px">Memuat pratinjau...</div>
+    </div>
+    <div class="modal-footer">
+      <span id="modal-info">—</span>
+      <span class="hint">Scroll untuk melihat semua halaman</span>
+    </div>
+  </div>
+</div>
 
 <footer class="site-footer">
   Sistem Laporan RJTP &mdash; UPTD Puskesmas Mowewe &nbsp;|&nbsp; Data diproses di browser, tidak dikirim ke server.
 </footer>
 
 <script>
-var BULAN_NAMA  = ['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-var BULAN_UP    = ['','JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
+// ── CONSTANTS
+var BULAN_NAMA=['','Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+var BULAN_UP=['','JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
 
-function getDaysInMonth(m,y){ return new Date(y,m,0).getDate(); }
-
-function buildTglOpts(month,year){
-  var d=getDaysInMonth(parseInt(month),parseInt(year));
-  var o='<option value="">-- Pilih --</option>';
+function getDays(m,y){return new Date(y,m,0).getDate();}
+function buildTglOpts(m,y){
+  var d=getDays(parseInt(m),parseInt(y)),o='<option value="">-- Pilih --</option>';
   for(var i=1;i<=d;i++){
-    var dd=String(i).padStart(2,'0');
-    var mm=String(month).padStart(2,'0');
-    var yy=String(year).slice(-2);
-    o+='<option value="'+dd+'/'+mm+'/'+yy+'">'+dd+' '+BULAN_NAMA[parseInt(month)]+' '+year+'</option>';
+    var dd=String(i).padStart(2,'0'),mm=String(m).padStart(2,'0'),yy=String(y).slice(-2);
+    o+='<option value="'+dd+'/'+mm+'/'+yy+'">'+dd+' '+BULAN_NAMA[parseInt(m)]+' '+y+'</option>';
   }
   return o;
 }
-
 function onBulanChange(){
-  var month=document.getElementById('bulan').value;
-  var year=document.getElementById('tahun').value;
-  var opts=buildTglOpts(month,year);
-  document.querySelectorAll('select.tgl-sel').forEach(function(s){
-    var cur=s.value; s.innerHTML=opts; s.value=cur;
-  });
+  var m=document.getElementById('bulan').value,y=document.getElementById('tahun').value,opts=buildTglOpts(m,y);
+  document.querySelectorAll('select.tgl-sel').forEach(function(s){var c=s.value;s.innerHTML=opts;s.value=c;});
 }
 
-// ── STATE
-var rowIdCtr=0, rowIds=[];
-function v(f,id){ var e=document.getElementById(f+'_'+id); return e?e.value.trim():''; }
-function eq(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function up(s){ return eq(s).toUpperCase(); }
+// ── ROW STATE
+var rowIdCtr=0,rowIds=[];
+function v(f,id){var e=document.getElementById(f+'_'+id);return e?e.value.trim():'';}
+function eq(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// ── ADD ROW
 function addRow(data){
   data=data||{};
   rowIdCtr++;
   var id=rowIdCtr;
   rowIds.push(id);
-  var month=document.getElementById('bulan').value;
-  var year=document.getElementById('tahun').value;
-  var tglOpts=buildTglOpts(month,year);
-
+  var m=document.getElementById('bulan').value,y=document.getElementById('tahun').value;
+  var tOpts=buildTglOpts(m,y);
   var tr=document.createElement('tr');
   tr.id='row_'+id;
+  // Each input uses class "ci" (cell input) for uniform styling
   tr.innerHTML=
-    '<td class="no">'+(rowIds.length)+'</td>'+
-    // Tanggal
-    '<td style="min-width:105px"><select id="tgl_'+id+'" class="tgl-sel" style="font-size:10px;padding:4px 14px 4px 3px">'+tglOpts+'</select></td>'+
-    // Nomor BPJS/NIK
-    '<td><input id="nomor_'+id+'" value="'+eq(data.nomor||'')+'" placeholder="Nomor" class="left" oninput="this.value=this.value.toUpperCase()"></td>'+
-    // Nama
-    '<td><input id="nama_'+id+'" value="'+eq(data.nama||'')+'" placeholder="Nama" class="left" oninput="this.value=this.value.toUpperCase()"></td>'+
-    // Umur
-    '<td><input id="umur_'+id+'" type="number" value="'+eq(data.umur||'')+'" placeholder="thn" min="0" max="150"></td>'+
-    // JK
-    '<td><select id="jk_'+id+'"><option value="P"'+((!data.jk||data.jk==='P')?' selected':'')+'>P</option><option value="L"'+(data.jk==='L'?' selected':'')+'>L</option></select></td>'+
-    // BB TB LP
-    '<td><input id="bb_'+id+'" type="number" value="'+eq(data.bb||'')+'" placeholder="kg"></td>'+
-    '<td><input id="tb_'+id+'" type="number" value="'+eq(data.tb||'')+'" placeholder="cm"></td>'+
-    '<td><input id="lp_'+id+'" type="number" value="'+eq(data.lp||'')+'" placeholder="cm"></td>'+
-    // TD sistol/diastol
-    '<td style="min-width:84px"><div class="td-split">'+
-      '<input id="sistol_'+id+'" type="number" value="'+eq(data.sistol||'')+'" placeholder="120" style="min-width:32px">'+
-      '<span>/</span>'+
-      '<input id="diastol_'+id+'" type="number" value="'+eq(data.diastol||'')+'" placeholder="80" style="min-width:28px">'+
-    '</div></td>'+
-    // N S P C A G
-    '<td><input id="nadi_'+id+'" type="number" value="'+eq(data.nadi||'')+'" placeholder="80"></td>'+
-    '<td><input id="suhu_'+id+'" value="'+eq(data.suhu||'')+'" placeholder="36.5"></td>'+
-    '<td><input id="rr_'+id+'" type="number" value="'+eq(data.rr||'')+'" placeholder="20"></td>'+
-    '<td><input id="circ_'+id+'" type="number" value="'+eq(data.circ||'')+'" placeholder="—"></td>'+
-    '<td><input id="abd_'+id+'" type="number" value="'+eq(data.abd||'')+'" placeholder="—"></td>'+
-    '<td><input id="gula_'+id+'" type="number" value="'+eq(data.gula||'')+'" placeholder="—"></td>'+
-    // Diagnosa
-    '<td><input id="diag_'+id+'" value="'+eq(data.diag||'')+'" placeholder="Diagnosa/Keluhan" class="left" oninput="this.value=this.value.toUpperCase()"></td>'+
-    // Terapi - textarea multiline
-    '<td style="min-width:160px;vertical-align:top;padding:3px"><textarea id="ther_'+id+'" placeholder="1. Obat A&#10;2. Obat B" rows="2" oninput="autoUp(this)">'+eq(data.ther||'')+'</textarea></td>'+
-    // Kunjungan
-    '<td><select id="kunj_'+id+'"><option value="L"'+((!data.kunj||data.kunj==='L')?' selected':'')+'>L</option><option value="B"'+(data.kunj==='B'?' selected':'')+'>B</option></select></td>'+
-    // Delete
-    '<td><button class="del-btn" onclick="deleteRow('+id+')" title="Hapus">✕</button></td>';
-
+    '<td class="no-cell col-no">'+(rowIds.length)+'</td>'+
+    '<td class="col-date"><select id="tgl_'+id+'" class="ci sel tgl-sel" style="font-size:10px;min-width:0;padding-right:14px">'+tOpts+'</select></td>'+
+    '<td class="col-id"><input id="nomor_'+id+'" class="ci left" value="'+eq(data.nomor||'')+'" placeholder="Nomor BPJS/NIK" oninput="this.value=this.value.toUpperCase()"></td>'+
+    '<td class="col-name"><input id="nama_'+id+'" class="ci left" value="'+eq(data.nama||'')+'" placeholder="Nama" oninput="this.value=this.value.toUpperCase()"></td>'+
+    '<td class="col-umur"><input id="umur_'+id+'" class="ci" type="number" value="'+eq(data.umur||'')+'" placeholder="0" min="0" max="150"></td>'+
+    '<td class="col-jk"><select id="jk_'+id+'" class="ci sel"><option value="P"'+((!data.jk||data.jk==='P')?' selected':'')+'>P</option><option value="L"'+(data.jk==='L'?' selected':'')+'>L</option></select></td>'+
+    '<td class="col-measure"><input id="bb_'+id+'" class="ci" type="number" value="'+eq(data.bb||'')+'" placeholder="—"></td>'+
+    '<td class="col-measure"><input id="tb_'+id+'" class="ci" type="number" value="'+eq(data.tb||'')+'" placeholder="—"></td>'+
+    '<td class="col-measure"><input id="lp_'+id+'" class="ci" type="number" value="'+eq(data.lp||'')+'" placeholder="—"></td>'+
+    '<td class="col-td"><div class="td-split"><input id="sistol_'+id+'" class="ci" type="number" value="'+eq(data.sistol||'')+'" placeholder="120"><span>/</span><input id="diastol_'+id+'" class="ci" type="number" value="'+eq(data.diastol||'')+'" placeholder="80"></div></td>'+
+    '<td class="col-vital"><input id="nadi_'+id+'" class="ci" type="number" value="'+eq(data.nadi||'')+'" placeholder="—"></td>'+
+    '<td class="col-vital"><input id="suhu_'+id+'" class="ci" value="'+eq(data.suhu||'')+'" placeholder="—"></td>'+
+    '<td class="col-vital"><input id="rr_'+id+'" class="ci" type="number" value="'+eq(data.rr||'')+'" placeholder="—"></td>'+
+    '<td class="col-vital"><input id="chol_'+id+'" class="ci" type="number" value="'+eq(data.chol||'')+'" placeholder="—"></td>'+
+    '<td class="col-vital"><input id="au_'+id+'" class="ci" value="'+eq(data.au||'')+'" placeholder="—"></td>'+
+    '<td class="col-vital"><input id="gda_'+id+'" class="ci" type="number" value="'+eq(data.gda||'')+'" placeholder="—"></td>'+
+    '<td class="col-text" style="vertical-align:top"><input id="diag_'+id+'" class="ci left" value="'+eq(data.diag||'')+'" placeholder="Diagnosa" oninput="this.value=this.value.toUpperCase()"></td>'+
+    '<td class="col-text" style="vertical-align:top;padding:2px 3px"><textarea id="ther_'+id+'" class="ci-ta" rows="2" placeholder="1. Obat A&#10;2. Obat B" oninput="this.value=this.value.toUpperCase()">'+eq(data.ther||'')+'</textarea></td>'+
+    '<td class="col-kunj"><select id="kunj_'+id+'" class="ci sel"><option value="L"'+((!data.kunj||data.kunj==='L')?' selected':'')+'>L</option><option value="B"'+(data.kunj==='B'?' selected':'')+'>B</option></select></td>'+
+    '<td class="col-act"><button class="del-btn" onclick="deleteRow('+id+')" title="Hapus">✕</button></td>';
   document.getElementById('tbody').appendChild(tr);
-  if(data.tgl){ var s=document.getElementById('tgl_'+id); if(s) s.value=data.tgl; }
+  if(data.tgl){var s=document.getElementById('tgl_'+id);if(s)s.value=data.tgl;}
   updateUI();
 }
 
-function autoUp(el){ el.value=el.value.toUpperCase(); }
-function addMultiple(){ for(var i=0;i<5;i++) addRow(); }
-
+function addMultiple(){for(var i=0;i<5;i++)addRow();}
 function deleteRow(id){
-  var idx=rowIds.indexOf(id);
-  if(idx>-1) rowIds.splice(idx,1);
-  var tr=document.getElementById('row_'+id);
-  if(tr) tr.remove();
-  renumber(); updateUI();
+  var idx=rowIds.indexOf(id);if(idx>-1)rowIds.splice(idx,1);
+  var tr=document.getElementById('row_'+id);if(tr)tr.remove();
+  renumber();updateUI();
 }
-
 function clearAll(){
-  if(!rowIds.length) return;
-  if(!confirm('Hapus semua '+rowIds.length+' baris?')) return;
-  rowIds.length=0;
-  document.getElementById('tbody').innerHTML='';
-  updateUI();
+  if(!rowIds.length)return;
+  if(!confirm('Hapus semua '+rowIds.length+' baris?'))return;
+  rowIds.length=0;document.getElementById('tbody').innerHTML='';updateUI();
 }
-
 function renumber(){
   document.getElementById('tbody').querySelectorAll('tr').forEach(function(tr,i){
-    var c=tr.querySelector('.no'); if(c) c.textContent=i+1;
+    var c=tr.querySelector('.no-cell');if(c)c.textContent=i+1;
   });
 }
-
 function updateUI(){
   var n=rowIds.length;
   document.getElementById('row-badge').textContent=n+' pasien';
   document.getElementById('total-hint').textContent=n>0?'Total '+n+' data pasien':'Belum ada data — klik "Tambah Baris"';
 }
-
 function collectData(){
   return rowIds.map(function(id){
-    var sistol=v('sistol',id), diastol=v('diastol',id);
-    return {
-      tgl:   v('tgl',id),  nomor: v('nomor',id), nama:  v('nama',id),
-      umur:  v('umur',id), jk:    v('jk',id),    bb:    v('bb',id),
-      tb:    v('tb',id),   lp:    v('lp',id),
-      td:    sistol&&diastol?sistol+'/'+diastol:(sistol||diastol||''),
-      nadi:  v('nadi',id), suhu:  v('suhu',id),  rr:    v('rr',id),
-      circ:  v('circ',id), abd:   v('abd',id),   gula:  v('gula',id),
-      diag:  v('diag',id), ther:  v('ther',id),  kunj:  v('kunj',id),
-    };
+    var s=v('sistol',id),d=v('diastol',id);
+    return{tgl:v('tgl',id),nomor:v('nomor',id),nama:v('nama',id),umur:v('umur',id),jk:v('jk',id),
+      bb:v('bb',id),tb:v('tb',id),lp:v('lp',id),
+      td:s&&d?s+'/'+d:(s||d||''),nadi:v('nadi',id),suhu:v('suhu',id),rr:v('rr',id),
+      chol:v('chol',id),au:v('au',id),gda:v('gda',id),
+      diag:v('diag',id),ther:v('ther',id),kunj:v('kunj',id)};
   });
 }
 
-// ── DOCX
-function resetBtn(){
-  var b=document.getElementById('gen-btn');
-  b.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Unduh DOCX';
-  b.disabled=false;
-}
+// ── PDF GENERATION with jsPDF
+function showErr(m){document.getElementById('err-msg').textContent=m;document.getElementById('a-err').classList.add('show');}
+function hideErr(){document.getElementById('a-err').classList.remove('show');}
+function setProgress(n){document.getElementById('pb').style.width=n+'%';}
+function showProgress(){document.getElementById('pw').classList.add('show');}
+function hideProgress(){setTimeout(function(){document.getElementById('pw').classList.remove('show');setProgress(0);},700);}
 
-function generateDoc(){
-  if(typeof docx==='undefined'){ showErr('Pustaka belum termuat. Refresh halaman.'); return; }
-  hideAlerts();
-  var btn=document.getElementById('gen-btn');
-  var pw=document.getElementById('pw'), pb=document.getElementById('pb');
-  btn.disabled=true;
-  btn.innerHTML='<div class="spinner"></div> Membuat dokumen...';
-  pw.classList.add('show'); pb.style.width='15%';
+function buildPDF(){
+  var {jsPDF}=window.jspdf;
+  // A4 landscape: 297mm x 210mm
+  var doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
+  var PW=297,PH=210; // page dimensions mm
+  var ML=8,MR=8,MT=10,MB=10; // margins
+  var CW=PW-ML-MR; // content width = 281mm
 
-  setTimeout(function(){
-    var res;
-    try{ pb.style.width='40%'; res=buildDocx(); }
-    catch(e){ console.error(e); showErr(e.message||'Error'); setTimeout(function(){pw.classList.remove('show');pb.style.width='0%';},600); resetBtn(); return; }
-
-    pb.style.width='65%';
-    docx.Packer.toBase64String(res.doc).then(function(b64){
-      pb.style.width='95%';
-      var bin=atob(b64), bytes=new Uint8Array(bin.length);
-      for(var i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
-      var blob=new Blob([bytes],{type:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
-      var url=URL.createObjectURL(blob);
-      var lnk=document.getElementById('dl-link');
-      lnk.href=url; lnk.download=res.fname;
-      document.getElementById('a-fname').textContent=res.fname;
-      document.getElementById('a-sub').textContent=res.count+' data pasien · Klik "Simpan File" untuk menyimpan';
-      document.getElementById('a-ok').classList.add('show');
-      pb.style.width='100%';
-      setTimeout(function(){ lnk.click(); },100);
-      setTimeout(function(){ pw.classList.remove('show'); pb.style.width='0%'; },900);
-      resetBtn();
-    }).catch(function(e){ console.error(e); showErr('Gagal: '+(e.message||e)); setTimeout(function(){pw.classList.remove('show');pb.style.width='0%';},600); resetBtn(); });
-  },80);
-}
-
-function hideAlerts(){ document.getElementById('a-ok').classList.remove('show'); document.getElementById('a-err').classList.remove('show'); }
-function showErr(m){ document.getElementById('err-msg').textContent=m; document.getElementById('a-err').classList.add('show'); }
-
-function buildDocx(){
-  var D=docx;
-  var Document=D.Document, Paragraph=D.Paragraph, TextRun=D.TextRun;
-  var Table=D.Table, TableRow=D.TableRow, TableCell=D.TableCell;
-  var AlignmentType=D.AlignmentType, WidthType=D.WidthType, BorderStyle=D.BorderStyle;
-  var VerticalAlign=D.VerticalAlign, ShadingType=D.ShadingType, PageOrientation=D.PageOrientation;
-  var UnderlineType=D.UnderlineType;
-
-  var bulanNum=document.getElementById('bulan').value;
+  var bulanNum=parseInt(document.getElementById('bulan').value);
   var tahun=document.getElementById('tahun').value;
-  var bulanUp=BULAN_UP[parseInt(bulanNum)];
+  var bulanStr=BULAN_UP[bulanNum];
   var desa=document.getElementById('desa').value.toUpperCase();
   var faskes=document.getElementById('faskes').value.toUpperCase();
   var alamat=document.getElementById('alamat').value.toUpperCase();
   var data=collectData();
 
-  function bdr(c,sz){ return {style:BorderStyle.SINGLE,size:sz||6,color:c||'000000'}; }
-  var boldB={top:bdr(),bottom:bdr(),left:bdr(),right:bdr()};
-  var lightB={top:bdr('BBBBBB',4),bottom:bdr('BBBBBB',4),left:bdr('BBBBBB',4),right:bdr('BBBBBB',4)};
-
-  // Simple single-line cell
-  function mkCell(text,opts){
-    opts=opts||{};
-    return new TableCell({
-      borders:opts.h?boldB:lightB,
-      width:opts.w?{size:opts.w,type:WidthType.DXA}:undefined,
-      shading:opts.fill?{fill:opts.fill,type:ShadingType.CLEAR}:undefined,
-      verticalAlign:VerticalAlign.CENTER,
-      margins:{top:50,bottom:50,left:70,right:70},
-      rowSpan:opts.rs, columnSpan:opts.cs,
-      children:[new Paragraph({
-        alignment:opts.align||AlignmentType.CENTER,
-        children:[new TextRun({text:String(text!=null?text:''),font:'Arial',size:opts.sz||(opts.h?15:14),bold:!!opts.bold})]
-      })]
-    });
+  // ── FONTS & HELPERS
+  var FONT='helvetica';
+  function text(txt,x,y,opts){doc.text(String(txt==null?'':txt),x,y,opts||{});}
+  function setFont(style,sz){doc.setFont(FONT,style);doc.setFontSize(sz);}
+  function line(x1,y1,x2,y2,lw){doc.setLineWidth(lw||0.2);doc.line(x1,y1,x2,y2);}
+  function rect(x,y,w,h,lw){doc.setLineWidth(lw||0.2);doc.rect(x,y,w,h);}
+  function fillRect(x,y,w,h,r,g,b){
+    doc.setFillColor(r,g,b);doc.rect(x,y,w,h,'F');
   }
 
-  // Multiline cell for terapi — each line becomes a numbered paragraph
-  function mkTherCell(text,w){
-    var lines=(text||'').split('\n').map(function(l){return l.trim();}).filter(function(l){return l.length>0;});
-    var children;
-    if(lines.length===0){
-      children=[new Paragraph({alignment:AlignmentType.LEFT,children:[new TextRun({text:'',font:'Arial',size:14})]})];
-    } else {
-      children=lines.map(function(line,i){
-        return new Paragraph({
-          alignment:AlignmentType.LEFT,
-          indent:{left:0},
-          children:[new TextRun({text:(lines.length>1?(i+1)+'. ':'')+line.toUpperCase(),font:'Arial',size:14})]
-        });
+  // ── HEADER
+  var y=MT;
+  setFont('bold',13);
+  doc.setTextColor(15,23,42);
+  text('LAPORAN PELAYANAN',PW/2,y,{align:'center'}); y+=6;
+  setFont('bold',11);
+  text('RAWAT JALAN TINGKAT PERTAMA (RJTP)',PW/2,y,{align:'center'}); y+=5;
+  setFont('normal',9);
+  text('BULAN : '+bulanStr+'    TAHUN : '+tahun,PW/2,y,{align:'center'}); y+=6;
+
+  setFont('normal',8);
+  var hx=ML;
+  text('NAMA FASKES  :  '+faskes, hx, y); y+=4;
+  text('ALAMAT             :  '+alamat, hx, y); y+=4;
+  text('NAMA KEL/DESA :  '+desa, hx, y); y+=5;
+
+  // ── TABLE LAYOUT
+  // Columns: No | Tanggal | BPJS/NIK | Nama | Umur | JK | BB | TB | LP | TD | N | S | P | CHOL | AU | GDA | Diagnosa | Terapi | Kunj
+  // Total CW = 281mm, distribute carefully
+  // Groups: identifiers(wide), vitals(narrow equal), text cols(wide), kunj(narrow)
+  var W={
+    no:6, tgl:18, id:30, nama:30, umur:8, jk:6,
+    bb:8, tb:8, lp:8,
+    td:16, vital:9, // N S P CHOL AU GDA each 9mm → 6×9=54
+    diag:36, ther:40, kunj:8
+  };
+  // Sum: 6+18+30+30+8+6+8+8+8+16+54+36+40+8 = 276 → adjust to fill 281
+  // Give extra to ther: 40+5=45
+  W.ther=45;
+  // Total check: 6+18+30+30+8+6+8+8+8+16+54+36+45+8=281 ✓
+
+  var vitals=['nadi','suhu','rr','chol','au','gda'];
+  var vLabels=['N','S','P','CHOL','AU','GDA'];
+
+  // Column x positions
+  var cx={};
+  var cur=ML;
+  ['no','tgl','id','nama','umur','jk','bb','tb','lp','td'].forEach(function(k){cx[k]=cur;cur+=W[k];});
+  vitals.forEach(function(k){cx[k]=cur;cur+=W.vital;});
+  cx.diag=cur;cur+=W.diag;
+  cx.ther=cur;cur+=W.ther;
+  cx.kunj=cur;
+
+  var TH1=6, TH2=5; // header row heights
+  var ROW_H=7; // data row height
+  var tY=y; // table top Y
+
+  // ── DRAW TABLE HEADER ROW 1
+  var headBg=[13,23,42]; // dark navy
+  var subBg=[30,58,95];  // dark blue
+  var headFg=[226,232,240];
+
+  // bg for all header
+  fillRect(ML,tY,CW,TH1+TH2,headBg[0],headBg[1],headBg[2]);
+
+  // rowspan cells (draw text centered vertically over both rows)
+  var rsCells=[
+    {k:'no',label:'NO'},
+    {k:'tgl',label:'TANGGAL'},
+    {k:'id',label:'NOMOR BPJS/NIK'},
+    {k:'nama',label:'NAMA'},
+    {k:'umur',label:'UMUR'},
+    {k:'jk',label:'JK'},
+    {k:'bb',label:'BB'},
+    {k:'tb',label:'TB'},
+    {k:'lp',label:'LP'},
+    {k:'diag',label:'DIAGNOSA/KELUHAN'},
+    {k:'ther',label:'TERAPI/OBAT'},
+    {k:'kunj',label:'KUNJ.'},
+  ];
+  doc.setTextColor(headFg[0],headFg[1],headFg[2]);
+  setFont('bold',6);
+  rsCells.forEach(function(c){
+    var midY=tY+(TH1+TH2)/2+2;
+    var cw=W[c.k]||W.vital;
+    // wrap long labels
+    var lines=doc.splitTextToSize(c.label,cw-1);
+    var lineH=3.2;
+    var totalH=lines.length*lineH;
+    var startY=tY+(TH1+TH2)/2-totalH/2+lineH*0.8;
+    lines.forEach(function(l,i){text(l,cx[c.k]+cw/2,startY+i*lineH,{align:'center'});});
+  });
+
+  // PEMERIKSAAN FISIK group header
+  var pfX=cx.td, pfW=W.td+vitals.length*W.vital;
+  fillRect(pfX,tY,pfW,TH1,subBg[0],subBg[1],subBg[2]);
+  doc.setTextColor(147,197,253);
+  setFont('bold',6.5);
+  text('PEMERIKSAAN FISIK',pfX+pfW/2,tY+TH1/2+1.5,{align:'center'});
+
+  // Sub headers row 2: TD + vitals
+  var sh2Y=tY+TH1;
+  fillRect(cx.td,sh2Y,W.td+vitals.length*W.vital,TH2,subBg[0],subBg[1],subBg[2]);
+  doc.setTextColor(147,197,253);
+  setFont('bold',6);
+  text('TD',cx.td+W.td/2,sh2Y+TH2/2+1.5,{align:'center'});
+  vitals.forEach(function(k,i){
+    text(vLabels[i],cx[k]+W.vital/2,sh2Y+TH2/2+1.5,{align:'center'});
+  });
+
+  // ── GRID LINES for header
+  doc.setDrawColor(51,65,85);
+  doc.setLineWidth(0.15);
+  var allCols=Object.keys(cx);
+  allCols.forEach(function(k){
+    doc.line(cx[k],tY,cx[k],tY+TH1+TH2);
+  });
+  doc.line(ML+CW,tY,ML+CW,tY+TH1+TH2);
+  doc.line(ML,tY,ML+CW,tY);
+  doc.line(ML,tY+TH1,cx.td,tY+TH1); // divider only under non-grouped cols? No — under group
+  doc.line(cx.td,tY+TH1,ML+CW,tY+TH1);
+  doc.line(ML,tY+TH1+TH2,ML+CW,tY+TH1+TH2);
+
+  // ── DATA ROWS
+  var dY=tY+TH1+TH2;
+  doc.setTextColor(15,23,42);
+
+  data.forEach(function(r,i){
+    // compute row height based on ther multiline
+    var therLines=r.ther?r.ther.split('\n').filter(function(l){return l.trim();}):[];
+    var rh=Math.max(ROW_H, therLines.length*3.8+2);
+
+    // zebra
+    if(i%2===1){doc.setFillColor(248,250,252);doc.rect(ML,dY,CW,rh,'F');}
+
+    // clip check — new page if needed
+    if(dY+rh>PH-MB-10){
+      doc.addPage();
+      dY=MT;
+      // redraw mini header on new page
+      fillRect(ML,dY,CW,TH1+TH2,headBg[0],headBg[1],headBg[2]);
+      fillRect(pfX,dY,pfW,TH1,subBg[0],subBg[1],subBg[2]);
+      fillRect(cx.td,dY+TH1,W.td+vitals.length*W.vital,TH2,subBg[0],subBg[1],subBg[2]);
+      doc.setTextColor(headFg[0],headFg[1],headFg[2]);
+      setFont('bold',6);
+      rsCells.forEach(function(c){
+        var cw=W[c.k]||W.vital;
+        var lines=doc.splitTextToSize(c.label,cw-1);
+        var lineH=3.2,totalH=lines.length*lineH;
+        var startY=dY+(TH1+TH2)/2-totalH/2+lineH*0.8;
+        lines.forEach(function(l,li){text(l,cx[c.k]+cw/2,startY+li*lineH,{align:'center'});});
+      });
+      doc.setTextColor(147,197,253);setFont('bold',6.5);
+      text('PEMERIKSAAN FISIK',pfX+pfW/2,dY+TH1/2+1.5,{align:'center'});
+      setFont('bold',6);
+      text('TD',cx.td+W.td/2,dY+TH1+TH2/2+1.5,{align:'center'});
+      vitals.forEach(function(k,vi){text(vLabels[vi],cx[k]+W.vital/2,dY+TH1+TH2/2+1.5,{align:'center'});});
+      doc.setDrawColor(51,65,85);doc.setLineWidth(0.15);
+      allCols.forEach(function(k){doc.line(cx[k],dY,cx[k],dY+TH1+TH2);});
+      doc.line(ML+CW,dY,ML+CW,dY+TH1+TH2);
+      doc.line(ML,dY,ML+CW,dY);doc.line(ML,dY+TH1,cx.td,dY+TH1);
+      doc.line(cx.td,dY+TH1,ML+CW,dY+TH1);doc.line(ML,dY+TH1+TH2,ML+CW,dY+TH1+TH2);
+      dY+=TH1+TH2;
+      doc.setTextColor(15,23,42);
+    }
+
+    // draw cell text
+    setFont('normal',7);
+    var cy=dY+rh/2+1.5; // vertical center
+    var pad=1;
+
+    function ctext(txt,col,align,maxW){
+      var t=String(txt==null?'':txt).toUpperCase();
+      var cw=(col==='td'?W.td:col==='ther'||col==='diag'?W[col]:col==='id'||col==='nama'?W[col]:W.vital||W[col]||6);
+      if(align==='center'){text(t,cx[col]+cw/2,cy,{align:'center',maxWidth:cw-1});}
+      else{
+        // left: multiline for long text
+        var lines=doc.splitTextToSize(t,(maxW||cw)-1);
+        var lh=3.5;
+        var startY=dY+rh/2-(lines.length*lh)/2+lh*0.8;
+        lines.forEach(function(l,li){text(l,cx[col]+pad,startY+li*lh);});
+      }
+    }
+
+    ctext(i+1,'no','center');
+    ctext(r.tgl,'tgl','center');
+    // BPJS — smaller font for long numbers
+    doc.setFontSize(6.5);
+    var idLines=doc.splitTextToSize(r.nomor||'',W.id-1);
+    var idSY=dY+rh/2-(idLines.length*3.2)/2+3;
+    idLines.forEach(function(l,li){text(l,cx.id+pad,idSY+li*3.2);});
+    doc.setFontSize(7);
+    // Nama - left aligned, wrap
+    var namaLines=doc.splitTextToSize((r.nama||'').toUpperCase(),W.nama-1);
+    var namaSY=dY+rh/2-(namaLines.length*3.5)/2+3.5*0.8;
+    namaLines.forEach(function(l,li){text(l,cx.nama+pad,namaSY+li*3.5);});
+
+    ctext(r.umur,'umur','center');
+    ctext(r.jk,'jk','center');
+    ctext(r.bb,'bb','center');
+    ctext(r.tb,'tb','center');
+    ctext(r.lp,'lp','center');
+    // TD
+    doc.setFontSize(6.5);ctext(r.td,'td','center');doc.setFontSize(7);
+    ctext(r.nadi,'nadi','center');
+    ctext(r.suhu,'suhu','center');
+    ctext(r.rr,'rr','center');
+    ctext(r.chol,'chol','center');
+    ctext(r.au,'au','center');
+    ctext(r.gda,'gda','center');
+    // Diagnosa
+    var diagLines=doc.splitTextToSize((r.diag||'').toUpperCase(),W.diag-1.5);
+    var diagSY=dY+rh/2-(diagLines.length*3.5)/2+3.5*0.8;
+    diagLines.forEach(function(l,li){text(l,cx.diag+pad,diagSY+li*3.5);});
+    // Terapi - numbered lines
+    if(therLines.length>0){
+      setFont('normal',6.5);
+      var tlerSY=dY+1.5+2.5;
+      therLines.forEach(function(l,li){
+        var numbered=(therLines.length>1?(li+1)+'. ':'')+l.toUpperCase();
+        text(numbered,cx.ther+pad,tlerSY+li*3.8);
       });
     }
-    return new TableCell({
-      borders:lightB,
-      width:w?{size:w,type:WidthType.DXA}:undefined,
-      verticalAlign:VerticalAlign.TOP,
-      margins:{top:50,bottom:50,left:70,right:70},
-      children:children
-    });
-  }
+    doc.setFontSize(7);
+    ctext(r.kunj,'kunj','center');
 
-  // Column widths DXA — page width 15840, margins 900+720 = 1620 → usable 14220
-  // cols: no, tgl, nomor, nama, umur, jk, bb, tb, lp, td, n, s, p, c, a, g, diag, ther, kunj
-  var cols=[380,900,1480,1680,400,340,380,380,380,760,340,380,320,320,320,340,1700,1700,380];
-  var colSum=cols.reduce(function(a,b){return a+b;},0);
-  var H1='D6E4F0',H2='BDD7EE';
+    // row border
+    doc.setDrawColor(200,210,220);doc.setLineWidth(0.1);
+    doc.line(ML,dY+rh,ML+CW,dY+rh);
+    // vertical col lines
+    allCols.forEach(function(k){doc.line(cx[k],dY,cx[k],dY+rh);});
+    doc.line(ML+CW,dY,ML+CW,dY+rh);
 
-  var thead1=new TableRow({tableHeader:true,children:[
-    mkCell('NO',             {bold:true,rs:2,w:cols[0], fill:H1,h:true}),
-    mkCell('TANGGAL',        {bold:true,rs:2,w:cols[1], fill:H1,h:true}),
-    mkCell('NOMOR BPJS/NIK', {bold:true,rs:2,w:cols[2], fill:H1,h:true}),
-    mkCell('NAMA',           {bold:true,rs:2,w:cols[3], fill:H1,h:true}),
-    mkCell('UMUR',           {bold:true,rs:2,w:cols[4], fill:H1,h:true}),
-    mkCell('JK',             {bold:true,rs:2,w:cols[5], fill:H1,h:true}),
-    mkCell('BB\n(kg)',       {bold:true,rs:2,w:cols[6], fill:H1,h:true}),
-    mkCell('TB\n(cm)',       {bold:true,rs:2,w:cols[7], fill:H1,h:true}),
-    mkCell('LP\n(cm)',       {bold:true,rs:2,w:cols[8], fill:H1,h:true}),
-    mkCell('PEMERIKSAAN FISIK',{bold:true,cs:7,w:cols[9]+cols[10]+cols[11]+cols[12]+cols[13]+cols[14]+cols[15],fill:H2,h:true}),
-    mkCell('DIAGNOSA/KELUHAN',{bold:true,rs:2,w:cols[16],fill:H1,h:true}),
-    mkCell('TERAPI/OBAT',    {bold:true,rs:2,w:cols[17],fill:H1,h:true}),
-    mkCell('KUN-\nJUNGAN',  {bold:true,rs:2,w:cols[18],fill:H1,h:true}),
-  ]});
-
-  var thead2=new TableRow({tableHeader:true,children:[
-    mkCell('TD',{bold:true,w:cols[9], fill:H2,h:true,sz:13}),
-    mkCell('N', {bold:true,w:cols[10],fill:H2,h:true,sz:13}),
-    mkCell('S', {bold:true,w:cols[11],fill:H2,h:true,sz:13}),
-    mkCell('P', {bold:true,w:cols[12],fill:H2,h:true,sz:13}),
-    mkCell('C', {bold:true,w:cols[13],fill:H2,h:true,sz:13}),
-    mkCell('A', {bold:true,w:cols[14],fill:H2,h:true,sz:13}),
-    mkCell('G', {bold:true,w:cols[15],fill:H2,h:true,sz:13}),
-  ]});
-
-  var dataRows=data.map(function(r,i){
-    return new TableRow({children:[
-      mkCell(i+1,   {w:cols[0]}),
-      mkCell(r.tgl, {w:cols[1]}),
-      mkCell(r.nomor,{w:cols[2],align:AlignmentType.LEFT}),
-      mkCell(r.nama.toUpperCase(),{w:cols[3],align:AlignmentType.LEFT}),
-      mkCell(r.umur,{w:cols[4]}),
-      mkCell(r.jk,  {w:cols[5]}),
-      mkCell(r.bb,  {w:cols[6]}),
-      mkCell(r.tb,  {w:cols[7]}),
-      mkCell(r.lp,  {w:cols[8]}),
-      mkCell(r.td,  {w:cols[9],sz:13}),
-      mkCell(r.nadi,{w:cols[10]}),
-      mkCell(r.suhu,{w:cols[11]}),
-      mkCell(r.rr,  {w:cols[12]}),
-      mkCell(r.circ,{w:cols[13]}),
-      mkCell(r.abd, {w:cols[14]}),
-      mkCell(r.gula,{w:cols[15]}),
-      mkCell(r.diag.toUpperCase(),{w:cols[16],align:AlignmentType.LEFT}),
-      mkTherCell(r.ther, cols[17]),
-      mkCell(r.kunj,{w:cols[18]}),
-    ]});
+    dY+=rh;
   });
 
-  var emptyCount=Math.max(5,30-data.length);
-  var emptyRows=[];
-  for(var ei=0;ei<emptyCount;ei++){
-    (function(idx){
-      emptyRows.push(new TableRow({children:cols.map(function(w,ci){
-        return ci===0?mkCell(data.length+idx+1,{w:w}):mkCell('',{w:w});
-      })}));
-    })(ei);
+  // empty rows to fill minimum 5 blank
+  var minBlank=Math.max(0,5-data.length);
+  for(var ei=0;ei<minBlank;ei++){
+    if(dY+ROW_H>PH-MB-10){doc.addPage();dY=MT;}
+    if(ei%2===1){doc.setFillColor(248,250,252);doc.rect(ML,dY,CW,ROW_H,'F');}
+    setFont('normal',7);doc.setTextColor(15,23,42);
+    var noTxt=data.length+ei+1;
+    text(String(noTxt),cx.no+W.no/2,dY+ROW_H/2+1.5,{align:'center'});
+    doc.setDrawColor(200,210,220);doc.setLineWidth(0.1);
+    doc.line(ML,dY+ROW_H,ML+CW,dY+ROW_H);
+    allCols.forEach(function(k){doc.line(cx[k],dY,cx[k],dY+ROW_H);});
+    doc.line(ML+CW,dY,ML+CW,dY+ROW_H);
+    dY+=ROW_H;
   }
 
-  var mainTable=new Table({
-    width:{size:colSum,type:WidthType.DXA},
-    columnWidths:cols,
-    rows:[thead1,thead2].concat(dataRows).concat(emptyRows),
-  });
+  // outer border
+  doc.setDrawColor(15,23,42);doc.setLineWidth(0.4);
+  doc.rect(ML,tY,CW,dY-tY);
 
-  function para(runs,center,sb,sa){
-    return new Paragraph({
-      alignment:center!==false?AlignmentType.CENTER:AlignmentType.LEFT,
-      spacing:{before:sb||0,after:sa!=null?sa:60},
-      children:runs,
-    });
+  // ── SIGNATURE
+  dY+=6;
+  setFont('normal',8);doc.setTextColor(15,23,42);
+  text('Mowewe, ......................... '+tahun,ML+CW,dY,{align:'right'});
+  dY+=5;text('Petugas Kesehatan,',ML+CW,dY,{align:'right'});
+  dY+=16;text('(___________________________)',ML+CW,dY,{align:'right'});
+
+  // ── PAGE NUMBERS
+  var totalPages=doc.getNumberOfPages();
+  for(var p=1;p<=totalPages;p++){
+    doc.setPage(p);
+    setFont('normal',7);doc.setTextColor(148,163,184);
+    text('Halaman '+p+' / '+totalPages,PW/2,PH-4,{align:'center'});
   }
-  function run(txt,sz,bold,ul){
-    return new TextRun({text:txt,font:'Arial',size:sz||22,bold:!!bold,underline:ul?{}:undefined});
-  }
 
-  // CRITICAL: use explicit width/height with orientation for true landscape
-  // width=15840 (11in), height=12240 (8.5in) = A4 landscape in twips (1440 twips/in)
-  var doc=new Document({sections:[{
-    properties:{page:{
-      size:{
-        width:15840,   // 11 inches
-        height:12240,  // 8.5 inches
-        orientation:PageOrientation.LANDSCAPE,
-      },
-      margin:{top:720,right:720,bottom:720,left:900},
-    }},
-    children:[
-      para([run('LAPORAN PELAYANAN',28,true)]),
-      para([run('RAWAT JALAN TINGKAT PERTAMA (RJTP)',26,true)]),
-      para([run('BULAN  ',22,true),run(bulanUp,22,true,true),run('     TAHUN  ',22,true),run(tahun,22,true,true)],true,0,100),
-      para([run('NAMA FASKES     :  '+faskes,20)],false,80,40),
-      para([run('ALAMAT               :  '+alamat,20)],false,0,40),
-      para([run('NAMA KEL/DESA  :  '+desa,20)],false,0,140),
-      mainTable,
-      para([run('Mowewe, ......................  '+tahun,20)],false,200,40),
-      para([run('Petugas Kesehatan,',20)],false,0,0),
-      para([run('')],false,0,0),para([run('')],false,0,0),para([run('')],false,0,0),
-      para([run('(___________________________)',20)],false,0,0),
-    ]
-  }]});
-
-  return {doc:doc,fname:'Laporan_RJTP_'+bulanUp+'_'+tahun+'.docx',count:data.length};
+  return doc;
 }
 
-// ── INIT
-window.addEventListener('load',function(){
-  if(typeof docx==='undefined'){
-    var s=document.createElement('script');
-    s.src='https://unpkg.com/docx@8.5.0/build/index.umd.js';
-    s.onerror=function(){ showErr('Gagal memuat pustaka. Periksa koneksi internet.'); };
-    document.head.appendChild(s);
-  }
-});
+// ── ACTIONS
+function previewPDF(){
+  hideErr();
+  var prevBtn=document.getElementById('prev-btn');
+  prevBtn.disabled=true;
+  prevBtn.innerHTML='<div class="spinner"></div> Memuat...';
+  showProgress();setProgress(20);
 
+  setTimeout(function(){
+    try{
+      setProgress(50);
+      var doc=buildPDF();
+      setProgress(80);
+      // Render preview using jsPDF output as blob URL
+      var pdfBlob=doc.output('blob');
+      var url=URL.createObjectURL(pdfBlob);
+      var pageCount=doc.getNumberOfPages();
+      var bulanNum=parseInt(document.getElementById('bulan').value);
+      var tahun=document.getElementById('tahun').value;
+      var modal=document.getElementById('modal-overlay');
+      var body=document.getElementById('modal-body');
+      document.getElementById('modal-title').textContent='Pratinjau — '+BULAN_UP[bulanNum]+' '+tahun;
+      document.getElementById('modal-info').textContent=collectData().length+' data pasien · '+pageCount+' halaman · A4 Landscape';
+      // Embed PDF in iframe for preview
+      body.innerHTML='<iframe src="'+url+'" style="width:100%;height:600px;border:none;border-radius:4px;box-shadow:0 4px 20px rgba(0,0,0,.2)" allowfullscreen></iframe>';
+      modal.classList.add('show');
+      setProgress(100);
+    }catch(e){
+      console.error(e);showErr('Gagal membuat pratinjau: '+e.message);
+    }
+    hideProgress();
+    prevBtn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg> Pratinjau PDF';
+    prevBtn.disabled=false;
+  },80);
+}
+
+function downloadPDF(){
+  hideErr();
+  var btn=document.getElementById('gen-btn');
+  btn.disabled=true;btn.innerHTML='<div class="spinner"></div> Membuat PDF...';
+  showProgress();setProgress(20);
+  setTimeout(function(){
+    try{
+      setProgress(60);
+      var doc=buildPDF();
+      setProgress(90);
+      var bulanNum=parseInt(document.getElementById('bulan').value);
+      var tahun=document.getElementById('tahun').value;
+      doc.save('Laporan_RJTP_'+BULAN_UP[bulanNum]+'_'+tahun+'.pdf');
+      setProgress(100);
+    }catch(e){
+      console.error(e);showErr('Gagal: '+e.message);
+    }
+    hideProgress();
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Unduh PDF';
+    btn.disabled=false;
+  },80);
+}
+
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('show');
+  document.getElementById('modal-body').innerHTML='<div style="color:#6b7280;font-size:13px;padding:40px">Memuat pratinjau...</div>';
+}
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// ── SAMPLE DATA
 var sample=[
-  {tgl:'11/02/26',nomor:'0701036506610001',nama:'ROSTINA', umur:65,jk:'P',bb:62,tb:155,lp:96, sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,circ:'',abd:'',gula:'', diag:'HIPERTENSI',  ther:'1. AMLODIPINE 5MG\n2. LISINOPRIL 10MG',kunj:'L'},
-  {tgl:'11/02/26',nomor:'7401196109870001',nama:'HERIANTI',umur:92,jk:'P',bb:52,tb:153,lp:'',  sistol:140,diastol:80,nadi:78,suhu:'36.8',rr:18,circ:'',abd:'',gula:'', diag:'FEBRIS',      ther:'1. PCT 500MG\n2. CTM',kunj:'B'},
-  {tgl:'11/02/26',nomor:'7401039572730001',nama:'NURIANA', umur:48,jk:'P',bb:42,tb:167,lp:102,sistol:110,diastol:80,nadi:81,suhu:'36.2',rr:19,circ:'',abd:'',gula:'', diag:'ISPA',         ther:'1. METHYLPREDNISOLON\n2. AMBROXOL',kunj:'L'},
-  {tgl:'12/02/26',nomor:'7901039308790001',nama:'HANIA',   umur:52,jk:'P',bb:69,tb:168,lp:85, sistol:130,diastol:90,nadi:86,suhu:'37.2',rr:20,circ:'',abd:'',gula:210, diag:'GOUT ARTRITIS',ther:'1. PIROXICAM\n2. ALLOPURINOL',kunj:'L'},
-  {tgl:'12/02/26',nomor:'9901024908378002',nama:'SARLINA', umur:51,jk:'P',bb:55,tb:160,lp:'',  sistol:110,diastol:80,nadi:90,suhu:'37.0',rr:18,circ:'',abd:'',gula:'', diag:'GASTRITIS',   ther:'1. ANTASIDA\n2. OMEPRAZOLE 20MG',kunj:'B'},
+  {tgl:'11/02/26',nomor:'0701036506610001',nama:'ROSTINA', umur:65,jk:'P',bb:62,tb:155,lp:96, sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,chol:210,au:'5.2',gda:'', diag:'HIPERTENSI',  ther:'1. AMLODIPINE 5MG\n2. LISINOPRIL 10MG',kunj:'L'},
+  {tgl:'11/02/26',nomor:'7401196109870001',nama:'HERIANTI',umur:92,jk:'P',bb:52,tb:153,lp:'',  sistol:140,diastol:80,nadi:78,suhu:'36.8',rr:18,chol:'',  au:'',   gda:'', diag:'FEBRIS',      ther:'1. PCT 500MG\n2. CTM',kunj:'B'},
+  {tgl:'11/02/26',nomor:'7401039572730001',nama:'NURIANA', umur:48,jk:'P',bb:42,tb:167,lp:102,sistol:110,diastol:80,nadi:81,suhu:'36.2',rr:19,chol:'',  au:'',   gda:'', diag:'ISPA',         ther:'1. METHYLPREDNISOLON\n2. AMBROXOL',kunj:'L'},
+  {tgl:'12/02/26',nomor:'7901039308790001',nama:'HANIA',   umur:52,jk:'P',bb:69,tb:168,lp:85, sistol:130,diastol:90,nadi:86,suhu:'37.2',rr:20,chol:240,au:'7.1',gda:210,diag:'GOUT ARTRITIS',ther:'1. PIROXICAM 20MG\n2. ALLOPURINOL 100MG',kunj:'L'},
+  {tgl:'12/02/26',nomor:'9901024908378002',nama:'SARLINA', umur:51,jk:'P',bb:55,tb:160,lp:'',  sistol:110,diastol:80,nadi:90,suhu:'37.0',rr:18,chol:'',  au:'',   gda:'', diag:'GASTRITIS',   ther:'1. ANTASIDA\n2. OMEPRAZOLE 20MG',kunj:'B'},
 ];
-sample.forEach(function(d){ addRow(d); });
+sample.forEach(function(d){addRow(d);});
 </script>
 </body>
 </html>
