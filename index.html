@@ -194,7 +194,7 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
         <div class="field">
           <label>Bulan</label>
           <select id="bulan" onchange="onBulanChange()">
-            <option value="1">Januari</option><option value="2" selected>Februari</option>
+            <option value="" selected disabled>-- Pilih Bulan --</option><option value="1">Januari</option><option value="2">Februari</option>
             <option value="3">Maret</option><option value="4">April</option>
             <option value="5">Mei</option><option value="6">Juni</option>
             <option value="7">Juli</option><option value="8">Agustus</option>
@@ -204,11 +204,11 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
         </div>
         <div class="field">
           <label>Tahun</label>
-          <input type="number" id="tahun" value="2026" min="2000" max="2099" onchange="onBulanChange()">
+          <input type="number" id="tahun" value="" min="2000" max="2099" placeholder="Tahun" onchange="onBulanChange()">
         </div>
         <div class="field">
           <label>Nama Desa/Kelurahan</label>
-          <input type="text" id="desa" value="PUOSU" oninput="this.value=this.value.toUpperCase()">
+          <input type="text" id="desa" value=""  placeholder="Nama Desa/Kelurahan" oninput="this.value=this.value.toUpperCase()">
         </div>
         <input type="hidden" id="faskes" value="UPTD PUSKESMAS MOWEWE">
         <input type="hidden" id="alamat" value="KECAMATAN MOWEWE">
@@ -937,14 +937,7 @@ function closeModal(){
 document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
 // ── SAMPLE DATA
-var sample=[
-  {tgl:'11/02/26',nomor:'0701036506610001',nama:'ROSTINA', umur:65,jk:'P',bb:62,tb:155,lp:96, sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,chol:210,au:'5.2',gda:'', diag:'HIPERTENSI\nSAKIT KEPALA',  ther:'AMLODIPINE 5MG\nLISINOPRIL 10MG',kunj:'LAMA'},
-  {tgl:'11/02/26',nomor:'7401196109870001',nama:'HERIANTI',umur:92,jk:'P',bb:52,tb:153,lp:'',  sistol:140,diastol:80,nadi:78,suhu:'36.8',rr:18,chol:'',  au:'',   gda:'', diag:'FEBRIS',      ther:'PCT 500MG\nCTM',kunj:'BARU'},
-  {tgl:'11/02/26',nomor:'7401039572730001',nama:'NURIANA', umur:48,jk:'P',bb:42,tb:167,lp:102,sistol:110,diastol:80,nadi:81,suhu:'36.2',rr:19,chol:'',  au:'',   gda:'', diag:'ISPA',         ther:'METHYLPREDNISOLON\nAMBROXOL',kunj:'LAMA'},
-  {tgl:'12/02/26',nomor:'7901039308790001',nama:'HANIA',   umur:52,jk:'P',bb:69,tb:168,lp:85, sistol:130,diastol:90,nadi:86,suhu:'37.2',rr:20,chol:240,au:'7.1',gda:210,diag:'GOUT ARTRITIS',ther:'PIROXICAM 20MG\nALLOPURINOL 100MG',kunj:'LAMA'},
-  {tgl:'12/02/26',nomor:'9901024908378002',nama:'SARLINA', umur:51,jk:'P',bb:55,tb:160,lp:'',  sistol:110,diastol:80,nadi:90,suhu:'37.0',rr:18,chol:'',  au:'',   gda:'', diag:'GASTRITIS',   ther:'ANTASIDA\nOMEPRAZOLE 20MG',kunj:'BARU'},
-];
-sample.forEach(function(d){addRow(d);});
+
 </script>
 </body>
 </html>
