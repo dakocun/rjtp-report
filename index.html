@@ -52,7 +52,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
 /* TABLE */
 .twrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rs)}
-table.data-table{width:100%;border-collapse:collapse;min-width:1300px}
+table.data-table{width:100%;border-collapse:collapse;min-width:1400px}
 table.data-table thead th{background:#0f172a;color:#e2e8f0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:7px 4px;text-align:center;white-space:nowrap;border-right:1px solid #1e293b}
 table.data-table thead th:last-child{border-right:none}
 table.data-table thead th.sub{background:#1e3a5f;color:#93c5fd}
@@ -80,18 +80,18 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
 .del-btn:hover{background:#fee2e2}
 
 /* column width groups - px as min-width hints */
-.col-no{width:28px}
-.col-date{width:105px}
-.col-id{width:138px}
-.col-name{width:140px}
-.col-umur{width:42px}
-.col-jk{width:36px}
-.col-measure{width:42px} /* BB TB LP - same */
-.col-td{width:82px}
-.col-vital{width:36px}  /* N S P CHOL AU GDA - same */
-.col-text{width:145px}  /* diagnosa terapi */
-.col-kunj{width:40px}
-.col-act{width:28px}
+.col-no{width:36px;min-width:36px}
+.col-date{width:120px;min-width:120px}
+.col-id{width:145px;min-width:145px}
+.col-name{width:130px;min-width:130px}
+.col-umur{width:52px;min-width:52px}
+.col-jk{width:44px;min-width:44px}
+.col-measure{width:52px;min-width:52px} /* BB TB LP - same */
+.col-td{width:90px;min-width:90px}
+.col-vital{width:52px;min-width:52px}  /* N S P CHOL AU GDA - same */
+.col-text{width:160px;min-width:160px} /* diagnosa terapi */
+.col-kunj{width:80px;min-width:80px}
+.col-act{width:32px;min-width:32px}
 
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--rs);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border-s);background:white;color:var(--text2);transition:background .15s,transform .08s;white-space:nowrap;outline:none}
 .btn:hover{background:var(--bg)}
@@ -457,12 +457,14 @@ function buildPDF(){
   TC(15,23,42);
   SF('bold',12); T('LAPORAN PELAYANAN',PW/2,y,{align:'center'}); y+=5.5;
   SF('bold',10); T('RAWAT JALAN TINGKAT PERTAMA (RJTP)',PW/2,y,{align:'center'}); y+=5;
-  SF('normal',8.5); T('BULAN : '+bulanStr+'    TAHUN : '+tahun,PW/2,y,{align:'center'}); y+=5.5;
+  SF('normal',8.5); T('BULAN : '+bulanStr+'    TAHUN : '+tahun,PW/2,y,{align:'center'}); y+=8;
 
+  // Aligned ":" — fixed label column + colon column
   SF('normal',8);
-  T('NAMA FASKES     :  '+faskes, ML, y); y+=4;
-  T('ALAMAT               :  '+alamat, ML, y); y+=4;
-  T('NAMA KEL/DESA :  '+desa, ML, y); y+=5;
+  var lblX=ML, colX=ML+26, valX=ML+29;
+  T('NAMA FASKES',lblX,y); T(':',colX,y); T(faskes,valX,y); y+=4.5;
+  T('ALAMAT',lblX,y);      T(':',colX,y); T(alamat,valX,y); y+=4.5;
+  T('NAMA KEL/DESA',lblX,y);T(':',colX,y); T(desa,valX,y);  y+=6;
 
   // ── COLUMN DEFINITIONS
   // Total must equal CW=281
@@ -470,9 +472,9 @@ function buildPDF(){
   // TD(15) N(8) S(8) P(8) CHOL(9) AU(9) GDA(9)
   // Diag(34) Terapi(40) Kunj(12)
   // Sum: 5+22+30+28+7+6+7+7+7+15+8+8+8+9+9+9+34+40+12 = 281 ✓
-  var W={no:5,tgl:22,id:30,nama:33,umur:7,jk:6,bb:7,tb:7,lp:7,
+  var W={no:5,tgl:18,id:30,nama:28,umur:7,jk:6,bb:7,tb:7,lp:7,
          td:15,nadi:8,suhu:8,rr:8,chol:9,au:9,gda:9,
-         diag:39,ther:40,kunj:12};
+         diag:39,ther:44,kunj:17};
 
   var COL_ORDER=['no','tgl','id','nama','umur','jk','bb','tb','lp','td','nadi','suhu','rr','chol','au','gda','diag','ther','kunj'];
   var VITALS=['nadi','suhu','rr','chol','au','gda'];
@@ -499,49 +501,52 @@ function buildPDF(){
                  bb:'BB',tb:'TB',lp:'LP',diag:'DIAGNOSA/\nKELUHAN',ther:'TERAPI/OBAT',kunj:'KUNJUNGAN'};
 
   function drawHeader(topY){
-    // No background — white/transparent
-    // Draw outer box
     DC(80,80,80); LW(0.3);
+
+    // ── Outer border only (no internal fill)
     doc.rect(ML,topY,CW,THtotal);
 
-    // Horizontal divider — only under the PEMERIKSAAN FISIK span area
-    LW(0.2);
-    // Left section: single tall cells — draw bottom border at TH1 only for pf group
-    // Draw the horizontal mid-line only inside PF group
+    // ── Horizontal mid-line ONLY inside the PF colspan group
+    LW(0.25);
     doc.line(pfX,topY+TH1,pfX+pfW,topY+TH1);
 
-    // Vertical lines between ALL columns — full header height
+    // ── Vertical dividers
+    // For rowspan cols (before PF group and after): full height topY -> topY+THtotal
+    // For PF sub-cols (td,nadi,...,gda): only from topY+TH1 -> topY+THtotal (below PF label)
+    var pfEndX=pfX+pfW;
     COL_ORDER.forEach(function(k,i){
-      if(i===0) return; // left edge already from rect
-      DC(80,80,80); LW(0.2);
-      doc.line(CX[k],topY,CX[k],topY+THtotal);
+      if(i===0) return; // left outer edge from rect
+      LW(0.2);
+      var isInPF=(CX[k]>=pfX && CX[k]<pfEndX);
+      if(isInPF){
+        // vertical only in sub-row (don't cut through PF label row)
+        doc.line(CX[k],topY+TH1,CX[k],topY+THtotal);
+      } else {
+        // full height rowspan divider
+        doc.line(CX[k],topY,CX[k],topY+THtotal);
+      }
     });
 
-    // Draw rowspan cell texts (centered vertically over full TH)
-    TC(15,23,42);
-    SF('bold',5.5);
+    // ── Rowspan cell labels (centered over full THtotal height)
+    TC(15,23,42); SF('bold',5.5);
     RS_COLS.forEach(function(k){
-      var cw=W[k];
-      var cx=CX[k];
+      var cw=W[k], cx=CX[k];
       var label=RS_LABELS[k];
       var lines=label.split('\n');
-      var lh=3.2;
-      var totalH=lines.length*lh;
+      var lh=3.2, totalH=lines.length*lh;
       var startY=topY+THtotal/2-totalH/2+lh*0.75;
-      lines.forEach(function(l,i){
-        T(l,cx+cw/2,startY+i*lh,{align:'center'});
-      });
+      lines.forEach(function(l,i){T(l,cx+cw/2,startY+i*lh,{align:'center'});});
     });
 
-    // PEMERIKSAAN FISIK group label (row 1, spanning pf group)
+    // ── PEMERIKSAAN FISIK label in top row of PF area
     SF('bold',5.5); TC(15,23,42);
-    T('PEMERIKSAAN FISIK',pfX+pfW/2,topY+TH1/2+1.5,{align:'center'});
+    T('PEMERIKSAAN FISIK',pfX+pfW/2,topY+TH1/2+1.8,{align:'center'});
 
-    // Sub header row: TD + vitals
+    // ── Sub-header labels: TD + vitals (in bottom row of header)
     SF('bold',5.5); TC(15,23,42);
-    T('TD',CX.td+W.td/2,topY+TH1+TH2/2+1.5,{align:'center'});
+    T('TD',CX.td+W.td/2,topY+TH1+TH2/2+1.8,{align:'center'});
     VITALS.forEach(function(k,i){
-      T(V_LABELS[i],CX[k]+W[k]/2,topY+TH1+TH2/2+1.5,{align:'center'});
+      T(V_LABELS[i],CX[k]+W[k]/2,topY+TH1+TH2/2+1.8,{align:'center'});
     });
   }
 
@@ -699,13 +704,6 @@ function buildPDF(){
   doc.line(ML,tY,ML,dY);   // left
   doc.line(ML+CW,tY,ML+CW,dY); // right
   doc.line(ML,dY,ML+CW,dY); // bottom
-
-  // ── SIGNATURE
-  dY+=7;
-  SF('normal',8);TC(15,23,42);
-  T('Mowewe, ......................... '+tahun,ML+CW,dY,{align:'right'});
-  dY+=5;T('Petugas Kesehatan,',ML+CW,dY,{align:'right'});
-  dY+=15;T('(___________________________)',ML+CW,dY,{align:'right'});
 
   // ── PAGE NUMBERS
   var totalPages=doc.getNumberOfPages();
