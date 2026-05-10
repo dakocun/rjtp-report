@@ -204,7 +204,7 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
           <input type="number" id="tahun" value="2026" min="2000" max="2099" onchange="onBulanChange()">
         </div>
         <div class="field">
-          <label>Nama Kel/Desa</label>
+          <label>Nama Desa/Kelurahan</label>
           <input type="text" id="desa" value="PUOSU" oninput="this.value=this.value.toUpperCase()">
         </div>
         <div class="field">
@@ -457,14 +457,14 @@ function buildPDF(){
   TC(15,23,42);
   SF('bold',12); T('LAPORAN PELAYANAN',PW/2,y,{align:'center'}); y+=5.5;
   SF('bold',10); T('RAWAT JALAN TINGKAT PERTAMA (RJTP)',PW/2,y,{align:'center'}); y+=5;
-  SF('normal',8.5); T('BULAN : '+bulanStr+'    TAHUN : '+tahun,PW/2,y,{align:'center'}); y+=8;
+  SF('normal',8.5); T('BULAN : '+bulanStr+'    TAHUN : '+tahun,PW/2,y,{align:'center'}); y+=12;
 
   // Aligned ":" — fixed label column + colon column
   SF('normal',8);
-  var lblX=ML, colX=ML+26, valX=ML+29;
+  var lblX=ML, colX=ML+38, valX=ML+41;
   T('NAMA FASKES',lblX,y); T(':',colX,y); T(faskes,valX,y); y+=4.5;
   T('ALAMAT',lblX,y);      T(':',colX,y); T(alamat,valX,y); y+=4.5;
-  T('NAMA KEL/DESA',lblX,y);T(':',colX,y); T(desa,valX,y);  y+=6;
+  T('NAMA DESA/KELURAHAN',lblX,y);T(':',colX,y); T(desa,valX,y);  y+=6;
 
   // ── COLUMN DEFINITIONS
   // Total must equal CW=281
@@ -501,52 +501,64 @@ function buildPDF(){
                  bb:'BB',tb:'TB',lp:'LP',diag:'DIAGNOSA/\nKELUHAN',ther:'TERAPI/OBAT',kunj:'KUNJUNGAN'};
 
   function drawHeader(topY){
-    DC(80,80,80); LW(0.3);
+    // Single consistent border style throughout
+    var BC=100; // border color grey
+    DC(BC,BC,BC); LW(0.25);
 
-    // ── Outer border only (no internal fill)
-    doc.rect(ML,topY,CW,THtotal);
+    // ── Step 1: draw all internal horizontal lines first
+    // Top line
+    doc.line(ML,topY,ML+CW,topY);
+    // Mid line — full width (separates row1 from row2 for ALL cols)
+    // For rowspan cols, we'll overdraw with white to erase it, but simpler:
+    // Just draw mid-line only for PF group, and top+bottom for rowspan cols
+    doc.line(pfX,topY+TH1,pfX+pfW,topY+TH1); // PF mid-divider
+    // Bottom line
+    doc.line(ML,topY+THtotal,ML+CW,topY+THtotal);
 
-    // ── Horizontal mid-line ONLY inside the PF colspan group
-    LW(0.25);
-    doc.line(pfX,topY+TH1,pfX+pfW,topY+TH1);
+    // ── Step 2: all vertical lines — uniform style, correct height per column
+    // Left outer
+    doc.line(ML,topY,ML,topY+THtotal);
+    // Right outer
+    doc.line(ML+CW,topY,ML+CW,topY+THtotal);
 
-    // ── Vertical dividers
-    // For rowspan cols (before PF group and after): full height topY -> topY+THtotal
-    // For PF sub-cols (td,nadi,...,gda): only from topY+TH1 -> topY+THtotal (below PF label)
+    // Internal verticals
     var pfEndX=pfX+pfW;
     COL_ORDER.forEach(function(k,i){
-      if(i===0) return; // left outer edge from rect
-      LW(0.2);
-      var isInPF=(CX[k]>=pfX && CX[k]<pfEndX);
-      if(isInPF){
-        // vertical only in sub-row (don't cut through PF label row)
-        doc.line(CX[k],topY+TH1,CX[k],topY+THtotal);
-      } else {
-        // full height rowspan divider
-        doc.line(CX[k],topY,CX[k],topY+THtotal);
+      if(i===0) return;
+      var x=CX[k];
+      var isFirstPF=(x===pfX);    // left edge of PF group = right edge of LP
+      var isInsidePF=(x>pfX && x<pfEndX); // internal PF dividers
+      var isAfterPF=(x>=pfEndX);  // right side of PF group and beyond (diag, ther, kunj)
+
+      if(isFirstPF || isAfterPF){
+        // Full-height divider — separates rowspan cols
+        doc.line(x,topY,x,topY+THtotal);
+      } else if(isInsidePF){
+        // Sub-row only — below PF label
+        doc.line(x,topY+TH1,x,topY+THtotal);
       }
     });
 
-    // ── Rowspan cell labels (centered over full THtotal height)
+    // ── Step 3: text labels
     TC(15,23,42); SF('bold',5.5);
+
+    // Rowspan labels — vertically centered over full header height
     RS_COLS.forEach(function(k){
       var cw=W[k], cx=CX[k];
-      var label=RS_LABELS[k];
-      var lines=label.split('\n');
+      var lines=RS_LABELS[k].split('\n');
       var lh=3.2, totalH=lines.length*lh;
       var startY=topY+THtotal/2-totalH/2+lh*0.75;
       lines.forEach(function(l,i){T(l,cx+cw/2,startY+i*lh,{align:'center'});});
     });
 
-    // ── PEMERIKSAAN FISIK label in top row of PF area
-    SF('bold',5.5); TC(15,23,42);
+    // PEMERIKSAAN FISIK — centered in top PF row
     T('PEMERIKSAAN FISIK',pfX+pfW/2,topY+TH1/2+1.8,{align:'center'});
 
-    // ── Sub-header labels: TD + vitals (in bottom row of header)
-    SF('bold',5.5); TC(15,23,42);
-    T('TD',CX.td+W.td/2,topY+TH1+TH2/2+1.8,{align:'center'});
+    // Sub-header labels — centered in bottom PF row (middle of TH2)
+    var subMid=topY+TH1+TH2/2+1.8;
+    T('TD',CX.td+W.td/2,subMid,{align:'center'});
     VITALS.forEach(function(k,i){
-      T(V_LABELS[i],CX[k]+W[k]/2,topY+TH1+TH2/2+1.8,{align:'center'});
+      T(V_LABELS[i],CX[k]+W[k]/2,subMid,{align:'center'});
     });
   }
 
@@ -606,10 +618,10 @@ function buildPDF(){
   }
 
   function drawRowBorders(rowTop,rowH){
-    DC(160,160,160); LW(0.15);
+    var BC=100; DC(BC,BC,BC); LW(0.25);
     // horizontal bottom line
     doc.line(ML,rowTop+rowH,ML+CW,rowTop+rowH);
-    // vertical col dividers
+    // vertical col dividers (left outer drawn by outer border rect)
     COL_ORDER.forEach(function(k,i){
       if(i===0) return;
       doc.line(CX[k],rowTop,CX[k],rowTop+rowH);
@@ -700,7 +712,7 @@ function buildPDF(){
   }
 
   // Close table outer border
-  DC(60,60,60);LW(0.35);
+  var OBC=100; DC(OBC,OBC,OBC);LW(0.25);
   doc.line(ML,tY,ML,dY);   // left
   doc.line(ML+CW,tY,ML+CW,dY); // right
   doc.line(ML,dY,ML+CW,dY); // bottom
