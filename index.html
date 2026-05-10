@@ -19,12 +19,12 @@
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
 
 .site-header{background:var(--hbg);border-bottom:1px solid #0369a1;padding:0 2rem;position:sticky;top:0;z-index:100}
-.site-header-inner{max-width:1600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:1rem}
+.site-header-inner{max-width:1600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:72px;gap:1rem}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-icon{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
 .logo-icon svg{width:18px;height:18px;fill:white}
-.logo-text strong{display:block;font-size:13px;font-weight:700;color:#e0f2fe;letter-spacing:-.01em}
-.logo-text span{font-size:11px;color:#7dd3fc}
+.logo-text strong{display:block;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:.01em;line-height:1.2}
+.logo-text span{font-size:11.5px;color:#bae6fd;font-weight:500;letter-spacing:.02em}
 .hbadge{font-size:11px;padding:4px 10px;background:#075985;color:#e0f2fe;border-radius:20px;font-weight:500;border:1px solid #38bdf8}
 
 .main{max-width:1600px;margin:0 auto;padding:2rem 2rem 4rem}
@@ -54,9 +54,9 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 /* TABLE */
 .twrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rs)}
 table.data-table{width:100%;border-collapse:collapse;min-width:1400px}
-table.data-table thead th{background:#0369a1;color:#f0f9ff;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:7px 4px;text-align:center;white-space:nowrap;border-right:1px solid #0284c7}
+table.data-table thead th{background:#0369a1;color:#f0f9ff;vertical-align:middle;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:7px 4px;text-align:center;white-space:nowrap;border-right:1px solid #0284c7}
 table.data-table thead th:last-child{border-right:none}
-table.data-table thead th.sub{background:#0284c7;color:#e0f2fe}
+table.data-table thead th.sub{background:#0369a1;color:#f0f9ff;vertical-align:middle;text-align:center}
 table.data-table thead tr:first-child th{border-bottom:1px solid #38bdf8}
 table.data-table tbody tr{border-bottom:1px solid var(--border)}
 table.data-table tbody tr:last-child{border-bottom:none}
@@ -169,8 +169,8 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
     <div class="logo">
       <div class="logo-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 13h8v1H8v-1zm0 3h8v1H8v-1zm0-6h3v1H8v-1z"/></svg></div>
       <div class="logo-text">
-        <strong>Sistem Laporan RJTP</strong>
-        <span>UPTD Puskesmas Mowewe</span>
+        <strong>NERS ASRI CANTIK</strong>
+        <span>SISTEM LAPORAN RJTP &mdash; UPTD PUSKESMAS MOWEWE</span>
       </div>
     </div>
     <span class="hbadge">Rawat Jalan Tingkat Pertama</span>
@@ -458,7 +458,7 @@ function buildPDF(){
   TC(15,23,42);
   SF('bold',12); T('LAPORAN PELAYANAN',PW/2,y,{align:'center'}); y+=5.5;
   SF('bold',10); T('RAWAT JALAN TINGKAT PERTAMA (RJTP)',PW/2,y,{align:'center'}); y+=5;
-  SF('normal',8.5); T('BULAN : '+bulanStr+'    TAHUN : '+tahun,PW/2,y,{align:'center'}); y+=12;
+  SF('normal',8.5); T('BULAN '+bulanStr+'    TAHUN '+tahun,PW/2,y,{align:'center'}); y+=12;
 
   // Aligned ":" — fixed label column + colon column
   SF('normal',8);
