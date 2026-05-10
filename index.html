@@ -812,11 +812,7 @@ function downloadXLSX(){
       data.forEach(function(r,i){
         // Clean ther & diag: strip "1. " numbering, join with newline
         function cleanBullet(txt){
-          return (txt||'').split('
-').map(function(l){
-            return l.trim().replace(/^\d+[\.\)]\s*/,'');
-          }).filter(function(l){return l.length>0;}).join('
-');
+          return (txt||'').split('\n').map(function(l){return l.trim().replace(/^\d+[.\)]\s*/,'');}).filter(function(l){return l.length>0;}).join('\n');
         }
         ws_data.push([
           i+1, r.tgl, r.nomor, r.nama, r.umur?parseInt(r.umur)||r.umur:'',
