@@ -60,21 +60,21 @@ table.data-table thead th.sub{background:#0369a1;color:#f0f9ff;vertical-align:mi
 table.data-table thead tr:first-child th{border-bottom:1px solid #38bdf8}
 table.data-table tbody tr{border-bottom:1px solid var(--border)}
 table.data-table tbody tr:last-child{border-bottom:none}
-table.data-table tbody tr:nth-child(even) td{background:#fafbfc}
+table.data-table tbody tr:nth-child(even) td{background:#f0f9ff}
 table.data-table tbody tr:hover td{background:#e0f2fe}
-table.data-table tbody td{padding:2px 3px;text-align:center;vertical-align:middle}
+table.data-table tbody td{padding:3px 4px;text-align:center;vertical-align:middle}
 td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mono',monospace;padding:2px 5px;width:28px}
 
 /* uniform cell inputs */
-.ci{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:4px 3px;border:1px solid transparent;border-radius:3px;background:transparent;color:var(--text);width:100%;text-align:center;outline:none;transition:border-color .1s,background .1s}
-.ci:hover{border-color:var(--border-s);background:white}
-.ci:focus{border-color:var(--accent-m);background:white;box-shadow:0 0 0 2px rgba(59,130,246,.1)}
+.ci{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:4px 5px;border:1px solid #bae6fd;border-radius:3px;background:#f8fbff;color:var(--text);width:100%;text-align:center;outline:none;transition:border-color .15s,background .15s,box-shadow .15s}
+.ci:hover{border-color:#38bdf8;background:#fff}
+.ci:focus{border-color:#0284c7;background:#fff;box-shadow:0 0 0 2px rgba(2,132,199,.15)}
 .ci.left{text-align:left}
-.ci.sel{-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 2px center;padding-right:12px}
-.ci-ta{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:4px 3px;border:1px solid transparent;border-radius:3px;background:transparent;color:var(--text);width:100%;text-align:left;outline:none;resize:vertical;min-height:32px;line-height:1.35;transition:border-color .1s,background .1s}
-.ci-ta:hover{border-color:var(--border-s);background:white}
-.ci-ta:focus{border-color:var(--accent-m);background:white;box-shadow:0 0 0 2px rgba(59,130,246,.1)}
-.td-split{display:flex;align-items:center;gap:0}
+.ci.sel{-webkit-appearance:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='7' height='7' viewBox='0 0 12 12'%3E%3Cpath fill='%230284c7' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 4px center;padding-right:14px}
+.ci-ta{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;padding:4px 5px;border:1px solid #bae6fd;border-radius:3px;background:#f8fbff;color:var(--text);width:100%;text-align:left;outline:none;resize:vertical;min-height:36px;line-height:1.4;transition:border-color .15s,background .15s,box-shadow .15s}
+.ci-ta:hover{border-color:#38bdf8;background:#fff}
+.ci-ta:focus{border-color:#0284c7;background:#fff;box-shadow:0 0 0 2px rgba(2,132,199,.15)}
+.td-split{display:flex;align-items:center;gap:2px}
 .td-split .ci{flex:1}
 .td-split span{font-size:10px;color:var(--text3);flex-shrink:0;padding:0 1px}
 .del-btn{width:22px;height:22px;border:1px solid #fca5a5;background:#fef2f2;color:var(--red);border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;margin:auto;transition:background .1s;flex-shrink:0}
@@ -204,11 +204,27 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
         </div>
         <div class="field">
           <label>Tahun</label>
-          <input type="number" id="tahun" value="" min="2000" max="2099" placeholder="Tahun" onchange="onBulanChange()">
+          <input type="number" id="tahun" value="" min="2000" max="2099" onchange="onBulanChange()">
         </div>
         <div class="field">
           <label>Nama Desa/Kelurahan</label>
-          <input type="text" id="desa" value=""  placeholder="Nama Desa/Kelurahan" oninput="this.value=this.value.toUpperCase()">
+          <select id="desa" style="-webkit-appearance:none;appearance:none;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E&quot;);background-repeat:no-repeat;background-position:right 10px center;padding-right:28px">
+            <option value="" selected disabled>-- Pilih --</option>
+            <optgroup label="Kelurahan">
+              <option value="HORODOPI">HORODOPI</option>
+              <option value="INEBENGGI">INEBENGGI</option>
+              <option value="WOITOMBO">WOITOMBO</option>
+            </optgroup>
+            <optgroup label="Desa">
+              <option value="WATUPUTE">WATUPUTE</option>
+              <option value="LAPANGISI">LAPANGISI</option>
+              <option value="SABI-SABILA">SABI-SABILA</option>
+              <option value="LAMBOTUA">LAMBOTUA</option>
+              <option value="PUUOSU">PUUOSU</option>
+              <option value="NELOMBU">NELOMBU</option>
+              <option value="ULU MOWEWE">ULU MOWEWE</option>
+            </optgroup>
+          </select>
         </div>
         <input type="hidden" id="faskes" value="UPTD PUSKESMAS MOWEWE">
         <input type="hidden" id="alamat" value="KECAMATAN MOWEWE">
@@ -368,23 +384,23 @@ function addRow(data){
   tr.innerHTML=
     '<td class="no-cell col-no">'+(rowIds.length)+'</td>'+
     '<td class="col-date"><select id="tgl_'+id+'" class="ci sel tgl-sel" style="font-size:10px;min-width:0;padding-right:14px">'+tOpts+'</select></td>'+
-    '<td class="col-id"><input id="nomor_'+id+'" class="ci left" value="'+eq(data.nomor||'')+'" placeholder="Nomor BPJS/NIK" oninput="this.value=this.value.toUpperCase()"></td>'+
-    '<td class="col-name"><input id="nama_'+id+'" class="ci left" value="'+eq(data.nama||'')+'" placeholder="Nama" oninput="this.value=this.value.toUpperCase()"></td>'+
-    '<td class="col-umur"><input id="umur_'+id+'" class="ci" type="number" value="'+eq(data.umur||'')+'" placeholder="0" min="0" max="150"></td>'+
-    '<td class="col-jk"><select id="jk_'+id+'" class="ci sel"><option value="P"'+((!data.jk||data.jk==='P')?' selected':'')+'>P</option><option value="L"'+(data.jk==='L'?' selected':'')+'>L</option></select></td>'+
-    '<td class="col-measure"><input id="bb_'+id+'" class="ci" type="number" value="'+eq(data.bb||'')+'" placeholder="—"></td>'+
-    '<td class="col-measure"><input id="tb_'+id+'" class="ci" type="number" value="'+eq(data.tb||'')+'" placeholder="—"></td>'+
-    '<td class="col-measure"><input id="lp_'+id+'" class="ci" type="number" value="'+eq(data.lp||'')+'" placeholder="—"></td>'+
-    '<td class="col-td"><div class="td-split"><input id="sistol_'+id+'" class="ci" type="number" value="'+eq(data.sistol||'')+'" placeholder="120"><span>/</span><input id="diastol_'+id+'" class="ci" type="number" value="'+eq(data.diastol||'')+'" placeholder="80"></div></td>'+
-    '<td class="col-vital"><input id="nadi_'+id+'" class="ci" type="number" value="'+eq(data.nadi||'')+'" placeholder="—"></td>'+
-    '<td class="col-vital"><input id="suhu_'+id+'" class="ci" value="'+eq(data.suhu||'')+'" placeholder="—"></td>'+
-    '<td class="col-vital"><input id="rr_'+id+'" class="ci" type="number" value="'+eq(data.rr||'')+'" placeholder="—"></td>'+
-    '<td class="col-vital"><input id="chol_'+id+'" class="ci" type="number" value="'+eq(data.chol||'')+'" placeholder="—"></td>'+
-    '<td class="col-vital"><input id="au_'+id+'" class="ci" value="'+eq(data.au||'')+'" placeholder="—"></td>'+
-    '<td class="col-vital"><input id="gda_'+id+'" class="ci" type="number" value="'+eq(data.gda||'')+'" placeholder="—"></td>'+
-    '<td class="col-text" style="vertical-align:top;padding:2px 3px"><textarea id="diag_'+id+'" class="ci-ta" rows="2" placeholder="Diagnosa&#10;Keluhan lainnya..." oninput="this.value=this.value.toUpperCase()">'+eq(data.diag||'')+'</textarea></td>'+
-    '<td class="col-text" style="vertical-align:top;padding:2px 3px"><textarea id="ther_'+id+'" class="ci-ta" rows="2" placeholder="1. Obat A&#10;2. Obat B" oninput="this.value=this.value.toUpperCase()">'+eq(data.ther||'')+'</textarea></td>'+
-    '<td class="col-kunj"><select id="kunj_'+id+'" class="ci sel"><option value="LAMA"'+((!data.kunj||data.kunj==="LAMA")?' selected':'')+'>LAMA</option><option value="BARU"'+(data.kunj==="BARU"?' selected':'')+'>BARU</option></select></td>'+
+    '<td class="col-id"><input id="nomor_'+id+'" class="ci left" value="'+eq(data.nomor||'')+'" oninput="this.value=this.value.toUpperCase()"></td>'+
+    '<td class="col-name"><input id="nama_'+id+'" class="ci left" value="'+eq(data.nama||'')+'" oninput="this.value=this.value.toUpperCase()"></td>'+
+    '<td class="col-umur"><input id="umur_'+id+'" class="ci" type="number" value="'+eq(data.umur||'')+'" min="0" max="150"></td>'+
+    '<td class="col-jk"><select id="jk_'+id+'" class="ci sel"><option value="" '+(!data.jk?' selected':'')+' disabled></option><option value="P"'+(data.jk==='P'?' selected':'')+'>P</option><option value="L"'+(data.jk==='L'?' selected':'')+'>L</option></select></td>'+
+    '<td class="col-measure"><input id="bb_'+id+'" class="ci" type="number" value="'+eq(data.bb||'')+'"></td>'+
+    '<td class="col-measure"><input id="tb_'+id+'" class="ci" type="number" value="'+eq(data.tb||'')+'"></td>'+
+    '<td class="col-measure"><input id="lp_'+id+'" class="ci" type="number" value="'+eq(data.lp||'')+'"></td>'+
+    '<td class="col-td"><div class="td-split"><input id="sistol_'+id+'" class="ci" type="number" value="'+eq(data.sistol||'')+'"><span>/</span><input id="diastol_'+id+'" class="ci" type="number" value="'+eq(data.diastol||'')+'"></div></td>'+
+    '<td class="col-vital"><input id="nadi_'+id+'" class="ci" type="number" value="'+eq(data.nadi||'')+'"></td>'+
+    '<td class="col-vital"><input id="suhu_'+id+'" class="ci" value="'+eq(data.suhu||'')+'"></td>'+
+    '<td class="col-vital"><input id="rr_'+id+'" class="ci" type="number" value="'+eq(data.rr||'')+'"></td>'+
+    '<td class="col-vital"><input id="chol_'+id+'" class="ci" type="number" value="'+eq(data.chol||'')+'"></td>'+
+    '<td class="col-vital"><input id="au_'+id+'" class="ci" value="'+eq(data.au||'')+'"></td>'+
+    '<td class="col-vital"><input id="gda_'+id+'" class="ci" type="number" value="'+eq(data.gda||'')+'"></td>'+
+    '<td class="col-text" style="vertical-align:top;padding:2px 3px"><textarea id="diag_'+id+'" class="ci-ta" rows="2" oninput="this.value=this.value.toUpperCase()">'+eq(data.diag||'')+'</textarea></td>'+
+    '<td class="col-text" style="vertical-align:top;padding:2px 3px"><textarea id="ther_'+id+'" class="ci-ta" rows="2" oninput="this.value=this.value.toUpperCase()">'+eq(data.ther||'')+'</textarea></td>'+
+    '<td class="col-kunj"><select id="kunj_'+id+'" class="ci sel"><option value="" '+(!data.kunj?' selected':'')+' disabled></option><option value="LAMA"'+(data.kunj==="LAMA"?' selected':'')+'>LAMA</option><option value="BARU"'+(data.kunj==="BARU"?' selected':'')+'>BARU</option></select></td>'+
     '<td class="col-act"><button class="del-btn" onclick="deleteRow('+id+')" title="Hapus">✕</button></td>';
   document.getElementById('tbody').appendChild(tr);
   if(data.tgl){var s=document.getElementById('tgl_'+id);if(s)s.value=data.tgl;}
