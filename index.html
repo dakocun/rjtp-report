@@ -532,8 +532,8 @@ function buildPDF(){
       var sY=topY+THtotal/2-totalH/2+lh*0.75;
       lines.forEach(function(l,i){T(l,cx+cw/2,sY+i*lh,{align:'center'});});
     });
-    T('PEMERIKSAAN FISIK',pfX+pfW/2,topY+TH1/2+1.8,{align:'center'});
-    var subMid=topY+TH1+TH2/2+1.8;
+    T('PEMERIKSAAN FISIK',pfX+pfW/2,topY+TH1/2+1.3,{align:'center'});
+    var subMid=topY+TH1+TH2/2+1.3;
     T('TD',CX.td+W.td/2,subMid,{align:'center'});
     VITALS.forEach(function(k,i){T(V_LABELS[i],CX[k]+W[k]/2,subMid,{align:'center'});});
   }
@@ -749,7 +749,9 @@ function downloadPDF(){
       setProgress(90);
       var bulanNum=parseInt(document.getElementById('bulan').value);
       var tahun=document.getElementById('tahun').value;
-      doc.save('Laporan_RJTP_'+BULAN_UP[bulanNum]+'_'+tahun+'.pdf');
+      var desa=document.getElementById('desa').value.toUpperCase().replace(/\s+/g,'-');
+      var pdfFname='RJTP-'+desa+'-'+BULAN_UP[bulanNum]+tahun+'.pdf';
+      doc.save(pdfFname);
       setProgress(100);
     }catch(e){
       console.error(e);showErr('Gagal: '+e.message);
@@ -916,8 +918,8 @@ function downloadXLSX(){
 
       setProgress(85);
       XLSX.utils.book_append_sheet(wb,ws,'Laporan RJTP');
-      var fname='Laporan_RJTP_'+bulanStr+'_'+tahun+'.xlsx';
-      XLSX.writeFile(wb,fname);
+      var xlsxFname='RJTP-'+desa.replace(/\s+/g,'-')+'-'+bulanStr+tahun+'.xlsx';
+      XLSX.writeFile(wb,xlsxFname);
       setProgress(100);
     }catch(e){
       console.error(e);showErr('Gagal buat XLSX: '+(e.message||e));
