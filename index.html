@@ -9,31 +9,31 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 :root{
-  --bg:#f0f4f8;--surface:#fff;--surface2:#f8fafc;--border:#e2e8f0;--border-s:#cbd5e1;
-  --text:#0f172a;--text2:#475569;--text3:#94a3b8;
-  --accent:#1d4ed8;--accent-l:#eff6ff;--accent-m:#3b82f6;--accent-d:#1e40af;
-  --green:#16a34a;--green-l:#f0fdf4;--red:#dc2626;--hbg:#0f172a;
-  --r:10px;--rs:6px;--sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --bg:#f0f9ff;--surface:#fff;--surface2:#e0f2fe;--border:#bae6fd;--border-s:#7dd3fc;
+  --text:#0c4a6e;--text2:#0369a1;--text3:#7dd3fc;
+  --accent:#0284c7;--accent-l:#e0f2fe;--accent-m:#38bdf8;--accent-d:#0369a1;
+  --green:#0891b2;--green-l:#ecfeff;--red:#dc2626;--hbg:#0c4a6e;
+  --r:10px;--rs:6px;--sh:0 1px 3px rgba(12,74,110,.08),0 1px 2px rgba(12,74,110,.04);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.6}
 
-.site-header{background:var(--hbg);border-bottom:1px solid #334155;padding:0 2rem;position:sticky;top:0;z-index:100}
+.site-header{background:var(--hbg);border-bottom:1px solid #0369a1;padding:0 2rem;position:sticky;top:0;z-index:100}
 .site-header-inner{max-width:1600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:1rem}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-icon{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
 .logo-icon svg{width:18px;height:18px;fill:white}
-.logo-text strong{display:block;font-size:13px;font-weight:700;color:#f1f5f9;letter-spacing:-.01em}
-.logo-text span{font-size:11px;color:#94a3b8}
-.hbadge{font-size:11px;padding:4px 10px;background:#1e3a5f;color:#93c5fd;border-radius:20px;font-weight:500;border:1px solid #1e40af}
+.logo-text strong{display:block;font-size:13px;font-weight:700;color:#e0f2fe;letter-spacing:-.01em}
+.logo-text span{font-size:11px;color:#7dd3fc}
+.hbadge{font-size:11px;padding:4px 10px;background:#075985;color:#e0f2fe;border-radius:20px;font-weight:500;border:1px solid #38bdf8}
 
 .main{max-width:1600px;margin:0 auto;padding:2rem 2rem 4rem}
-.page-title{margin-bottom:1.75rem}
-.page-title h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+.page-title{margin-bottom:1.25rem}
+.page-title h1{font-size:22px;font-weight:700;letter-spacing:-.02em;color:#0c4a6e}
 .page-title p{font-size:13px;color:var(--text2);margin-top:4px}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:1.25rem;overflow:hidden}
-.card-header{padding:14px 20px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;gap:10px}
+.card-header{padding:14px 20px;border-bottom:1px solid var(--border);background:#e0f2fe;display:flex;align-items:center;gap:10px}
 .card-icon{width:28px;height:28px;background:var(--accent-l);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0}
 .card-header h2{font-size:13px;font-weight:600;letter-spacing:-.01em}
 .badge{margin-left:auto;font-size:11px;padding:2px 8px;background:var(--accent-l);color:var(--accent);border-radius:20px;font-weight:600}
@@ -54,14 +54,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 /* TABLE */
 .twrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--rs)}
 table.data-table{width:100%;border-collapse:collapse;min-width:1400px}
-table.data-table thead th{background:#0f172a;color:#e2e8f0;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:7px 4px;text-align:center;white-space:nowrap;border-right:1px solid #1e293b}
+table.data-table thead th{background:#0369a1;color:#f0f9ff;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:7px 4px;text-align:center;white-space:nowrap;border-right:1px solid #0284c7}
 table.data-table thead th:last-child{border-right:none}
-table.data-table thead th.sub{background:#1e3a5f;color:#93c5fd}
-table.data-table thead tr:first-child th{border-bottom:1px solid #334155}
+table.data-table thead th.sub{background:#0284c7;color:#e0f2fe}
+table.data-table thead tr:first-child th{border-bottom:1px solid #38bdf8}
 table.data-table tbody tr{border-bottom:1px solid var(--border)}
 table.data-table tbody tr:last-child{border-bottom:none}
 table.data-table tbody tr:nth-child(even) td{background:#fafbfc}
-table.data-table tbody tr:hover td{background:#eff6ff}
+table.data-table tbody tr:hover td{background:#e0f2fe}
 table.data-table tbody td{padding:2px 3px;text-align:center;vertical-align:middle}
 td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mono',monospace;padding:2px 5px;width:28px}
 
@@ -88,7 +88,7 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
 .col-umur{width:52px;min-width:52px}
 .col-jk{width:44px;min-width:44px}
 .col-measure{width:52px;min-width:52px} /* BB TB LP - same */
-.col-td{width:90px;min-width:90px}
+.col-td{width:115px;min-width:115px}
 .col-vital{width:52px;min-width:52px}  /* N S P CHOL AU GDA - same */
 .col-text{width:160px;min-width:160px} /* diagnosa terapi */
 .col-kunj{width:80px;min-width:80px}
@@ -97,16 +97,16 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:var(--rs);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border-s);background:white;color:var(--text2);transition:background .15s,transform .08s;white-space:nowrap;outline:none}
 .btn:hover{background:var(--bg)}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:var(--accent);color:white;border-color:var(--accent-d)}
-.btn-primary:hover{background:var(--accent-d)}
+.btn-primary{background:#0284c7;color:white;border-color:#0369a1}
+.btn-primary:hover{background:#0369a1}
 .btn-green{background:var(--green);color:white;border-color:#15803d;font-size:13px;padding:11px 20px}
 .btn-orange{background:#c2410c;color:white;border-color:#9a3412;font-size:13px;padding:11px 20px}
 .btn-orange:hover{background:#9a3412}
 .btn-green:hover{background:#15803d}
-.btn-blue{background:#0369a1;color:white;border-color:#075985;font-size:13px;padding:11px 20px}
-.btn-blue:hover{background:#075985}
+.btn-blue{background:#0284c7;color:white;border-color:#0369a1;font-size:13px;padding:11px 20px}
+.btn-blue:hover{background:#0369a1}
 
-.gen-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:20px;display:flex;flex-direction:column;gap:14px;margin-bottom:1.25rem}
+.gen-bar{background:#f0f9ff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);padding:20px;display:flex;flex-direction:column;gap:14px;margin-bottom:1.25rem}
 .gen-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .gen-desc{flex:1;min-width:180px}
 .gen-desc strong{display:block;font-size:14px;font-weight:600}
@@ -180,7 +180,7 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
 <main class="main">
   <div class="page-title">
     <h1>Input Laporan Pelayanan RJTP</h1>
-    <p>Isi data pasien, preview dokumen, lalu unduh sebagai PDF siap cetak.</p>
+
   </div>
 
   <!-- INFO LAPORAN -->
@@ -210,14 +210,8 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
           <label>Nama Desa/Kelurahan</label>
           <input type="text" id="desa" value="PUOSU" oninput="this.value=this.value.toUpperCase()">
         </div>
-        <div class="field">
-          <label>Nama Faskes</label>
-          <input type="text" id="faskes" value="UPTD PUSKESMAS MOWEWE" oninput="this.value=this.value.toUpperCase()">
-        </div>
-        <div class="field">
-          <label>Alamat</label>
-          <input type="text" id="alamat" value="KECAMATAN MOWEWE" oninput="this.value=this.value.toUpperCase()">
-        </div>
+        <input type="hidden" id="faskes" value="UPTD PUSKESMAS MOWEWE">
+        <input type="hidden" id="alamat" value="KECAMATAN MOWEWE">
       </div>
     </div>
   </div>
@@ -240,7 +234,7 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
             <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>Kosongkan
           </button>
         </div>
-        <span class="hint">Terapi/Obat: Enter untuk baris baru (tampil bernomor di PDF)</span>
+
       </div>
 
       <div class="twrap">
