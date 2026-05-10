@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Laporan RJTP — UPTD Puskesmas Mowewe</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 :root{
@@ -99,6 +100,8 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
 .btn-primary{background:var(--accent);color:white;border-color:var(--accent-d)}
 .btn-primary:hover{background:var(--accent-d)}
 .btn-green{background:var(--green);color:white;border-color:#15803d;font-size:13px;padding:11px 20px}
+.btn-orange{background:#c2410c;color:white;border-color:#9a3412;font-size:13px;padding:11px 20px}
+.btn-orange:hover{background:#9a3412}
 .btn-green:hover{background:#15803d}
 .btn-blue{background:#0369a1;color:white;border-color:#075985;font-size:13px;padding:11px 20px}
 .btn-blue:hover{background:#075985}
@@ -283,7 +286,7 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
     <div class="gen-top">
       <div class="gen-desc">
         <strong>Pratinjau &amp; Unduh Dokumen</strong>
-        <span>Format PDF landscape, siap cetak langsung dari browser</span>
+        <span>PDF landscape siap cetak · XLSX untuk diedit di Excel/Spreadsheet</span>
       </div>
       <div class="gen-actions">
         <button class="btn btn-blue" id="prev-btn" onclick="previewPDF()">
@@ -293,6 +296,10 @@ td.no-cell{font-size:11px;color:var(--text3);font-weight:600;font-family:'DM Mon
         <button class="btn btn-green" id="gen-btn" onclick="downloadPDF()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
           Unduh PDF
+        </button>
+        <button class="btn btn-orange" id="xlsx-btn" onclick="downloadXLSX()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 11h8v1.5H8V11zm0 3h8v1.5H8V14zm0 3h5v1.5H8V17z"/></svg>
+          Unduh XLSX
         </button>
       </div>
     </div>
@@ -381,7 +388,7 @@ function addRow(data){
     '<td class="col-vital"><input id="chol_'+id+'" class="ci" type="number" value="'+eq(data.chol||'')+'" placeholder="—"></td>'+
     '<td class="col-vital"><input id="au_'+id+'" class="ci" value="'+eq(data.au||'')+'" placeholder="—"></td>'+
     '<td class="col-vital"><input id="gda_'+id+'" class="ci" type="number" value="'+eq(data.gda||'')+'" placeholder="—"></td>'+
-    '<td class="col-text" style="vertical-align:top"><input id="diag_'+id+'" class="ci left" value="'+eq(data.diag||'')+'" placeholder="Diagnosa" oninput="this.value=this.value.toUpperCase()"></td>'+
+    '<td class="col-text" style="vertical-align:top;padding:2px 3px"><textarea id="diag_'+id+'" class="ci-ta" rows="2" placeholder="Diagnosa&#10;Keluhan lainnya..." oninput="this.value=this.value.toUpperCase()">'+eq(data.diag||'')+'</textarea></td>'+
     '<td class="col-text" style="vertical-align:top;padding:2px 3px"><textarea id="ther_'+id+'" class="ci-ta" rows="2" placeholder="1. Obat A&#10;2. Obat B" oninput="this.value=this.value.toUpperCase()">'+eq(data.ther||'')+'</textarea></td>'+
     '<td class="col-kunj"><select id="kunj_'+id+'" class="ci sel"><option value="LAMA"'+((!data.kunj||data.kunj==="LAMA")?' selected':'')+'>LAMA</option><option value="BARU"'+(data.kunj==="BARU"?' selected':'')+'>BARU</option></select></td>'+
     '<td class="col-act"><button class="del-btn" onclick="deleteRow('+id+')" title="Hapus">✕</button></td>';
@@ -501,65 +508,40 @@ function buildPDF(){
                  bb:'BB',tb:'TB',lp:'LP',diag:'DIAGNOSA/\nKELUHAN',ther:'TERAPI/OBAT',kunj:'KUNJUNGAN'};
 
   function drawHeader(topY){
-    // Single consistent border style throughout
-    var BC=100; // border color grey
-    DC(BC,BC,BC); LW(0.25);
-
-    // ── Step 1: draw all internal horizontal lines first
-    // Top line
-    doc.line(ML,topY,ML+CW,topY);
-    // Mid line — full width (separates row1 from row2 for ALL cols)
-    // For rowspan cols, we'll overdraw with white to erase it, but simpler:
-    // Just draw mid-line only for PF group, and top+bottom for rowspan cols
-    doc.line(pfX,topY+TH1,pfX+pfW,topY+TH1); // PF mid-divider
-    // Bottom line
-    doc.line(ML,topY+THtotal,ML+CW,topY+THtotal);
-
-    // ── Step 2: all vertical lines — uniform style, correct height per column
-    // Left outer
-    doc.line(ML,topY,ML,topY+THtotal);
-    // Right outer
-    doc.line(ML+CW,topY,ML+CW,topY+THtotal);
-
-    // Internal verticals
+    var BC=100; DC(BC,BC,BC); LW(0.25);
     var pfEndX=pfX+pfW;
+
+    // Horizontal lines
+    doc.line(ML,topY,ML+CW,topY);                   // top
+    doc.line(pfX,topY+TH1,pfX+pfW,topY+TH1);        // PF mid-divider only
+    doc.line(ML,topY+THtotal,ML+CW,topY+THtotal);   // bottom
+
+    // Vertical lines
+    doc.line(ML,topY,ML,topY+THtotal);               // left outer
+    doc.line(ML+CW,topY,ML+CW,topY+THtotal);         // right outer
     COL_ORDER.forEach(function(k,i){
       if(i===0) return;
       var x=CX[k];
-      var isFirstPF=(x===pfX);    // left edge of PF group = right edge of LP
-      var isInsidePF=(x>pfX && x<pfEndX); // internal PF dividers
-      var isAfterPF=(x>=pfEndX);  // right side of PF group and beyond (diag, ther, kunj)
-
-      if(isFirstPF || isAfterPF){
-        // Full-height divider — separates rowspan cols
-        doc.line(x,topY,x,topY+THtotal);
-      } else if(isInsidePF){
-        // Sub-row only — below PF label
-        doc.line(x,topY+TH1,x,topY+THtotal);
+      if(x>pfX && x<pfEndX){
+        doc.line(x,topY+TH1,x,topY+THtotal);        // inside PF: sub-row only
+      } else {
+        doc.line(x,topY,x,topY+THtotal);             // full height
       }
     });
 
-    // ── Step 3: text labels
+    // Text labels
     TC(15,23,42); SF('bold',5.5);
-
-    // Rowspan labels — vertically centered over full header height
     RS_COLS.forEach(function(k){
       var cw=W[k], cx=CX[k];
       var lines=RS_LABELS[k].split('\n');
       var lh=3.2, totalH=lines.length*lh;
-      var startY=topY+THtotal/2-totalH/2+lh*0.75;
-      lines.forEach(function(l,i){T(l,cx+cw/2,startY+i*lh,{align:'center'});});
+      var sY=topY+THtotal/2-totalH/2+lh*0.75;
+      lines.forEach(function(l,i){T(l,cx+cw/2,sY+i*lh,{align:'center'});});
     });
-
-    // PEMERIKSAAN FISIK — centered in top PF row
     T('PEMERIKSAAN FISIK',pfX+pfW/2,topY+TH1/2+1.8,{align:'center'});
-
-    // Sub-header labels — centered in bottom PF row (middle of TH2)
     var subMid=topY+TH1+TH2/2+1.8;
     T('TD',CX.td+W.td/2,subMid,{align:'center'});
-    VITALS.forEach(function(k,i){
-      T(V_LABELS[i],CX[k]+W[k]/2,subMid,{align:'center'});
-    });
+    VITALS.forEach(function(k,i){T(V_LABELS[i],CX[k]+W[k]/2,subMid,{align:'center'});});
   }
 
   var tY=y; // table top
@@ -637,9 +619,10 @@ function buildPDF(){
     // Compute row height from multiline content
     var therRaw=String(r.ther||'').toUpperCase();
     var therLines=therRaw.split('\n').map(function(l){return l.trim().replace(/^\d+[\.\)]\s*/,'');}).filter(function(l){return l.length>0;});
-    var diagLines=doc.splitTextToSize((r.diag||'').toUpperCase(),W.diag-PAD*2);
+    var diagRaw=String(r.diag||'').toUpperCase();
+    var diagBullets=diagRaw.split('\n').map(function(l){return l.trim().replace(/^\d+[\.\)]\s*/,'');}).filter(function(l){return l.length>0;});
     var namaLines=doc.splitTextToSize((r.nama||'').toUpperCase(),W.nama-PAD*2);
-    var maxLines=Math.max(therLines.length,diagLines.length,namaLines.length,1);
+    var maxLines=Math.max(therLines.length,diagBullets.length,namaLines.length,1);
     var rh=Math.max(ROW_MIN,maxLines*3.6+2);
 
     // new page check
@@ -686,8 +669,8 @@ function buildPDF(){
     cellCenterMiddle(r.chol,'chol',dY,rh);
     cellCenterMiddle(r.au,'au',dY,rh);
     cellCenterMiddle(r.gda,'gda',dY,rh);
-    // Diagnosa: left+middle
-    cellLeftMiddle(r.diag,'diag',dY,rh);
+    // Diagnosa: bullets (same as terapi)
+    bulletLines(r.diag,'diag',dY,rh);
     // Terapi: bullets, left+middle
     bulletLines(r.ther,'ther',dY,rh);
     // Kunjungan
@@ -783,6 +766,178 @@ function downloadPDF(){
   },80);
 }
 
+function downloadXLSX(){
+  hideErr();
+  var btn=document.getElementById('xlsx-btn');
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner"></div> Membuat XLSX...';
+  showProgress();setProgress(20);
+
+  setTimeout(function(){
+    try{
+      if(typeof XLSX==='undefined') throw new Error('Library XLSX belum termuat. Refresh halaman.');
+
+      var bulanNum=parseInt(document.getElementById('bulan').value);
+      var tahun=document.getElementById('tahun').value;
+      var bulanStr=BULAN_UP[bulanNum];
+      var desa=document.getElementById('desa').value.toUpperCase();
+      var faskes=document.getElementById('faskes').value.toUpperCase();
+      var alamat=document.getElementById('alamat').value.toUpperCase();
+      var data=collectData();
+
+      setProgress(40);
+      var wb=XLSX.utils.book_new();
+      var ws_data=[];
+
+      // ── INFO HEADER rows (merged cells handled via !merges)
+      ws_data.push(['LAPORAN PELAYANAN RAWAT JALAN TINGKAT PERTAMA (RJTP)']);
+      ws_data.push(['BULAN : '+bulanStr+'   TAHUN : '+tahun]);
+      ws_data.push(['']);
+      ws_data.push(['NAMA FASKES','','','',faskes]);
+      ws_data.push(['ALAMAT','','','',alamat]);
+      ws_data.push(['NAMA DESA/KELURAHAN','','','',desa]);
+      ws_data.push(['']);
+
+      // ── TABLE HEADERS (2 rows)
+      var H1=['NO','TANGGAL','NOMOR BPJS/NIK','NAMA','UMUR','JK','BB','TB','LP',
+              'PEMERIKSAAN FISIK','','','','','','',
+              'DIAGNOSA/KELUHAN','TERAPI/OBAT','KUNJUNGAN'];
+      var H2=['','','','','','','','','',
+              'TD','N','S','P','CHOL','AU','GDA',
+              '','',''];
+      ws_data.push(H1);
+      ws_data.push(H2);
+
+      // ── DATA ROWS
+      data.forEach(function(r,i){
+        // Clean ther & diag: strip "1. " numbering, join with newline
+        function cleanBullet(txt){
+          return (txt||'').split('
+').map(function(l){
+            return l.trim().replace(/^\d+[\.\)]\s*/,'');
+          }).filter(function(l){return l.length>0;}).join('
+');
+        }
+        ws_data.push([
+          i+1, r.tgl, r.nomor, r.nama, r.umur?parseInt(r.umur)||r.umur:'',
+          r.jk, r.bb?parseFloat(r.bb)||r.bb:'', r.tb?parseFloat(r.tb)||r.tb:'', r.lp?parseFloat(r.lp)||r.lp:'',
+          r.td, r.nadi?parseFloat(r.nadi)||r.nadi:'', r.suhu||'', r.rr?parseFloat(r.rr)||r.rr:'',
+          r.chol?parseFloat(r.chol)||r.chol:'', r.au||'', r.gda?parseFloat(r.gda)||r.gda:'',
+          cleanBullet(r.diag), cleanBullet(r.ther), r.kunj
+        ]);
+      });
+
+      setProgress(60);
+      var ws=XLSX.utils.aoa_to_sheet(ws_data);
+
+      // ── MERGES
+      var merges=[];
+      var totalCols=19; // A..S
+      // Row 1: title — merge all cols (0-indexed: row 0, cols 0-18)
+      merges.push({s:{r:0,c:0},e:{r:0,c:totalCols-1}});
+      // Row 2: bulan/tahun — merge all
+      merges.push({s:{r:1,c:0},e:{r:1,c:totalCols-1}});
+      // Row 3: blank
+      // Row 4,5,6: label | : | value (cols 0-3 merged for label, col 4+ for value)
+      [3,4,5].forEach(function(r){
+        merges.push({s:{r:r,c:0},e:{r:r,c:3}});  // label
+        merges.push({s:{r:r,c:4},e:{r:r,c:totalCols-1}}); // value
+      });
+      // Row 7: blank
+      // Header row 8 (index 7): PEMERIKSAAN FISIK spans cols 9-15
+      merges.push({s:{r:7,c:9},e:{r:7,c:15}});
+      // Rowspan cols in header row 8+9: NO,TANGGAL,...,LP (cols 0-8), DIAGNOSA (16), TERAPI (17), KUNJ (18)
+      [0,1,2,3,4,5,6,7,8,16,17,18].forEach(function(c){
+        merges.push({s:{r:7,c:c},e:{r:8,c:c}});
+      });
+      ws['!merges']=merges;
+
+      // ── COLUMN WIDTHS
+      ws['!cols']=[
+        {wch:5},{wch:12},{wch:18},{wch:20},{wch:6},{wch:5},
+        {wch:6},{wch:6},{wch:6},
+        {wch:14},{wch:6},{wch:7},{wch:6},{wch:8},{wch:7},{wch:8},
+        {wch:22},{wch:28},{wch:10}
+      ];
+
+      // ── STYLING via cell styles (SheetJS CE supports basic styles)
+      var headerRows=[7,8]; // 0-indexed
+      var headerStyle={
+        font:{bold:true,name:'Arial',sz:9},
+        alignment:{horizontal:'center',vertical:'center',wrapText:true},
+        border:{
+          top:{style:'thin',color:{rgb:'646464'}},
+          bottom:{style:'thin',color:{rgb:'646464'}},
+          left:{style:'thin',color:{rgb:'646464'}},
+          right:{style:'thin',color:{rgb:'646464'}}
+        }
+      };
+      var dataStyle={
+        font:{name:'Arial',sz:9},
+        border:{
+          top:{style:'thin',color:{rgb:'AAAAAA'}},
+          bottom:{style:'thin',color:{rgb:'AAAAAA'}},
+          left:{style:'thin',color:{rgb:'AAAAAA'}},
+          right:{style:'thin',color:{rgb:'AAAAAA'}}
+        }
+      };
+      var colLetters='ABCDEFGHIJKLMNOPQRS'.split('');
+
+      // Style header rows
+      headerRows.forEach(function(ri){
+        colLetters.forEach(function(col){
+          var cellRef=col+(ri+1);
+          if(!ws[cellRef]) ws[cellRef]={t:'z',v:''};
+          ws[cellRef].s=headerStyle;
+        });
+      });
+
+      // Style data rows
+      var dataStart=9; // 0-indexed row 9 = row 10 in Excel
+      data.forEach(function(_,di){
+        colLetters.forEach(function(col,ci){
+          var cellRef=col+(dataStart+di+1);
+          if(ws[cellRef]){
+            var isTextCol=(ci===3||ci===16||ci===17);
+            ws[cellRef].s=Object.assign({},dataStyle,{
+              alignment:{
+                horizontal:isTextCol?'left':'center',
+                vertical:'center',
+                wrapText:true
+              }
+            });
+          }
+        });
+      });
+
+      // Style info header rows
+      var infoStyle={font:{bold:true,name:'Arial',sz:11},alignment:{horizontal:'center',vertical:'center'}};
+      var infoValStyle={font:{name:'Arial',sz:9},alignment:{horizontal:'left',vertical:'center'}};
+      if(ws['A1']) ws['A1'].s={font:{bold:true,name:'Arial',sz:12},alignment:{horizontal:'center',vertical:'center'}};
+      if(ws['A2']) ws['A2'].s={font:{name:'Arial',sz:10},alignment:{horizontal:'center',vertical:'center'}};
+
+      // ── ROW HEIGHTS
+      ws['!rows']=[];
+      ws['!rows'][0]={hpt:22}; // title
+      ws['!rows'][1]={hpt:16}; // bulan
+      ws['!rows'][7]={hpt:20}; // header1
+      ws['!rows'][8]={hpt:18}; // header2
+      // Data rows auto-height handled by wrapText
+
+      setProgress(85);
+      XLSX.utils.book_append_sheet(wb,ws,'Laporan RJTP');
+      var fname='Laporan_RJTP_'+bulanStr+'_'+tahun+'.xlsx';
+      XLSX.writeFile(wb,fname);
+      setProgress(100);
+    }catch(e){
+      console.error(e);showErr('Gagal buat XLSX: '+(e.message||e));
+    }
+    hideProgress();
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM8 11h8v1.5H8V11zm0 3h8v1.5H8V14zm0 3h5v1.5H8V17z"/></svg> Unduh XLSX';
+    btn.disabled=false;
+  },80);
+}
+
 function closeModal(){
   document.getElementById('modal-overlay').classList.remove('show');
   document.getElementById('modal-body').innerHTML='<div style="color:#6b7280;font-size:13px;padding:40px">Memuat pratinjau...</div>';
@@ -791,7 +946,7 @@ document.getElementById('modal-overlay').addEventListener('click',function(e){if
 
 // ── SAMPLE DATA
 var sample=[
-  {tgl:'11/02/26',nomor:'0701036506610001',nama:'ROSTINA', umur:65,jk:'P',bb:62,tb:155,lp:96, sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,chol:210,au:'5.2',gda:'', diag:'HIPERTENSI',  ther:'AMLODIPINE 5MG\nLISINOPRIL 10MG',kunj:'LAMA'},
+  {tgl:'11/02/26',nomor:'0701036506610001',nama:'ROSTINA', umur:65,jk:'P',bb:62,tb:155,lp:96, sistol:140,diastol:90,nadi:89,suhu:'36.5',rr:20,chol:210,au:'5.2',gda:'', diag:'HIPERTENSI\nSAKIT KEPALA',  ther:'AMLODIPINE 5MG\nLISINOPRIL 10MG',kunj:'LAMA'},
   {tgl:'11/02/26',nomor:'7401196109870001',nama:'HERIANTI',umur:92,jk:'P',bb:52,tb:153,lp:'',  sistol:140,diastol:80,nadi:78,suhu:'36.8',rr:18,chol:'',  au:'',   gda:'', diag:'FEBRIS',      ther:'PCT 500MG\nCTM',kunj:'BARU'},
   {tgl:'11/02/26',nomor:'7401039572730001',nama:'NURIANA', umur:48,jk:'P',bb:42,tb:167,lp:102,sistol:110,diastol:80,nadi:81,suhu:'36.2',rr:19,chol:'',  au:'',   gda:'', diag:'ISPA',         ther:'METHYLPREDNISOLON\nAMBROXOL',kunj:'LAMA'},
   {tgl:'12/02/26',nomor:'7901039308790001',nama:'HANIA',   umur:52,jk:'P',bb:69,tb:168,lp:85, sistol:130,diastol:90,nadi:86,suhu:'37.2',rr:20,chol:240,au:'7.1',gda:210,diag:'GOUT ARTRITIS',ther:'PIROXICAM 20MG\nALLOPURINOL 100MG',kunj:'LAMA'},
